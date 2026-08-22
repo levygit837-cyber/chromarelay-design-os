@@ -1,0 +1,48 @@
+{
+  "version": "1.0.0",
+  "workflows": [
+    {
+      "id": "CREATE",
+      "description": "Create a new design direction and implementation from a product idea.",
+      "definition": "framework/workflows/create.json",
+      "entry": ["no canonical design exists", "a new product or major Surface needs identity"],
+      "typicalDecisionLevel": 3
+    },
+    {
+      "id": "DOCUMENT",
+      "description": "Model an existing design as operational documentation before changing it.",
+      "definition": "framework/workflows/document.json",
+      "entry": ["an implementation exists", "documentation is missing or untrusted"],
+      "typicalDecisionLevel": 2
+    },
+    {
+      "id": "REDESIGN",
+      "description": "Replace a weak visual or structural system while preserving product truth.",
+      "definition": "framework/workflows/redesign.json",
+      "entry": ["an implementation exists", "the root cause is systemic, structural, compositional, experiential, or identitary"],
+      "typicalDecisionLevel": 3
+    },
+    {
+      "id": "EXPLORE",
+      "description": "Generate, prototype, compare, and select independent creative directions.",
+      "definition": "framework/workflows/explore.json",
+      "entry": ["the main uncertainty is creative direction", "implementation is not yet the primary decision"],
+      "typicalDecisionLevel": 2
+    },
+    {
+      "id": "REFINE",
+      "description": "Improve a bounded concept, Surface, section, or component through evidence-backed hypotheses.",
+      "definition": "framework/workflows/refine.json",
+      "entry": ["a usable baseline exists", "the scope is bounded and the current identity is mostly valid"],
+      "typicalDecisionLevel": 1
+    }
+  ],
+  "routingOrder": [
+    "honor explicit workflow when compatible with facts",
+    "route exploration-only requests to EXPLORE",
+    "route undocumented existing designs through DOCUMENT before mutation",
+    "route systemic existing-design problems to REDESIGN",
+    "route bounded existing-design problems to REFINE",
+    "route new designs to CREATE"
+  ]
+}

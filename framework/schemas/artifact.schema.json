@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://createive.dev/schemas/artifact.schema.json",
+  "title": "Createive Artifact Reference",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "kind", "path", "status", "producerRole", "runId", "phase", "createdAt", "sourceRefs"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "kind": { "type": "string", "minLength": 1 },
+    "path": { "type": "string", "minLength": 1 },
+    "status": { "enum": ["observed", "inferred", "proposed", "approved", "locked", "deprecated", "rejected"] },
+    "producerRole": { "type": "string" },
+    "agentId": { "type": "string" },
+    "runId": { "type": "string" },
+    "phase": { "type": "string" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "contentHash": { "type": "string" },
+    "sourceRefs": { "type": "array", "items": { "type": "string" } },
+    "evidenceRefs": { "type": "array", "items": { "type": "string" }, "default": [] },
+    "canonicalDestination": { "type": "string" }
+  }
+}

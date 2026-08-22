@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://createive.dev/schemas/decision.schema.json",
+  "title": "Createive Decision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "scope", "status", "choice", "rationale", "alternatives", "evidence", "risks", "revisitWhen"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "scope": { "enum": ["project", "system", "surface", "component", "run"] },
+    "status": { "enum": ["inferred", "proposed", "approved", "locked", "deprecated", "rejected"] },
+    "choice": { "type": "string", "minLength": 1 },
+    "rationale": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "alternatives": { "type": "array", "items": { "type": "string" } },
+    "evidence": { "type": "array", "items": { "type": "string" } },
+    "risks": { "type": "array", "items": { "type": "string" } },
+    "revisitWhen": { "type": "array", "items": { "type": "string" } },
+    "supersedes": { "type": "array", "items": { "type": "string" } },
+    "approvedBy": { "type": "string" },
+    "approvedAt": { "type": "string", "format": "date-time" }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "surface": "OPERATE",
+  "inherits": "common.json",
+  "extraDimensions": {
+    "taskAndStates": "The primary task, data meaning, controls, feedback, and non-happy-path states remain clear under real operational density."
+  },
+  "priorities": ["task clarity", "hierarchy", "state completeness", "density choice", "predictable interaction"],
+  "antiBias": "Do not punish deliberate density or reward empty marketing spaciousness in an operational tool."
+}

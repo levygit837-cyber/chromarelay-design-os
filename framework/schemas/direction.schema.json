@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://createive.dev/schemas/direction.schema.json",
+  "title": "Createive Creative Direction",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "thesis", "productInterpretation", "domainWorld", "composition", "typography", "color", "surfaces", "motion", "signature", "antiDefaults", "systemPotential", "risks", "divergenceAxes", "evidencePlan"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "thesis": { "type": "string", "minLength": 1 },
+    "productInterpretation": { "type": "string", "minLength": 1 },
+    "domainWorld": { "type": "array", "items": { "type": "string" }, "minItems": 3 },
+    "composition": { "type": "string", "minLength": 1 },
+    "typography": { "type": "string", "minLength": 1 },
+    "color": { "type": "string", "minLength": 1 },
+    "surfaces": { "type": "string", "minLength": 1 },
+    "motion": { "type": "string", "minLength": 1 },
+    "signature": { "type": "string", "minLength": 1 },
+    "antiDefaults": { "type": "array", "items": { "type": "string" } },
+    "systemPotential": { "type": "string", "minLength": 1 },
+    "risks": { "type": "array", "items": { "type": "string" } },
+    "divergenceAxes": { "type": "array", "items": { "type": "string" }, "minItems": 3 },
+    "evidencePlan": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "referencePrinciples": { "type": "array", "items": { "type": "string" } },
+    "nonTransferableReferenceElements": { "type": "array", "items": { "type": "string" } }
+  }
+}

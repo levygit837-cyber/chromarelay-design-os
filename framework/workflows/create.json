@@ -1,0 +1,165 @@
+{
+  "id": "CREATE",
+  "version": "1.0.0",
+  "purpose": "Create a visually distinctive and operationally coherent design system from product intent.",
+  "phases": [
+    {
+      "id": "intake",
+      "role": "coordinator",
+      "kit": null,
+      "purpose": "Classify Surface, decision level, autonomy, scope, constraints, and existing state.",
+      "inputs": ["Design Work request"],
+      "outputs": ["Run Contract"],
+      "gates": [],
+      "parallelism": "none",
+      "exit": "Run Contract validates"
+    },
+    {
+      "id": "grounding",
+      "role": "product-strategist",
+      "kit": "grounding",
+      "purpose": "Establish user, task, product truth, desired perception, constraints, and open creative space.",
+      "inputs": ["Run Contract", "existing product facts"],
+      "outputs": ["Product Brief", "Constraint Draft"],
+      "gates": ["grounding-completeness"],
+      "parallelism": "single",
+      "exit": "material ambiguity resolved or explicitly accepted"
+    },
+    {
+      "id": "domain-exploration",
+      "role": "art-director",
+      "kit": "creative-direction-product",
+      "purpose": "Explore domain objects, materials, metaphors, environments, rhythms, and likely defaults before visual composition.",
+      "inputs": ["Product Brief", "Constraints"],
+      "outputs": ["Domain Map", "Anti-default Ledger", "Creative Opportunities"],
+      "gates": [],
+      "parallelism": "single",
+      "exit": "at least three materially different creative territories are available"
+    },
+    {
+      "id": "direction-divergence",
+      "role": "art-director",
+      "kit": "creative-direction-product",
+      "purpose": "Produce independent coherent Directions under different lenses.",
+      "inputs": ["Product Brief", "Domain Map", "Constraints"],
+      "outputs": ["Direction candidates"],
+      "gates": [],
+      "parallelism": "3-5 isolated contexts",
+      "contextControls": ["hide competing candidates", "use distinct exploration lens per agent"],
+      "exit": "each candidate diverges materially on at least three axes"
+    },
+    {
+      "id": "visual-specimens",
+      "role": "art-director",
+      "kit": "creative-direction-product",
+      "purpose": "Render enough of each Direction to judge hierarchy, signature, component language, and system potential.",
+      "inputs": ["Direction candidates"],
+      "outputs": ["visual specimens", "risk notes"],
+      "gates": ["direction-eligibility"],
+      "parallelism": "per candidate",
+      "exit": "eligible candidates have comparable evidence"
+    },
+    {
+      "id": "direction-tournament",
+      "role": "visual-critic",
+      "kit": "visual-critique-product",
+      "purpose": "Run blind pairwise comparisons and evaluate system potential.",
+      "inputs": ["Product Brief", "anonymous specimens", "Direction contracts"],
+      "outputs": ["Tournament Report", "Selected Direction or escalation"],
+      "gates": ["direction-tournament"],
+      "parallelism": "2+ independent critics for high-risk work",
+      "contextControls": ["hide creator identity", "hide creator reasoning"],
+      "exit": "winner selected or human resolves material tie"
+    },
+    {
+      "id": "canonization",
+      "role": "system-architect",
+      "kit": "design-system",
+      "purpose": "Translate the Selected Direction into design grammar, tokens, scope, exceptions, and Locks.",
+      "inputs": ["Selected Direction", "Product Brief", "Constraints"],
+      "outputs": ["DESIGN draft", "token drafts", "Decision records"],
+      "gates": ["contract-consistency"],
+      "parallelism": "single",
+      "exit": "contracts validate without unresolved conflict"
+    },
+    {
+      "id": "surface-architecture",
+      "role": "product-strategist",
+      "kit": "grounding",
+      "purpose": "Define information hierarchy, focal point, actions, responsive transformations, and state matrix.",
+      "inputs": ["Product Brief", "Selected Direction", "DESIGN draft"],
+      "outputs": ["Surface Brief", "Information Architecture", "Responsive Model", "State Matrix"],
+      "gates": [],
+      "parallelism": "single",
+      "exit": "Surface contracts are implementation-ready"
+    },
+    {
+      "id": "component-plan",
+      "role": "component-architect",
+      "kit": "components",
+      "purpose": "Resolve each component requirement by reuse, composition, extension, or justified creation.",
+      "inputs": ["Surface Brief", "component inventory", "DESIGN draft"],
+      "outputs": ["Component Plan", "component state contracts"],
+      "gates": ["component-reuse"],
+      "parallelism": "single",
+      "exit": "all critical component requirements have a resolution"
+    },
+    {
+      "id": "lighthouse-build",
+      "role": "builder",
+      "kit": "implementation",
+      "purpose": "Implement one representative Surface through an isolated worktree.",
+      "inputs": ["Surface Brief", "DESIGN draft", "tokens", "Component Plan"],
+      "outputs": ["implementation patch", "renderable Surface", "implementation notes"],
+      "gates": ["build-health"],
+      "parallelism": "isolated single writer",
+      "exit": "Surface renders and basic health passes"
+    },
+    {
+      "id": "deterministic-audit",
+      "role": "deterministic-auditor",
+      "kit": "deterministic-audit",
+      "purpose": "Collect objective implementation Evidence.",
+      "inputs": ["implementation", "acceptance contracts"],
+      "outputs": ["Audit Report", "screenshots", "state captures"],
+      "gates": ["build-health", "token-drift", "responsive-geometry", "accessibility", "state-coverage"],
+      "parallelism": "independent from builder",
+      "exit": "objective blockers resolved or recorded"
+    },
+    {
+      "id": "visual-critique",
+      "role": "visual-critic",
+      "kit": "visual-critique-product",
+      "purpose": "Judge the rendered Surface blindly against product and design intent.",
+      "inputs": ["anonymous screenshots", "Product Brief", "DESIGN excerpt", "Surface Brief"],
+      "outputs": ["Visual Review"],
+      "gates": ["visual-quality"],
+      "parallelism": "1-3 critics based on risk",
+      "contextControls": ["detector report withheld until first verdict"],
+      "exit": "approved, repairable, or structural return identified"
+    },
+    {
+      "id": "repair",
+      "role": "repairer",
+      "kit": "repair",
+      "purpose": "Apply one coherent batch of approved findings.",
+      "inputs": ["approved findings", "implementation baseline"],
+      "outputs": ["repair patch", "before/after evidence"],
+      "gates": ["build-health", "visual-quality"],
+      "parallelism": "isolated single writer",
+      "skipWhen": "no approved finding requires change",
+      "exit": "repair confirmed or structural return triggered"
+    },
+    {
+      "id": "promotion",
+      "role": "memory-curator",
+      "kit": "memory",
+      "purpose": "Promote approved reusable contracts and record provenance.",
+      "inputs": ["approved Run Artifacts", "Gate evidence"],
+      "outputs": ["canonical Artifacts", "Promotion Manifest"],
+      "gates": ["promotion-readiness"],
+      "parallelism": "single",
+      "exit": "Run completes"
+    }
+  ]
+}

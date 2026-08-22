@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://createive.dev/schemas/eval-case.schema.json",
+  "title": "Createive Eval Case",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "title", "workflow", "surfaceClass", "brief", "fixedInputs", "baseline", "candidate", "gates", "rubric", "repetitions"],
+  "properties": {
+    "id": { "type": "string" },
+    "title": { "type": "string" },
+    "workflow": { "enum": ["CREATE", "DOCUMENT", "REDESIGN", "EXPLORE", "REFINE"] },
+    "surfaceClass": { "enum": ["PERSUADE", "OPERATE", "READ", "EXPERIENCE"] },
+    "brief": { "type": "string" },
+    "fixedInputs": { "type": "array", "items": { "type": "string" } },
+    "baseline": { "type": "object", "required": ["mode"], "properties": { "mode": { "const": "without-createive" }, "modelRole": { "type": "string" } } },
+    "candidate": { "type": "object", "required": ["mode"], "properties": { "mode": { "const": "with-createive" }, "modelRole": { "type": "string" } } },
+    "gates": { "type": "array", "items": { "type": "string" } },
+    "rubric": { "type": "string" },
+    "repetitions": { "type": "integer", "minimum": 1 },
+    "blind": { "type": "boolean", "default": true },
+    "record": { "type": "array", "items": { "type": "string" } }
+  }
+}

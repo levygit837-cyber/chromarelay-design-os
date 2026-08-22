@@ -1,0 +1,19 @@
+{
+  "version": "1.0.0",
+  "instructions": [
+    "Judge A and B independently before comparing.",
+    "Do not infer which system produced either side.",
+    "Use the Surface-specific rubric.",
+    "Select a winner per material dimension and overall.",
+    "Record confidence, trade-offs, and insufficient evidence.",
+    "Do not receive creator reasoning or detector findings before the first verdict."
+  ],
+  "output": {
+    "winner": "A | B | tie",
+    "confidence": "low | medium | high",
+    "dimensionWinners": {},
+    "reasons": [],
+    "strengthsToPreserve": [],
+    "risks": []
+  }
+}

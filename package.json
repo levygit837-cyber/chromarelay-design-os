@@ -1,0 +1,23 @@
+{
+  "name": "createive-design-os",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Portable design-work management operating system for agent teams.",
+  "type": "module",
+  "bin": {
+    "createive": "dist/src/cli.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "node --test dist/test/*.test.js",
+    "check": "npm run build && npm test",
+    "validate:framework": "npm run build && node dist/src/cli.js validate-framework --system framework"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.9.0"
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://createive.dev/schemas/run-contract.schema.json",
+  "title": "Createive Run Contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "runId", "workflow", "objective", "scope", "autonomy", "status", "currentPhase", "decisionLevel", "authority", "skillBudget", "createdAt", "updatedAt"],
+  "properties": {
+    "version": { "const": "1.0" },
+    "runId": { "type": "string", "minLength": 8 },
+    "workflow": { "enum": ["CREATE", "DOCUMENT", "REDESIGN", "EXPLORE", "REFINE"] },
+    "objective": { "type": "string", "minLength": 1 },
+    "scope": {
+      "type": "object",
+      "required": ["kind", "targets", "nonGoals"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": { "enum": ["project", "system", "flow", "surface", "section", "component"] },
+        "targets": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+        "nonGoals": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "autonomy": { "enum": ["assisted", "guarded", "full"] },
+    "status": { "enum": ["planned", "active", "blocked", "awaiting-human", "completed", "cancelled"] },
+    "currentPhase": { "type": "string", "minLength": 1 },
+    "decisionLevel": { "type": "integer", "minimum": 0, "maximum": 3 },
+    "surfaceClass": { "enum": ["PERSUADE", "OPERATE", "READ", "EXPERIENCE"] },
+    "hardConstraints": { "type": "array", "items": { "type": "string" }, "default": [] },
+    "lockedDecisions": { "type": "array", "items": { "type": "string" }, "default": [] },
+    "openDecisions": { "type": "array", "items": { "type": "string" }, "default": [] },
+    "authority": {
+      "type": "object",
+      "required": ["canonicalOwner", "promotionRole", "creatorMayFinalCritique"],
+      "additionalProperties": false,
+      "properties": {
+        "canonicalOwner": { "const": "coordinator" },
+        "promotionRole": { "const": "memory-curator" },
+        "creatorMayFinalCritique": { "const": false }
+      }
+    },
+    "skillBudget": {
+      "type": "object",
+      "required": ["primary", "supporting"],
+      "additionalProperties": false,
+      "properties": {
+        "primary": { "type": "integer", "minimum": 0, "maximum": 1 },
+        "supporting": { "type": "integer", "minimum": 0, "maximum": 2 }
+      }
+    },
+    "phaseHistory": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["phase", "enteredAt"],
+        "properties": {
+          "phase": { "type": "string" },
+          "enteredAt": { "type": "string", "format": "date-time" },
+          "exitedAt": { "type": "string", "format": "date-time" },
+          "outcome": { "type": "string" }
+        }
+      },
+      "default": []
+    },
+    "artifactRefs": { "type": "array", "items": { "$ref": "artifact.schema.json" }, "default": [] },
+    "decisionRefs": { "type": "array", "items": { "type": "string" }, "default": [] },
+    "blockers": { "type": "array", "items": { "type": "string" }, "default": [] },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" }
+  }
+}

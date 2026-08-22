@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://createive.dev/schemas/phase-packet.schema.json",
+  "title": "Createive Phase Packet",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["runId", "workflow", "phase", "role", "goal", "scope", "inputs", "locks", "openDecisions", "skillKit", "outputSchema", "acceptance", "exitPolicy", "nonGoals", "omittedContext"],
+  "properties": {
+    "runId": { "type": "string" },
+    "workflow": { "enum": ["CREATE", "DOCUMENT", "REDESIGN", "EXPLORE", "REFINE"] },
+    "phase": { "type": "string" },
+    "role": { "type": "string" },
+    "goal": { "type": "string", "minLength": 1 },
+    "scope": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "inputs": { "type": "array", "items": { "type": "string" } },
+    "locks": { "type": "array", "items": { "type": "string" } },
+    "openDecisions": { "type": "array", "items": { "type": "string" } },
+    "authority": { "type": "array", "items": { "type": "string" } },
+    "skillKit": {
+      "type": "object",
+      "required": ["primary", "supporting"],
+      "properties": {
+        "primary": { "type": ["string", "null"] },
+        "supporting": { "type": "array", "items": { "type": "string" }, "maxItems": 2 }
+      }
+    },
+    "outputSchema": { "type": "string", "description": "Path or URI to an explicit JSON Schema." },
+    "acceptance": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "exitPolicy": { "type": "string", "minLength": 1 },
+    "nonGoals": { "type": "array", "items": { "type": "string" } },
+    "omittedContext": { "type": "array", "items": { "type": "string" } },
+    "independenceControls": { "type": "array", "items": { "type": "string" } }
+  }
+}

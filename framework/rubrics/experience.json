@@ -1,0 +1,9 @@
+{
+  "surface": "EXPERIENCE",
+  "inherits": "common.json",
+  "extraDimensions": {
+    "presenceAndMotion": "The artifact, rhythm, interaction, and motion create presence while retaining usability and reduced-motion integrity."
+  },
+  "priorities": ["presence", "signature", "composition", "motion", "memorability"],
+  "antiBias": "Do not reduce an experiential Surface to the conventions of a dashboard or conversion page."
+}

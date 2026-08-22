@@ -1,0 +1,65 @@
+{
+  "version": "1.0.0",
+  "surfaces": [
+    {
+      "id": "PERSUADE",
+      "examples": ["landing page", "marketing page", "product launch"],
+      "weights": {
+        "productFit": 12,
+        "hierarchy": 14,
+        "specificity": 14,
+        "composition": 14,
+        "typography": 10,
+        "coherence": 10,
+        "responsiveness": 8,
+        "craft": 10,
+        "narrativeAndAction": 8
+      }
+    },
+    {
+      "id": "OPERATE",
+      "examples": ["dashboard", "admin", "tool", "SaaS application"],
+      "weights": {
+        "productFit": 14,
+        "hierarchy": 18,
+        "specificity": 10,
+        "composition": 10,
+        "typography": 10,
+        "coherence": 12,
+        "responsiveness": 10,
+        "craft": 8,
+        "taskAndStates": 8
+      }
+    },
+    {
+      "id": "READ",
+      "examples": ["documentation", "article", "editorial page"],
+      "weights": {
+        "productFit": 10,
+        "hierarchy": 14,
+        "specificity": 8,
+        "composition": 10,
+        "typography": 20,
+        "coherence": 12,
+        "responsiveness": 10,
+        "craft": 8,
+        "readingContinuity": 8
+      }
+    },
+    {
+      "id": "EXPERIENCE",
+      "examples": ["portfolio", "immersive story", "visual showcase"],
+      "weights": {
+        "productFit": 10,
+        "hierarchy": 10,
+        "specificity": 18,
+        "composition": 16,
+        "typography": 10,
+        "coherence": 10,
+        "responsiveness": 8,
+        "craft": 10,
+        "presenceAndMotion": 8
+      }
+    }
+  ]
+}

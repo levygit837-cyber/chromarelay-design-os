@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://createive.dev/schemas/handoff.schema.json",
+  "title": "Createive Specialist Handoff",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "runId", "phase", "role", "agentId", "summary", "claims", "evidence", "artifacts", "decisions", "risks", "confidence", "requestedTransition", "unresolved"],
+  "properties": {
+    "version": { "const": "1.0" },
+    "runId": { "type": "string" },
+    "phase": { "type": "string" },
+    "role": { "type": "string" },
+    "agentId": { "type": "string" },
+    "summary": { "type": "string", "minLength": 1 },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["claim", "status", "confidence", "evidenceRefs"],
+        "properties": {
+          "claim": { "type": "string" },
+          "status": { "enum": ["observed", "inferred", "proposed"] },
+          "confidence": { "enum": ["low", "medium", "high"] },
+          "evidenceRefs": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "evidence": { "type": "array", "items": { "type": "string" } },
+    "artifacts": { "type": "array", "items": { "$ref": "artifact.schema.json" } },
+    "decisions": { "type": "array", "items": { "$ref": "decision.schema.json" } },
+    "risks": { "type": "array", "items": { "type": "string" } },
+    "confidence": { "enum": ["low", "medium", "high"] },
+    "requestedTransition": { "enum": ["advance", "branch", "return", "escalate", "stop"] },
+    "requestedTarget": { "type": "string" },
+    "unresolved": { "type": "array", "items": { "type": "string" } }
+  }
+}
