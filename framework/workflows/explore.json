@@ -1,0 +1,86 @@
+{
+  "id": "EXPLORE",
+  "version": "1.0.0",
+  "purpose": "Expand the creative search space and select a Direction without committing to implementation too early.",
+  "phases": [
+    {
+      "id": "frame-question",
+      "role": "product-strategist",
+      "kit": "grounding",
+      "purpose": "Express the creative tension as a product-specific question with constraints and defaults to overcome.",
+      "inputs": ["Design Work request", "product truth"],
+      "outputs": ["Creative Question"],
+      "gates": ["grounding-completeness"],
+      "parallelism": "single",
+      "exit": "the question distinguishes creative uncertainty from implementation"
+    },
+    {
+      "id": "define-axes",
+      "role": "art-director",
+      "kit": "creative-direction-product",
+      "purpose": "Define dimensions that produce useful diversity without prescribing recipes.",
+      "inputs": ["Creative Question"],
+      "outputs": ["Exploration Axes", "lens assignments"],
+      "gates": [],
+      "parallelism": "single",
+      "exit": "lenses are materially different and product-relevant"
+    },
+    {
+      "id": "independent-concepts",
+      "role": "art-director",
+      "kit": "creative-direction-product",
+      "purpose": "Create coherent independent Directions under isolated contexts.",
+      "inputs": ["Creative Question", "assigned lens", "constraints"],
+      "outputs": ["Direction candidates"],
+      "gates": [],
+      "parallelism": "3-5 isolated contexts",
+      "contextControls": ["hide candidates from peers"],
+      "exit": "candidates differ materially on at least three axes"
+    },
+    {
+      "id": "eligibility",
+      "role": "product-strategist",
+      "kit": "grounding",
+      "purpose": "Remove concepts that fail product truth, usability, states, responsiveness, or implementation viability.",
+      "inputs": ["Direction candidates", "product constraints"],
+      "outputs": ["Eligibility Report", "eligible candidates"],
+      "gates": ["direction-eligibility"],
+      "parallelism": "independent from creators",
+      "exit": "only viable candidates remain"
+    },
+    {
+      "id": "prototype",
+      "role": "art-director",
+      "kit": "creative-direction-product",
+      "purpose": "Create comparable visual specimens at the minimum fidelity needed for the decision.",
+      "inputs": ["eligible Directions"],
+      "outputs": ["visual specimens", "system-potential notes"],
+      "gates": [],
+      "parallelism": "per candidate",
+      "exit": "evidence is comparable"
+    },
+    {
+      "id": "tournament",
+      "role": "visual-critic",
+      "kit": "visual-critique-product",
+      "purpose": "Run blind pairwise visual comparison, then review system potential and risk.",
+      "inputs": ["anonymous specimens", "Creative Question"],
+      "outputs": ["Tournament Report", "selected and reserve Directions"],
+      "gates": ["direction-tournament"],
+      "parallelism": "multiple critics based on risk",
+      "contextControls": ["hide creator", "randomize A/B order"],
+      "exit": "winner selected or material tie escalated"
+    },
+    {
+      "id": "selection-record",
+      "role": "memory-curator",
+      "kit": "memory",
+      "purpose": "Record selected, reserve, rejected Directions and their Evidence without canonizing implementation contracts.",
+      "inputs": ["Tournament Report"],
+      "outputs": ["Selected Direction record", "Direction archive"],
+      "gates": ["promotion-readiness"],
+      "parallelism": "single",
+      "exit": "Run completes or chains to CREATE/REDESIGN canonization"
+    }
+  ]
+}

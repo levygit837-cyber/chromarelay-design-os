@@ -1,0 +1,103 @@
+{
+  "version": "1.0.0",
+  "gates": [
+    {
+      "id": "grounding-completeness",
+      "kind": "hybrid",
+      "purpose": "Verify user, task, product truth, constraints, desired perception, and open creative space are represented.",
+      "evidence": ["Product Brief", "confidence per inferred field"],
+      "pass": "all required fields present; material low-confidence ambiguity is resolved or escalated"
+    },
+    {
+      "id": "as-is-fidelity",
+      "kind": "hybrid",
+      "purpose": "Verify operational documentation explains representative renders and code evidence.",
+      "evidence": ["inventory coverage", "prediction check", "unmodeled findings"],
+      "pass": "representative Surfaces can be explained without inventing undocumented rules"
+    },
+    {
+      "id": "direction-eligibility",
+      "kind": "qualitative",
+      "purpose": "Remove Directions that fail product truth, constraints, state support, responsiveness, or system potential.",
+      "evidence": ["eligibility report"],
+      "pass": "no blocker remains"
+    },
+    {
+      "id": "direction-tournament",
+      "kind": "qualitative",
+      "purpose": "Select among eligible Directions by blind pairwise comparison.",
+      "evidence": ["randomized comparisons", "critic votes", "disagreement"],
+      "pass": "clear winner or explicit human decision"
+    },
+    {
+      "id": "contract-consistency",
+      "kind": "deterministic",
+      "purpose": "Detect broken token references, conflicting Locks, incomplete component states, and schema errors.",
+      "evidence": ["validation report"],
+      "pass": "zero errors; warnings accepted or resolved"
+    },
+    {
+      "id": "build-health",
+      "kind": "deterministic",
+      "purpose": "Verify build, typecheck, targeted tests, runtime, and console health.",
+      "evidence": ["command output", "console capture"],
+      "pass": "required commands succeed and no unaccepted runtime error exists"
+    },
+    {
+      "id": "token-drift",
+      "kind": "deterministic",
+      "purpose": "Find visual values outside canonical tokens or approved exceptions.",
+      "evidence": ["drift report with paths"],
+      "pass": "zero unexplained drift"
+    },
+    {
+      "id": "component-reuse",
+      "kind": "hybrid",
+      "purpose": "Verify existing components and accessible primitives were queried before new ones were created.",
+      "evidence": ["component resolution records", "duplicate scan"],
+      "pass": "new components have a recorded resolution and no unjustified duplicate exists"
+    },
+    {
+      "id": "responsive-geometry",
+      "kind": "deterministic",
+      "purpose": "Detect overflow, clipping, collisions, unstable viewport sizing, and failed reorganization.",
+      "evidence": ["viewport screenshots", "geometry assertions"],
+      "pass": "all required viewports and states satisfy assertions"
+    },
+    {
+      "id": "accessibility",
+      "kind": "hybrid",
+      "purpose": "Combine automated checks with keyboard, focus, semantics, motion, and manual review.",
+      "evidence": ["axe report", "keyboard trace", "manual checklist"],
+      "pass": "zero critical/serious unaccepted violations and manual checks pass"
+    },
+    {
+      "id": "state-coverage",
+      "kind": "deterministic",
+      "purpose": "Verify required loading, empty, error, permission, long-content, disabled, and success states.",
+      "evidence": ["state matrix", "state captures"],
+      "pass": "every required state is reproducible and captured"
+    },
+    {
+      "id": "visual-quality",
+      "kind": "qualitative",
+      "purpose": "Blindly judge product fit, hierarchy, specificity, composition, typography, coherence, responsiveness, and craft.",
+      "evidence": ["critic reports", "rubric scores", "findings"],
+      "pass": "no blocker and threshold for Surface class is met"
+    },
+    {
+      "id": "baseline-preference",
+      "kind": "qualitative",
+      "purpose": "Compare candidate against frozen Baseline without revealing which is new.",
+      "evidence": ["randomized A/B votes", "reasons", "confidence"],
+      "pass": "candidate wins or trade-off is explicitly accepted"
+    },
+    {
+      "id": "promotion-readiness",
+      "kind": "deterministic",
+      "purpose": "Verify approved status, provenance, required Gates, destination scope, and Lock compatibility.",
+      "evidence": ["promotion manifest"],
+      "pass": "all promotion preconditions hold"
+    }
+  ]
+}

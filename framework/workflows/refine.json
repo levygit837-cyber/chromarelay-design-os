@@ -1,0 +1,107 @@
+{
+  "id": "REFINE",
+  "version": "1.0.0",
+  "purpose": "Improve a bounded baseline with the smallest coherent change set that produces observable quality gain.",
+  "phases": [
+    {
+      "id": "bound-scope",
+      "role": "coordinator",
+      "kit": null,
+      "purpose": "Classify polish, recompose, or reformulate; identify non-goals and reclassification triggers.",
+      "inputs": ["Design Work request", "project state"],
+      "outputs": ["Run Contract", "bounded target"],
+      "gates": [],
+      "parallelism": "none",
+      "exit": "scope is local enough for REFINE"
+    },
+    {
+      "id": "capture-baseline",
+      "role": "inspector",
+      "kit": "inspection",
+      "purpose": "Capture current render, code, states, token usage, and usage contexts.",
+      "inputs": ["bounded target"],
+      "outputs": ["Baseline", "context captures"],
+      "gates": ["build-health"],
+      "parallelism": "single",
+      "exit": "before state is reproducible"
+    },
+    {
+      "id": "diagnose",
+      "role": "visual-critic",
+      "kit": "visual-critique-product",
+      "purpose": "Identify the highest-impact cause rather than list cosmetic symptoms.",
+      "inputs": ["Baseline", "Surface Brief", "DESIGN excerpt"],
+      "outputs": ["Diagnosis", "priority findings"],
+      "gates": [],
+      "parallelism": "independent",
+      "exit": "cause and expected improvement are explicit"
+    },
+    {
+      "id": "form-hypothesis",
+      "role": "coordinator",
+      "kit": null,
+      "purpose": "Convert diagnosis into a testable intervention, expected Evidence, and rollback rule.",
+      "inputs": ["Diagnosis"],
+      "outputs": ["Refinement Hypothesis"],
+      "gates": [],
+      "parallelism": "none",
+      "exit": "hypothesis is falsifiable"
+    },
+    {
+      "id": "focused-options",
+      "role": "art-director",
+      "kit": "creative-direction-product",
+      "purpose": "Explore only the uncertain decision with two or three materially different mechanisms.",
+      "inputs": ["Refinement Hypothesis"],
+      "outputs": ["focused options", "comparison"],
+      "gates": ["direction-tournament"],
+      "parallelism": "2-3 isolated contexts",
+      "skipWhen": "the intervention is already clear and low-risk",
+      "exit": "one mechanism is selected"
+    },
+    {
+      "id": "coherent-batch",
+      "role": "repairer",
+      "kit": "repair",
+      "purpose": "Apply a single coherent change batch addressing the hypothesis.",
+      "inputs": ["selected intervention", "Baseline"],
+      "outputs": ["patch", "candidate renders"],
+      "gates": ["build-health"],
+      "parallelism": "isolated single writer",
+      "exit": "candidate is comparable"
+    },
+    {
+      "id": "blind-comparison",
+      "role": "visual-critic",
+      "kit": "visual-critique-product",
+      "purpose": "Compare before and after without revealing which is new.",
+      "inputs": ["randomized Baseline/candidate", "Refinement Hypothesis"],
+      "outputs": ["Comparison Report"],
+      "gates": ["baseline-preference", "visual-quality"],
+      "parallelism": "independent",
+      "exit": "candidate wins, trade-off is accepted, or rollback is requested"
+    },
+    {
+      "id": "deterministic-audit",
+      "role": "deterministic-auditor",
+      "kit": "deterministic-audit",
+      "purpose": "Verify no functional, token, state, responsive, or accessibility regression.",
+      "inputs": ["candidate implementation"],
+      "outputs": ["Audit Report"],
+      "gates": ["build-health", "token-drift", "responsive-geometry", "accessibility", "state-coverage"],
+      "parallelism": "independent",
+      "exit": "objective blockers resolved"
+    },
+    {
+      "id": "promote-or-revert",
+      "role": "memory-curator",
+      "kit": "memory",
+      "purpose": "Promote winning reusable decisions or restore Baseline without residue.",
+      "inputs": ["Comparison Report", "Audit Report", "patch"],
+      "outputs": ["Promotion or Revert Manifest"],
+      "gates": ["promotion-readiness"],
+      "parallelism": "single",
+      "exit": "Run completes"
+    }
+  ]
+}

@@ -1,0 +1,140 @@
+{
+  "id": "REDESIGN",
+  "version": "1.0.0",
+  "purpose": "Replace a weak design system while preserving valid product truth and behavior.",
+  "phases": [
+    {
+      "id": "intake",
+      "role": "coordinator",
+      "kit": null,
+      "purpose": "Confirm existing documentation quality and chain through DOCUMENT when needed.",
+      "inputs": ["Design Work request", "project state"],
+      "outputs": ["Run Contract"],
+      "gates": [],
+      "parallelism": "none",
+      "exit": "baseline and documentation are trusted"
+    },
+    {
+      "id": "preserve-product-truth",
+      "role": "product-strategist",
+      "kit": "grounding",
+      "purpose": "Separate content, behavior, flows, data, SEO, legal, accessibility, and technical truth from replaceable expression.",
+      "inputs": ["current documentation", "Baseline"],
+      "outputs": ["Product Truths", "Behavior Contracts", "Preserve/Replace Matrix"],
+      "gates": ["grounding-completeness"],
+      "parallelism": "single",
+      "exit": "preservation boundaries are explicit"
+    },
+    {
+      "id": "root-cause-diagnosis",
+      "role": "inspector",
+      "kit": "inspection",
+      "purpose": "Classify cosmetic, systemic, compositional, structural, experiential, and identitary causes with Evidence.",
+      "inputs": ["Baseline", "current documentation"],
+      "outputs": ["Diagnosis", "problem evidence"],
+      "gates": [],
+      "parallelism": "parallel lenses, single synthesis",
+      "exit": "symptoms are separated from root causes"
+    },
+    {
+      "id": "redesign-charter",
+      "role": "coordinator",
+      "kit": null,
+      "purpose": "Lock change level, preservation, objectives, comparison criteria, risks, and out-of-scope work.",
+      "inputs": ["Product Truths", "Diagnosis"],
+      "outputs": ["Redesign Charter"],
+      "gates": [],
+      "parallelism": "none",
+      "exit": "charter is accepted under autonomy policy"
+    },
+    {
+      "id": "target-world-divergence",
+      "role": "art-director",
+      "kit": "creative-direction-product",
+      "purpose": "Generate independent replacement worlds without prematurely hybridizing old and new.",
+      "inputs": ["Redesign Charter", "Product Truths", "anti-reference summary"],
+      "outputs": ["Direction candidates"],
+      "gates": ["direction-eligibility"],
+      "parallelism": "3-5 isolated contexts",
+      "contextControls": ["current design is product evidence and anti-reference, not visual authority"],
+      "exit": "eligible replacement worlds exist"
+    },
+    {
+      "id": "direction-tournament",
+      "role": "visual-critic",
+      "kit": "visual-critique-product",
+      "purpose": "Select the replacement Direction by blind visual and system-potential review.",
+      "inputs": ["anonymous specimens", "Redesign Charter"],
+      "outputs": ["Selected Direction", "Tournament Report"],
+      "gates": ["direction-tournament"],
+      "parallelism": "2+ critics for high-risk work",
+      "exit": "Direction selected"
+    },
+    {
+      "id": "v2-system-draft",
+      "role": "system-architect",
+      "kit": "design-system",
+      "purpose": "Create a versioned v2 design system without deleting v1.",
+      "inputs": ["Selected Direction", "Preserve/Replace Matrix"],
+      "outputs": ["v2 DESIGN draft", "v2 tokens", "v2 component principles"],
+      "gates": ["contract-consistency"],
+      "parallelism": "single",
+      "exit": "v2 contracts are internally coherent"
+    },
+    {
+      "id": "lighthouse-pilot",
+      "role": "builder",
+      "kit": "implementation",
+      "purpose": "Implement app shell, representative Surface, critical flow, and edge state in isolation.",
+      "inputs": ["v2 contracts", "Surface Brief", "Behavior Contracts"],
+      "outputs": ["pilot patch", "pilot renders"],
+      "gates": ["build-health", "state-coverage"],
+      "parallelism": "isolated single writer",
+      "exit": "pilot is comparable to Baseline"
+    },
+    {
+      "id": "baseline-comparison",
+      "role": "visual-critic",
+      "kit": "visual-critique-product",
+      "purpose": "Compare pilot against Baseline blindly for quality, clarity, specificity, system potential, and task preservation.",
+      "inputs": ["anonymous Baseline and pilot evidence", "Redesign Charter"],
+      "outputs": ["Baseline Comparison", "scale or return recommendation"],
+      "gates": ["baseline-preference", "visual-quality"],
+      "parallelism": "multiple critics when material",
+      "exit": "pilot wins or trade-off is explicitly accepted"
+    },
+    {
+      "id": "migration-plan",
+      "role": "component-architect",
+      "kit": "components",
+      "purpose": "Sequence foundations, primitives, shell, core Surfaces, domain components, long tail, edge states, and legacy removal.",
+      "inputs": ["approved pilot", "v1 inventory", "v2 contracts"],
+      "outputs": ["Migration Plan", "dependency graph", "expand-contract slices"],
+      "gates": ["component-reuse"],
+      "parallelism": "single",
+      "exit": "each wave is demoable or mechanically safe"
+    },
+    {
+      "id": "full-verification",
+      "role": "deterministic-auditor",
+      "kit": "deterministic-audit",
+      "purpose": "Verify v2 implementation and coexistence/migration safety.",
+      "inputs": ["implemented waves", "Behavior Contracts", "v2 contracts"],
+      "outputs": ["Audit Report", "regression evidence"],
+      "gates": ["build-health", "token-drift", "responsive-geometry", "accessibility", "state-coverage"],
+      "parallelism": "independent",
+      "exit": "objective blockers resolved"
+    },
+    {
+      "id": "promotion",
+      "role": "memory-curator",
+      "kit": "memory",
+      "purpose": "Promote v2 and record v1 deprecation/migration state.",
+      "inputs": ["approved v2", "comparison", "audit evidence"],
+      "outputs": ["canonical v2", "Migration Manifest"],
+      "gates": ["promotion-readiness"],
+      "parallelism": "single",
+      "exit": "Run completes"
+    }
+  ]
+}
