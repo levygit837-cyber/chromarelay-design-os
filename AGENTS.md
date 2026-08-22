@@ -4,6 +4,11 @@
 
 Read `CONTEXT.md` before naming domain concepts. Read only ADRs relevant to the area being changed.
 
+Engineering agents also read:
+
+- `docs/agents/domain.md` for domain-document consumption and ADR policy;
+- `docs/agents/issue-tracker.md` before creating specs, tickets, or Wayfinder maps.
+
 Createive separates permanent project truth from per-run work:
 
 - `.createive/project/` is canonical project state.
@@ -45,6 +50,13 @@ When sources conflict, follow the higher source and record the conflict.
 Use the codebase-design vocabulary consistently: **module**, **interface**, **implementation**, **seam**, **adapter**, **depth**, **leverage**, and **locality**.
 
 Create deep modules: a small interface hiding substantial behavior. Tests cross the same seam as callers. Prefer a real seam only when at least two adapters are justified.
+
+## Planning and execution
+
+- Use `to-tickets` for understood implementation work that can be expressed as vertical tracer bullets.
+- Use Wayfinder only for long-horizon work still under fog of war.
+- Use `to-spec` when the conversation already contains the decisions and only synthesis is needed.
+- Do not create process artifacts when the work fits safely in one context.
 
 ## Testing
 
