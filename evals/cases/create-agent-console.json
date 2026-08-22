@@ -1,0 +1,20 @@
+{
+  "id": "create-agent-console-v1",
+  "title": "Create an operational agent console from a product brief",
+  "workflow": "CREATE",
+  "surfaceClass": "OPERATE",
+  "brief": "Design a console for technical users to understand concurrent research agents and intervene when necessary. It should feel precise, alive, and advanced without default SaaS dashboard composition.",
+  "fixedInputs": [
+    "React/TypeScript implementation target",
+    "desktop 1280x800 and mobile 375x812",
+    "same content and product data",
+    "loading, empty, error, active, and blocked agent states"
+  ],
+  "baseline": { "mode": "without-createive", "modelRole": "createive_builder" },
+  "candidate": { "mode": "with-createive", "modelRole": "createive_builder" },
+  "gates": ["build-health", "responsive-geometry", "accessibility", "state-coverage", "visual-quality"],
+  "rubric": "framework/rubrics/operate.json",
+  "repetitions": 3,
+  "blind": true,
+  "record": ["resolved models", "tokens", "wall time", "requests", "cost", "interventions", "screenshots", "critic votes"]
+}

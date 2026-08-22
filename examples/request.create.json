@@ -1,0 +1,13 @@
+{
+  "objective": "Create a visually distinctive operational console for managing concurrent research agents.",
+  "scopeKind": "surface",
+  "targets": ["agent-console"],
+  "nonGoals": ["backend orchestration", "billing"],
+  "autonomy": "guarded",
+  "surfaceClass": "OPERATE",
+  "hasExistingDesign": false,
+  "needsCreativeExploration": true,
+  "changeMagnitude": "systemic",
+  "hardConstraints": ["keyboard navigation", "375px to 1440px", "real loading/empty/error states"],
+  "openDecisions": ["creative direction", "composition", "typography", "motion"]
+}
