@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://createive.dev/schemas/audit-report.schema.json",
+  "title": "Createive Audit Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["runId", "phase", "target", "environment", "checks", "summary", "blockers", "evidenceRefs", "createdAt"],
+  "properties": {
+    "runId": { "type": "string" },
+    "phase": { "type": "string" },
+    "target": { "type": "string" },
+    "environment": { "type": "object" },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["gate", "status", "findings", "evidenceRefs"],
+        "properties": {
+          "gate": { "type": "string" },
+          "status": { "enum": ["pass", "fail", "warning", "not-run"] },
+          "findings": { "type": "array", "items": { "type": "string" } },
+          "evidenceRefs": { "type": "array", "items": { "type": "string" } },
+          "exceptionRef": { "type": "string" }
+        }
+      }
+    },
+    "summary": { "type": "string" },
+    "blockers": { "type": "array", "items": { "type": "string" } },
+    "evidenceRefs": { "type": "array", "items": { "type": "string" } },
+    "createdAt": { "type": "string", "format": "date-time" }
+  }
+}

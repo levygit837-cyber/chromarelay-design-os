@@ -1,0 +1,9 @@
+{
+  "surface": "READ",
+  "inherits": "common.json",
+  "extraDimensions": {
+    "readingContinuity": "Measure, rhythm, navigation, hierarchy, and interruptions support sustained comprehension."
+  },
+  "priorities": ["typography", "content hierarchy", "measure", "continuity", "navigation"],
+  "antiBias": "Do not reward visual novelty that interrupts reading without informational purpose."
+}

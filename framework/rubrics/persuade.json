@@ -1,0 +1,9 @@
+{
+  "surface": "PERSUADE",
+  "inherits": "common.json",
+  "extraDimensions": {
+    "narrativeAndAction": "The page creates a persuasive sequence and keeps the primary action unmistakable without flattening the visual experience."
+  },
+  "priorities": ["memorability", "narrative rhythm", "identity", "image treatment", "clear action"],
+  "antiBias": "Do not reward a familiar conversion template merely because it is easy to scan."
+}

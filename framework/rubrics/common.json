@@ -1,0 +1,29 @@
+{
+  "version": "1.0.0",
+  "scale": {
+    "1": "actively harms the objective",
+    "2": "weak and materially generic or unclear",
+    "3": "competent but not distinctive or fully resolved",
+    "4": "strong, coherent, and specific",
+    "5": "exceptional, memorable, and systemically resolved"
+  },
+  "dimensions": {
+    "productFit": "The result appears to emerge from this product, user, and task.",
+    "hierarchy": "Attention and reading order make priorities immediately clear.",
+    "specificity": "The result would not be mistaken for a generic category template.",
+    "composition": "Proportion, rhythm, grouping, density, and whitespace form an intentional whole.",
+    "typography": "Type roles, scale, weight, color, measure, and details create function and character.",
+    "coherence": "Decisions belong to one system across components, states, and Surfaces.",
+    "responsiveness": "The design reorganizes purposefully across required viewports.",
+    "craft": "Small details appear decided and reinforce the whole rather than decorate it."
+  },
+  "findingRule": "A finding must explain the default or failure, its cost, and the specific decision needed. Personal preference without product cost is not a finding.",
+  "blockers": [
+    "no identifiable focal point",
+    "product-critical task is obscured",
+    "system cannot support required states",
+    "major responsive failure",
+    "generic composition with no product-specific rationale",
+    "incoherent design language"
+  ]
+}
