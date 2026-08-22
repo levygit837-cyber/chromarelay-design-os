@@ -8,7 +8,6 @@ Engineering agents also read:
 
 - `docs/agents/domain.md` for domain-document consumption and ADR policy;
 - `docs/agents/issue-tracker.md` before creating specs, tickets, or Wayfinder maps.
-
 Createive separates permanent project truth from per-run work:
 
 - `.createive/project/` is canonical project state.
@@ -57,7 +56,6 @@ Create deep modules: a small interface hiding substantial behavior. Tests cross 
 - Use Wayfinder only for long-horizon work still under fog of war.
 - Use `to-spec` when the conversation already contains the decisions and only synthesis is needed.
 - Do not create process artifacts when the work fits safely in one context.
-
 ## Testing
 
 - Test behavior through public interfaces, never private implementation.
