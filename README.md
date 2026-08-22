@@ -54,11 +54,11 @@ framework/            Registries, workflows, schemas, templates e rubrics
 src/                  Núcleo TypeScript e CLI
 scripts/              Instalador do Project Overlay
 examples/             Exemplos mínimos
- evals/                Playground de evals, isolado por seam
- docs/humans/          Instruções para pessoas
- docs/agents/          Contratos para agentes
- docs/architecture/    Arquitetura do sistema
- docs/adr/             Decisões difíceis de reverter
+evals/                Playground de evals, isolado por seam
+docs/humans/          Instruções para pessoas
+docs/agents/          Contratos para agentes
+docs/architecture/    Arquitetura do sistema
+docs/adr/             Decisões difíceis de reverter
 ```
 
 ## Início rápido
