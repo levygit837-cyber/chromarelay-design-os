@@ -4,7 +4,7 @@
   "title": "Createive Phase Packet",
   "type": "object",
   "additionalProperties": false,
-  "required": ["runId", "workflow", "phase", "role", "goal", "scope", "inputs", "locks", "openDecisions", "skillKit", "outputSchema", "acceptance", "exitPolicy", "nonGoals", "omittedContext"],
+  "required": ["runId", "workflow", "phase", "role", "goal", "scope", "inputs", "unresolvedInputs", "locks", "openDecisions", "rubric", "skillKit", "outputSchema", "acceptance", "exitPolicy", "nonGoals", "omittedContext"],
   "properties": {
     "runId": { "type": "string" },
     "workflow": { "enum": ["CREATE", "DOCUMENT", "REDESIGN", "EXPLORE", "REFINE"] },
@@ -12,9 +12,38 @@
     "role": { "type": "string" },
     "goal": { "type": "string", "minLength": 1 },
     "scope": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
-    "inputs": { "type": "array", "items": { "type": "string" } },
+    "inputs": {
+      "type": "array",
+      "description": "Resolved addresses, not concept names. A specialist runs without conversation history, so each input carries the path it lives at.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "path", "status"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "path": {
+            "type": ["string", "null"],
+            "description": "Workspace-relative path, or null when an optional input has no match."
+          },
+          "status": {
+            "enum": ["resolved", "canonical", "framework", "run", "absent-optional", "absent-canonical"],
+            "description": "Which root answered: resolved for a runtime Artifact, canonical/framework/run for a static source, absent-* when no file is present."
+          },
+          "contentHash": { "type": "string" }
+        }
+      }
+    },
+    "unresolvedInputs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Names of the inputs with no present file — every absent-optional and absent-canonical."
+    },
     "locks": { "type": "array", "items": { "type": "string" } },
     "openDecisions": { "type": "array", "items": { "type": "string" } },
+    "rubric": {
+      "type": "string",
+      "description": "Path to the Surface rubric, relative to the installed framework root (e.g. .createive/system/)."
+    },
     "authority": { "type": "array", "items": { "type": "string" } },
     "skillKit": {
       "type": "object",

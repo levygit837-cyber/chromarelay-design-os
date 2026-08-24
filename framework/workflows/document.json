@@ -8,7 +8,9 @@
       "role": "coordinator",
       "kit": null,
       "purpose": "Bound routes, repositories, states, devices, and documentation objective.",
-      "inputs": ["Design Work request"],
+      "inputs": [
+        { "name": "Design Work request", "source": "run", "path": "request.json" }
+      ],
       "outputs": ["Run Contract"],
       "gates": [],
       "parallelism": "none",
@@ -19,7 +21,10 @@
       "role": "inspector",
       "kit": "inspection",
       "purpose": "Record commit, environment, routes, data, modes, viewports, and representative screenshots.",
-      "inputs": ["Run Contract", "working implementation"],
+      "inputs": [
+        { "name": "Run Contract", "source": "run", "path": "run.json" },
+        { "name": "working implementation", "source": "run", "path": "request.json" }
+      ],
       "outputs": ["Baseline Manifest", "baseline evidence"],
       "gates": ["build-health"],
       "parallelism": "single",
@@ -30,7 +35,10 @@
       "role": "inspector",
       "kit": "inspection",
       "purpose": "Inventory themes, tokens, typography, assets, components, variants, layouts, routes, and dependencies.",
-      "inputs": ["Baseline Manifest", "codebase"],
+      "inputs": [
+        { "name": "Baseline Manifest", "source": "artifact", "kind": "Baseline Manifest" },
+        { "name": "codebase", "source": "run", "path": "request.json" }
+      ],
       "outputs": ["Token Inventory", "Component Inventory", "Route Map", "Source Evidence"],
       "gates": [],
       "parallelism": "parallel read-only scopes",
@@ -41,7 +49,10 @@
       "role": "inspector",
       "kit": "inspection",
       "purpose": "Capture pages, breakpoints, themes, controls, data states, and overlays.",
-      "inputs": ["Baseline Manifest", "Route Map"],
+      "inputs": [
+        { "name": "Baseline Manifest", "source": "artifact", "kind": "Baseline Manifest" },
+        { "name": "Route Map", "source": "artifact", "kind": "Route Map" }
+      ],
       "outputs": ["Surface Inventory", "State Inventory", "Render Evidence"],
       "gates": ["responsive-geometry", "state-coverage"],
       "parallelism": "parallel by Surface when safe",
@@ -52,7 +63,14 @@
       "role": "inspector",
       "kit": "inspection",
       "purpose": "Synthesize observed and inferred design grammar without normalizing it.",
-      "inputs": ["code inventory", "render inventory"],
+      "inputs": [
+        { "name": "Token Inventory", "source": "artifact", "kind": "Token Inventory" },
+        { "name": "Component Inventory", "source": "artifact", "kind": "Component Inventory" },
+        { "name": "Source Evidence", "source": "artifact", "kind": "Source Evidence" },
+        { "name": "Surface Inventory", "source": "artifact", "kind": "Surface Inventory" },
+        { "name": "State Inventory", "source": "artifact", "kind": "State Inventory" },
+        { "name": "Render Evidence", "source": "artifact", "kind": "Render Evidence" }
+      ],
       "outputs": ["AS_IS_PRODUCT", "AS_IS_DESIGN", "Drift Report"],
       "gates": [],
       "parallelism": "single synthesis",
@@ -63,7 +81,12 @@
       "role": "visual-critic",
       "kit": "visual-critique-product",
       "purpose": "Test whether documentation explains representative code and renders.",
-      "inputs": ["AS_IS documents", "anonymous representative evidence"],
+      "inputs": [
+        { "name": "AS_IS_PRODUCT", "source": "artifact", "kind": "AS_IS_PRODUCT" },
+        { "name": "AS_IS_DESIGN", "source": "artifact", "kind": "AS_IS_DESIGN" },
+        { "name": "anonymous representative render evidence", "source": "artifact", "kind": "Render Evidence" },
+        { "name": "anonymous representative source evidence", "source": "artifact", "kind": "Source Evidence" }
+      ],
       "outputs": ["Fidelity Report", "unmodeled findings"],
       "gates": ["as-is-fidelity"],
       "parallelism": "independent",
@@ -74,7 +97,12 @@
       "role": "system-architect",
       "kit": "design-system",
       "purpose": "Separate coherent core, deliberate variants, justified exceptions, drift, and historical accidents.",
-      "inputs": ["validated AS_IS documents", "history", "user constraints"],
+      "inputs": [
+        { "name": "validated AS_IS_PRODUCT", "source": "artifact", "kind": "AS_IS_PRODUCT" },
+        { "name": "validated AS_IS_DESIGN", "source": "artifact", "kind": "AS_IS_DESIGN" },
+        { "name": "history", "source": "canonical", "path": "DECISIONS.md", "required": false },
+        { "name": "user constraints", "source": "canonical", "path": "CONSTRAINTS.md", "required": false }
+      ],
       "outputs": ["Current DESIGN draft", "Canonical Token Proposal", "Exceptions", "confidence ledger"],
       "gates": ["contract-consistency"],
       "parallelism": "single",
@@ -85,7 +113,10 @@
       "role": "product-strategist",
       "kit": "grounding",
       "purpose": "Express each opportunity with Evidence, impact, root cause, scope, possible paths, and expected proof.",
-      "inputs": ["validated documentation", "Drift Report"],
+      "inputs": [
+        { "name": "validated documentation", "source": "artifact", "kind": "Current DESIGN draft" },
+        { "name": "Drift Report", "source": "artifact", "kind": "Drift Report" }
+      ],
       "outputs": ["Opportunity Map", "workflow recommendation"],
       "gates": [],
       "parallelism": "single",
@@ -96,7 +127,14 @@
       "role": "memory-curator",
       "kit": "memory",
       "purpose": "Promote approved current-state documentation without promoting uncertain inference.",
-      "inputs": ["approved documentation", "Fidelity Report"],
+      "inputs": [
+        { "name": "approved AS_IS_PRODUCT", "source": "artifact", "kind": "AS_IS_PRODUCT" },
+        { "name": "approved AS_IS_DESIGN", "source": "artifact", "kind": "AS_IS_DESIGN" },
+        { "name": "approved Current DESIGN draft", "source": "artifact", "kind": "Current DESIGN draft" },
+        { "name": "Canonical Token Proposal", "source": "artifact", "kind": "Canonical Token Proposal" },
+        { "name": "Exceptions", "source": "artifact", "kind": "Exceptions" },
+        { "name": "Fidelity Report", "source": "artifact", "kind": "Fidelity Report" }
+      ],
       "outputs": ["canonical current-state Artifacts", "Promotion Manifest"],
       "gates": ["promotion-readiness"],
       "parallelism": "single",

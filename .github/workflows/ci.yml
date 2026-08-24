@@ -18,6 +18,8 @@ jobs:
           node-version: 22
       - run: npm install
       - run: npm run check
+      - name: Typecheck harness adapter
+        run: npm run typecheck:omp
       - run: npm run validate:framework
       - name: Smoke-test portable overlay
         run: |

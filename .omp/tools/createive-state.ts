@@ -97,7 +97,7 @@ const factory: CustomToolFactory = pi => ({
     if (!(await exists(approvalPath))) throw new Error(`Approval record not found: ${params.approvalRef}`);
 
     const approval = JSON.parse(await readFile(approvalPath, "utf8"));
-    const approved = approval.status === "approved" || approval.status === "locked" || approval.approved === true || approval.verdict === "approve";
+    const approved = approval.status === "approved" || approval.status === "locked";
     if (!approved) throw new Error("Approval record does not authorize Promotion");
 
     const content = await readFile(source);
