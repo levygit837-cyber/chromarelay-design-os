@@ -4,7 +4,7 @@
   "title": "Createive Phase Packet",
   "type": "object",
   "additionalProperties": false,
-  "required": ["runId", "workflow", "phase", "role", "goal", "scope", "inputs", "locks", "openDecisions", "skillKit", "outputSchema", "acceptance", "exitPolicy", "nonGoals", "omittedContext"],
+  "required": ["runId", "workflow", "phase", "role", "goal", "scope", "inputs", "locks", "openDecisions", "rubric", "skillKit", "outputSchema", "acceptance", "exitPolicy", "nonGoals", "omittedContext"],
   "properties": {
     "runId": { "type": "string" },
     "workflow": { "enum": ["CREATE", "DOCUMENT", "REDESIGN", "EXPLORE", "REFINE"] },
@@ -15,6 +15,10 @@
     "inputs": { "type": "array", "items": { "type": "string" } },
     "locks": { "type": "array", "items": { "type": "string" } },
     "openDecisions": { "type": "array", "items": { "type": "string" } },
+    "rubric": {
+      "type": "string",
+      "description": "Path to the Surface rubric, relative to the installed framework root (e.g. .createive/system/)."
+    },
     "authority": { "type": "array", "items": { "type": "string" } },
     "skillKit": {
       "type": "object",

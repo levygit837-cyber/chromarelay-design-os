@@ -52,6 +52,7 @@ Commands:
   status [run-id] [--root .] [--system framework]
   phase [run-id] [--root .] [--system framework]
   handoff <run-id> <handoff.json> [--root .] [--system framework]
+  approve [run-id] --attestation <phase>/<agentId> [--decisions id,id] [--artifacts id,id] [--lock] [--root .] [--system framework]
   advance [run-id] [--root .] [--system framework] [--force] [--skip]
   validate [run-id] [--root .] [--system framework]
   validate-framework [--system framework]
@@ -115,6 +116,19 @@ async function main(): Promise<void> {
       console.log(JSON.stringify({ recorded: true, runId, phase: handoff.phase, agentId: handoff.agentId }, null, 2));
       return;
     }
+    case "approve": {
+      const attestation = flag(args, "attestation");
+      if (!attestation) usage();
+      const ids = (name: string): string[] => (flag(args, name) ?? "").split(",").map(id => id.trim()).filter(id => id.length > 0);
+      const result = await manager.approve(args.positional[0], {
+        attestation,
+        decisions: ids("decisions"),
+        artifacts: ids("artifacts"),
+        lock: args.flags.has("lock")
+      });
+      console.log(JSON.stringify(result, null, 2));
+      return;
+    }
     case "advance": {
       const run = await manager.advance(args.positional[0], { force: args.flags.has("force"), skip: args.flags.has("skip") });
       console.log(JSON.stringify(run, null, 2));
@@ -123,7 +137,18 @@ async function main(): Promise<void> {
     case "validate": {
       const run = await manager.getRun(args.positional[0]);
       manager.validateRun(run);
-      console.log(JSON.stringify({ valid: true, runId: run.runId, workflow: run.workflow, phase: run.currentPhase }, null, 2));
+      const audit = await manager.auditRun(run.runId);
+      const valid = audit.blockers.length === 0;
+      console.log(JSON.stringify({
+        valid,
+        runId: run.runId,
+        workflow: run.workflow,
+        phase: run.currentPhase,
+        handoffsRead: audit.handoffsRead,
+        blockers: audit.blockers,
+        notices: audit.notices
+      }, null, 2));
+      if (!valid) process.exitCode = 1;
       return;
     }
     default:

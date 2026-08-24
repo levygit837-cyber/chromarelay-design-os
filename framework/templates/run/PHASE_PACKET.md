@@ -12,6 +12,10 @@ Use stable paths or URIs.
 
 ## Open decisions
 
+## Rubric
+
+Path to the Surface rubric for this Run, relative to the framework root.
+
 ## Role authority
 
 What this Role may decide and write.

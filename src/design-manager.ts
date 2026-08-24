@@ -1,13 +1,18 @@
 import { randomUUID } from "node:crypto";
 import type {
+  ArtifactRef,
+  DecisionRecord,
   DesignRequest,
   PhasePacket,
   RegistryBundle,
   RouteDecision,
+  RunAudit,
   RunContract,
+  RunFinding,
   RunStatusView,
   SpecialistHandoff,
-  WorkflowId
+  WorkflowId,
+  WorkflowPhaseDefinition
 } from "./domain.js";
 import { ContractError, validateHandoff, validateRequest } from "./domain.js";
 import type { Workspace } from "./workspace.js";
@@ -22,6 +27,27 @@ export interface AdvanceOptions {
   force?: boolean;
   skip?: boolean;
   outcome?: string;
+}
+
+export interface ApproveOptions {
+  /** "<phase>/<agentId>" naming a Handoff already persisted in this Run. */
+  attestation: string;
+  /** Decision ids from run.decisionRefs. */
+  decisions?: string[];
+  /** Artifact ids from run.artifactRefs. */
+  artifacts?: string[];
+  /** Approve as "locked" instead of "approved"; locked project/system Decisions join run.lockedDecisions. */
+  lock?: boolean;
+  now?: Date;
+}
+
+export interface ApprovalResult {
+  runId: string;
+  approvedBy: string;
+  approvedAt: string;
+  status: "approved" | "locked";
+  decisions: string[];
+  artifacts: string[];
 }
 
 export class DesignManager {
@@ -116,6 +142,7 @@ export class DesignManager {
 
     const runRoot = this.runRoot(runId);
     await this.workspace.ensureDir(runRoot);
+    await this.workspace.ensureDir(".createive/project");
     await this.workspace.writeText(`${runRoot}/run.json`, this.json(run));
     await this.workspace.writeText(`${runRoot}/request.json`, this.json({ request, route }));
     await this.workspace.writeText(`${runRoot}/events.jsonl`, `${JSON.stringify({ at: timestamp, type: "run.started", workflow: route.workflow, phase: firstPhase.id })}\n`);
@@ -166,6 +193,7 @@ export class DesignManager {
       inputs: phase.inputs,
       locks: run.lockedDecisions,
       openDecisions: run.openDecisions,
+      rubric: `rubrics/${(run.surfaceClass ?? "COMMON").toLowerCase()}.json`,
       authority: [role.purpose, ...role.mustNot.map(rule => `must not: ${rule}`)],
       skillKit: {
         primary: kit?.primary ?? null,
@@ -185,12 +213,32 @@ export class DesignManager {
   }
 
   async recordHandoff(handoff: SpecialistHandoff): Promise<void> {
+    // Schema first: `validateHandoff` iterates handoff.artifacts, and a document arriving from the
+    // CLI is cast, not parsed, so a non-array there would surface as a raw TypeError.
+    this.registry.handoffValidator(handoff);
     validateHandoff(handoff);
     const run = await this.getRun(handoff.runId);
     if (run.status !== "active" && run.status !== "blocked") throw new ContractError(`Run ${run.runId} is not accepting Handoffs`);
     if (run.currentPhase !== handoff.phase) throw new ContractError(`Handoff phase ${handoff.phase} does not match active phase ${run.currentPhase}`);
     const phase = this.phaseDefinition(run);
     if (phase.role !== handoff.role) throw new ContractError(`Handoff role ${handoff.role} does not own phase ${phase.id}`);
+    this.assertGatesAddressed(phase, handoff);
+
+    // approvedBy must name an agent that actually attested in this Run, not any string the author chose.
+    for (const decision of handoff.decisions) {
+      if (decision.status !== "approved" && decision.status !== "locked") continue;
+      if (!(await this.hasAttested(run, decision.approvedBy, handoff.phase))) {
+        throw new ContractError(`Decision ${decision.id} names approvedBy ${decision.approvedBy}, which has no persisted Handoff in Run ${run.runId}`);
+      }
+    }
+    // An approved Artifact status must already be recorded by approve(), not asserted in a Handoff.
+    for (const artifact of handoff.artifacts) {
+      if (artifact.status !== "approved" && artifact.status !== "locked") continue;
+      const recorded = run.artifactRefs.find(entry => entry.id === artifact.id);
+      if (recorded?.status !== artifact.status) {
+        throw new ContractError(`Artifact ${artifact.id} claims ${artifact.status} but Run ${run.runId} records ${recorded?.status ?? "no such Artifact"}`);
+      }
+    }
 
     const handoffPath = `${this.runRoot(run.runId)}/handoffs/${handoff.phase}/${this.safeSegment(handoff.agentId)}.json`;
     await this.workspace.writeText(handoffPath, this.json(handoff));
@@ -223,12 +271,13 @@ export class DesignManager {
     if (currentIndex < 0) throw new ContractError(`Unknown current phase ${run.currentPhase}`);
     const phase = workflow.phases[currentIndex]!;
 
+    const phaseAudit = await this.phaseFindings(run.runId, phase.id);
     if (!options.force && phase.role !== "coordinator") {
-      const handoffDir = `${this.runRoot(run.runId)}/handoffs/${phase.id}`;
-      const handoffs = await this.workspace.list(handoffDir);
-      if (handoffs.length === 0 && !options.skip) throw new ContractError(`Phase ${phase.id} requires at least one persisted Handoff before advancing`);
+      if (phaseAudit.fileCount === 0 && !options.skip) throw new ContractError(`Phase ${phase.id} requires at least one persisted Handoff before advancing`);
     }
     if (options.skip && !phase.skipWhen && !options.force) throw new ContractError(`Phase ${phase.id} is not declared skippable`);
+
+    run.blockers = this.mergeBlockers(run.blockers, phaseAudit.findings);
 
     const now = new Date().toISOString();
     const history = run.phaseHistory.findLast(entry => entry.phase === run.currentPhase && !entry.exitedAt);
@@ -256,6 +305,115 @@ export class DesignManager {
     return run;
   }
 
+  /**
+   * Transitions Decisions and Artifacts from `proposed` to `approved` or `locked`. A Coordinator act:
+   * it draws its authority from an attestation, a Handoff another agent already persisted in a completed
+   * phase, so no single agent can both produce a thing and approve it.
+   */
+  async approve(runId: string | undefined, options: ApproveOptions): Promise<ApprovalResult> {
+    const run = await this.getRun(runId);
+    if (run.status !== "active" && run.status !== "blocked") throw new ContractError(`Run ${run.runId} is not accepting approvals from ${run.status}`);
+
+    const decisionIds = options.decisions ?? [];
+    const artifactIds = options.artifacts ?? [];
+    if (decisionIds.length === 0 && artifactIds.length === 0) throw new ContractError("approve requires at least one Decision or Artifact target");
+
+    const separator = options.attestation.indexOf("/");
+    if (separator <= 0 || separator === options.attestation.length - 1) {
+      throw new ContractError(`Attestation ${options.attestation} must be "<phase>/<agentId>"`);
+    }
+    const attestingPhase = options.attestation.slice(0, separator);
+    const attestingAgentId = options.attestation.slice(separator + 1);
+
+    if (attestingPhase === run.currentPhase) {
+      throw new ContractError(`Attestation phase ${attestingPhase} is the phase in flight; approval draws on completed work`);
+    }
+    if (!run.phaseHistory.some(entry => entry.phase === attestingPhase && entry.exitedAt)) {
+      throw new ContractError(`Attestation phase ${attestingPhase} has not completed in Run ${run.runId}`);
+    }
+
+    const attestation = await this.readHandoff(run.runId, attestingPhase, attestingAgentId);
+    if (!attestation) throw new ContractError(`Attestation ${options.attestation} has no persisted Handoff in Run ${run.runId}`);
+    if (attestation.agentId !== attestingAgentId) {
+      throw new ContractError(`Attestation ${options.attestation} names ${attestingAgentId} but the persisted Handoff reports ${attestation.agentId}`);
+    }
+
+    const status: "approved" | "locked" = options.lock ? "locked" : "approved";
+    const approvedAt = (options.now ?? new Date()).toISOString();
+
+    const decisions: DecisionRecord[] = [];
+    for (const id of decisionIds) {
+      if (!run.decisionRefs.includes(id)) throw new ContractError(`Run ${run.runId} records no Decision ${id}`);
+      const producer = await this.decisionProducer(run.runId, id);
+      if (!producer) throw new ContractError(`Decision ${id} has no producing Handoff in Run ${run.runId} and cannot be approved`);
+      if (producer === attestingAgentId) throw new ContractError(`Decision ${id} was produced by ${producer} and cannot be approved by the same agent`);
+      const decision = JSON.parse(await this.workspace.readText(this.decisionPath(run.runId, id))) as DecisionRecord;
+      decisions.push({ ...decision, status, approvedBy: attestingAgentId, approvedAt } as DecisionRecord);
+    }
+
+    const artifacts: ArtifactRef[] = [];
+    for (const id of artifactIds) {
+      const recorded = run.artifactRefs.find(entry => entry.id === id);
+      if (!recorded) throw new ContractError(`Run ${run.runId} records no Artifact ${id}`);
+      const producer = recorded.agentId ?? await this.phaseAgentId(run.runId, recorded.phase);
+      if (!producer) throw new ContractError(`Artifact ${id} has no traceable producer in Run ${run.runId} and cannot be approved`);
+      if (producer === attestingAgentId) throw new ContractError(`Artifact ${id} was produced by ${producer} and cannot be approved by the same agent`);
+      artifacts.push(recorded);
+    }
+
+    for (const decision of decisions) {
+      await this.workspace.writeText(this.decisionPath(run.runId, decision.id), this.json(decision));
+      if (status === "locked" && decision.scope !== "run" && !run.lockedDecisions.includes(decision.id)) {
+        run.lockedDecisions.push(decision.id);
+      }
+    }
+    for (const artifact of artifacts) artifact.status = status;
+
+    run.updatedAt = approvedAt;
+    await this.saveRun(run);
+    for (const decision of decisions) {
+      await this.appendEvent(run.runId, { type: "decision.approved", id: decision.id, status, approvedBy: attestingAgentId, approvedAt, attestation: options.attestation });
+    }
+    for (const artifact of artifacts) {
+      await this.appendEvent(run.runId, { type: "artifact.approved", id: artifact.id, status, approvedBy: attestingAgentId, approvedAt, attestation: options.attestation });
+    }
+    // Rewrite the Packet of the phase in flight so it sees the fresh locks rather than advance()'s copy.
+    await this.phasePacket(run.runId);
+
+    return {
+      runId: run.runId,
+      approvedBy: attestingAgentId,
+      approvedAt,
+      status,
+      decisions: decisions.map(decision => decision.id),
+      artifacts: artifacts.map(artifact => artifact.id)
+    };
+  }
+
+  /** Reads every persisted Handoff of a Run and reports the findings its specialists declared. Read-only. */
+  async auditRun(runId?: string): Promise<RunAudit> {
+    const run = await this.getRun(runId);
+    const workflow = this.registry.workflows[run.workflow];
+    const findings: RunFinding[] = [];
+    let handoffsRead = 0;
+    for (const phase of workflow.phases) {
+      const phaseAudit = await this.phaseFindings(run.runId, phase.id);
+      handoffsRead += phaseAudit.fileCount;
+      findings.push(...phaseAudit.findings);
+    }
+    const notices = new Set<string>();
+    for (const finding of findings) {
+      if (finding.severity === "notice") notices.add(finding.rendered);
+    }
+    return {
+      runId: run.runId,
+      handoffsRead,
+      findings,
+      blockers: this.mergeBlockers(run.blockers, findings),
+      notices: [...notices]
+    };
+  }
+
   validateRun(run: RunContract): void {
     if (run.version !== "1.0") throw new ContractError("Run Contract version must be 1.0");
     if (run.authority.canonicalOwner !== "coordinator") throw new ContractError("Coordinator must own canonical state");
@@ -264,6 +422,160 @@ export class DesignManager {
     if (run.skillBudget.primary > 1 || run.skillBudget.supporting > 2) throw new ContractError("Run exceeds Skill budget");
     const workflow = this.registry.workflows[run.workflow];
     if (!workflow.phases.some(phase => phase.id === run.currentPhase)) throw new ContractError(`Run references unknown phase ${run.currentPhase}`);
+  }
+
+  /**
+   * A phase that declares Gates cannot be left satisfied by silence. The requirement carries on
+   * `claims` and their per-claim `evidenceRefs`, which bind a specific assertion to what backs it;
+   * the top-level `evidence` bag cannot answer "is *this* claim supported?" and is not consulted.
+   */
+  private assertGatesAddressed(phase: WorkflowPhaseDefinition, handoff: SpecialistHandoff): void {
+    if (phase.gates.length === 0) return;
+    const gates = `[${phase.gates.join(", ")}]`;
+    if (handoff.claims.length === 0) {
+      throw new ContractError(`Phase ${phase.id} declares gates ${gates} and requires at least one claim`);
+    }
+    const unsupported = handoff.claims.find(claim => claim.evidenceRefs.length === 0);
+    if (unsupported) {
+      const quoted = unsupported.claim.length > 60 ? `${unsupported.claim.slice(0, 60)}…` : unsupported.claim;
+      throw new ContractError(
+        `Phase ${phase.id} declares gates ${gates}; every claim must carry at least one evidenceRef (offending: "${quoted}")`
+      );
+    }
+  }
+
+  /** Reads every persisted Handoff of one phase and classifies the declared findings. */
+  private async phaseFindings(runId: string, phaseId: string): Promise<{ fileCount: number; findings: RunFinding[] }> {
+    const handoffDir = `${this.runRoot(runId)}/handoffs/${phaseId}`;
+    const fileNames = await this.workspace.list(handoffDir);
+    const findings: RunFinding[] = [];
+    for (const fileName of fileNames) {
+      let parsed: unknown;
+      try {
+        parsed = JSON.parse(await this.workspace.readText(`${handoffDir}/${fileName}`));
+      } catch {
+        findings.push(this.unreadableFinding(phaseId, fileName));
+        continue;
+      }
+      findings.push(...this.collectHandoffFindings(parsed, phaseId, fileName));
+    }
+    return { fileCount: fileNames.length, findings };
+  }
+
+  /** Pure classification of one parsed Handoff. Never throws on bad content. */
+  private collectHandoffFindings(handoff: unknown, phaseId: string, fileName: string): RunFinding[] {
+    if (typeof handoff !== "object" || handoff === null) return [this.unreadableFinding(phaseId, fileName)];
+    const record = handoff as Record<string, unknown>;
+    const agentId = typeof record["agentId"] === "string" && record["agentId"].trim().length > 0 ? record["agentId"] : fileName;
+    const findings: RunFinding[] = [];
+
+    const unresolved = record["unresolved"];
+    if (!Array.isArray(unresolved)) return [this.unreadableFinding(phaseId, fileName)];
+    for (const entry of unresolved) {
+      if (typeof entry !== "string") return [this.unreadableFinding(phaseId, fileName)];
+      const detail = entry.trim();
+      if (detail.length === 0) continue;
+      findings.push({ severity: "blocker", kind: "unresolved", phase: phaseId, agentId, detail, rendered: `unresolved[${phaseId}/${agentId}]: ${detail}` });
+    }
+
+    const confidence = record["confidence"];
+    if (confidence !== "low" && confidence !== "medium" && confidence !== "high") return [this.unreadableFinding(phaseId, fileName)];
+    if (confidence === "low") {
+      findings.push({ severity: "blocker", kind: "handoff-confidence", phase: phaseId, agentId, detail: "handoff confidence is low", rendered: `confidence[${phaseId}/${agentId}]: handoff confidence is low` });
+    }
+
+    const claims = record["claims"];
+    if (Array.isArray(claims)) {
+      for (const claim of claims) {
+        if (typeof claim !== "object" || claim === null) continue;
+        const claimRecord = claim as Record<string, unknown>;
+        if (claimRecord["confidence"] !== "low") continue;
+        const text = typeof claimRecord["claim"] === "string" ? claimRecord["claim"].trim().slice(0, 160) : "";
+        findings.push({ severity: "notice", kind: "claim-confidence", phase: phaseId, agentId, detail: text, rendered: `claim-confidence[${phaseId}/${agentId}]: ${text}` });
+      }
+    }
+
+    return findings;
+  }
+
+  private decisionPath(runId: string, decisionId: string): string {
+    return `${this.runRoot(runId)}/decisions/${this.safeSegment(decisionId)}.json`;
+  }
+
+  /** Reads one persisted Handoff, or undefined when no such file exists or it cannot be parsed. */
+  private async readHandoff(runId: string, phase: string, agentId: string): Promise<SpecialistHandoff | undefined> {
+    const filePath = `${this.runRoot(runId)}/handoffs/${this.safeSegment(phase)}/${this.safeSegment(agentId)}.json`;
+    if (!(await this.workspace.exists(filePath))) return undefined;
+    try {
+      return JSON.parse(await this.workspace.readText(filePath)) as SpecialistHandoff;
+    } catch {
+      return undefined;
+    }
+  }
+
+  /** The agentId of the Handoff that first recorded a Decision id. `run.decisionRefs` holds ids only. */
+  private async decisionProducer(runId: string, decisionId: string): Promise<string | undefined> {
+    for (const handoff of await this.eachHandoff(runId)) {
+      if (handoff.decisions?.some(decision => decision.id === decisionId)) return handoff.agentId;
+    }
+    return undefined;
+  }
+
+  /** The agentId behind a phase, for Artifacts persisted without one. */
+  private async phaseAgentId(runId: string, phase: string): Promise<string | undefined> {
+    for (const handoff of await this.eachHandoff(runId)) {
+      if (handoff.phase === phase) return handoff.agentId;
+    }
+    return undefined;
+  }
+
+  /** Every parseable Handoff of a Run, in phase then agent order. Runs hold at most a few dozen. */
+  private async eachHandoff(runId: string): Promise<SpecialistHandoff[]> {
+    const handoffRoot = `${this.runRoot(runId)}/handoffs`;
+    const collected: SpecialistHandoff[] = [];
+    for (const phase of await this.workspace.list(handoffRoot)) {
+      for (const fileName of await this.workspace.list(`${handoffRoot}/${phase}`)) {
+        try {
+          collected.push(JSON.parse(await this.workspace.readText(`${handoffRoot}/${phase}/${fileName}`)) as SpecialistHandoff);
+        } catch {
+          continue;
+        }
+      }
+    }
+    return collected;
+  }
+
+  /**
+   * Whether `agentId` persisted a Handoff in this Run, in a completed phase other than `excludePhase`.
+   * This is what turns `approvedBy` from a free string into a claim about state another agent wrote.
+   */
+  private async hasAttested(run: RunContract, agentId: string, excludePhase: string): Promise<boolean> {
+    const handoffRoot = `${this.runRoot(run.runId)}/handoffs`;
+    for (const phase of await this.workspace.list(handoffRoot)) {
+      if (phase === excludePhase) continue;
+      if (!run.phaseHistory.some(entry => entry.phase === phase && entry.exitedAt)) continue;
+      if (await this.workspace.exists(`${handoffRoot}/${phase}/${this.safeSegment(agentId)}.json`)) return true;
+    }
+    return false;
+  }
+
+  private unreadableFinding(phaseId: string, fileName: string): RunFinding {
+    return {
+      severity: "blocker",
+      kind: "unreadable",
+      phase: phaseId,
+      agentId: fileName,
+      detail: "handoff could not be parsed for audit",
+      rendered: `unreadable[${phaseId}/${fileName}]: handoff could not be parsed for audit`
+    };
+  }
+
+  private mergeBlockers(existing: string[], findings: RunFinding[]): string[] {
+    const merged = new Set(existing);
+    for (const finding of findings) {
+      if (finding.severity === "blocker") merged.add(finding.rendered);
+    }
+    return [...merged];
   }
 
   private assertExplicitWorkflowCompatible(request: DesignRequest, workflow: WorkflowId): void {

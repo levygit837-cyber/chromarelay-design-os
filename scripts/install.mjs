@@ -76,7 +76,7 @@ async function main() {
   }
 
   if (options.minimal) {
-    for (const relative of ["registry", "workflows", "schemas", "templates/project", "templates/run/PHASE_PACKET.md"]) {
+    for (const relative of ["registry", "rubrics", "workflows", "schemas", "templates/project", "templates/run/PHASE_PACKET.md"]) {
       const source = path.join(SOURCE_ROOT, "framework", relative);
       const destination = path.join(target, ".createive/system", relative);
       if ((await exists(source)) && (await stat(source)).isDirectory()) await installTree(source, destination);

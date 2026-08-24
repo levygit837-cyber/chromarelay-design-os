@@ -74,11 +74,21 @@ export interface SkillKitDefinition {
   roles: string[];
 }
 
+/**
+ * Rejects a document that does not satisfy the published Handoff schema, listing every violation.
+ * Declared structurally here so this module keeps its zero imports; the compiling adapter lives in
+ * `handoff-schema.ts` and depends on this file rather than the other way round.
+ */
+export interface HandoffValidator {
+  (handoff: unknown): void;
+}
+
 export interface RegistryBundle {
   workflows: Record<WorkflowId, WorkflowDefinition>;
   roles: Record<string, AgentRoleDefinition>;
   kits: Record<string, SkillKitDefinition>;
   gates: Set<string>;
+  handoffValidator: HandoffValidator;
 }
 
 export interface ArtifactRef {
@@ -97,10 +107,9 @@ export interface ArtifactRef {
   canonicalDestination?: string;
 }
 
-export interface DecisionRecord {
+export interface DecisionCore {
   id: string;
   scope: "project" | "system" | "surface" | "component" | "run";
-  status: Exclude<ArtifactStatus, "observed">;
   choice: string;
   rationale: string[];
   alternatives: string[];
@@ -108,9 +117,24 @@ export interface DecisionRecord {
   risks: string[];
   revisitWhen: string[];
   supersedes?: string[];
-  approvedBy?: string;
-  approvedAt?: string;
 }
+
+/** Status a specialist may self-declare in a Handoff. */
+export type ProposedDecisionStatus = "inferred" | "proposed" | "deprecated" | "rejected";
+/** Status only approve() or an APPROVAL_ROLES Handoff may carry. */
+export type ApprovedDecisionStatus = "approved" | "locked";
+
+/**
+ * A Decision is either proposed by its producer, carrying no approver, or approved by a second party,
+ * carrying one. The union makes the middle ground — a self-declared approval with no approver, or a
+ * proposal that names one — inexpressible at compile time.
+ */
+export type DecisionRecord =
+  | (DecisionCore & { status: ProposedDecisionStatus; approvedBy?: never; approvedAt?: never })
+  | (DecisionCore & { status: ApprovedDecisionStatus; approvedBy: string; approvedAt: string });
+
+/** Roles whose Handoff may carry an already-approved Decision. One member today, so a constant, not a registry field. */
+export const APPROVAL_ROLES = new Set(["memory-curator"]);
 
 export interface HandoffClaim {
   claim: string;
@@ -189,6 +213,8 @@ export interface PhasePacket {
   inputs: string[];
   locks: string[];
   openDecisions: string[];
+  /** Path to the Surface rubric, relative to the installed framework root. */
+  rubric: string;
   authority: string[];
   skillKit: {
     primary: string | null;
@@ -213,6 +239,28 @@ export interface RunStatusView {
   gates: string[];
   blockers: string[];
   openDecisions: string[];
+}
+
+export type RunFindingKind = "unresolved" | "handoff-confidence" | "claim-confidence" | "unreadable";
+
+export interface RunFinding {
+  severity: "blocker" | "notice";
+  kind: RunFindingKind;
+  phase: string;
+  agentId: string;
+  detail: string;
+  /** Canonical one-line rendering; this exact string is what lands in run.blockers. */
+  rendered: string;
+}
+
+export interface RunAudit {
+  runId: string;
+  handoffsRead: number;
+  findings: RunFinding[];
+  /** Deduplicated `rendered` of every blocker-severity finding, merged with run.blockers already on disk. */
+  blockers: string[];
+  /** Deduplicated `rendered` of every notice-severity finding. Never persisted. */
+  notices: string[];
 }
 
 export class ContractError extends Error {
@@ -245,5 +293,31 @@ export function validateHandoff(handoff: SpecialistHandoff): void {
   for (const artifact of handoff.artifacts) {
     if (artifact.runId !== handoff.runId) throw new ContractError(`Artifact ${artifact.id} belongs to another Run`);
     if (artifact.phase !== handoff.phase) throw new ContractError(`Artifact ${artifact.id} belongs to another Phase`);
+  }
+
+  for (const artifact of handoff.artifacts) {
+    if (artifact.status !== "approved" && artifact.status !== "locked") continue;
+    if (!APPROVAL_ROLES.has(handoff.role)) {
+      throw new ContractError(
+        `Role ${handoff.role} may not submit Artifact ${artifact.id} with status ${artifact.status}; ` +
+        `specialists produce proposed Artifacts and approval is recorded through approve()`
+      );
+    }
+  }
+
+  for (const decision of handoff.decisions) {
+    if (decision.status !== "approved" && decision.status !== "locked") continue;
+    if (!APPROVAL_ROLES.has(handoff.role)) {
+      throw new ContractError(
+        `Role ${handoff.role} may not submit Decision ${decision.id} with status ${decision.status}; ` +
+        `specialists propose Decisions and the Memory Curator approves them during Promotion`
+      );
+    }
+    if (!decision.approvedBy?.trim()) {
+      throw new ContractError(`Decision ${decision.id} claims ${decision.status} without naming approvedBy`);
+    }
+    if (decision.approvedBy === handoff.agentId) {
+      throw new ContractError(`Decision ${decision.id} is self-approved by ${handoff.agentId}`);
+    }
   }
 }

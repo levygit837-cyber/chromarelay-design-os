@@ -2,6 +2,7 @@ import path from "node:path";
 import { readFile } from "node:fs/promises";
 import type { AgentRoleDefinition, RegistryBundle, SkillKitDefinition, WorkflowDefinition, WorkflowId } from "./domain.js";
 import { ContractError, WORKFLOW_IDS } from "./domain.js";
+import { loadHandoffValidator } from "./handoff-schema.js";
 
 interface WorkflowIndex {
   workflows: Array<{ id: WorkflowId; definition: string }>;
@@ -32,7 +33,8 @@ export async function loadRegistryBundle(systemRoot: string): Promise<RegistryBu
     workflows,
     roles: Object.fromEntries(agentIndex.roles.map(role => [role.id, role])),
     kits: Object.fromEntries(kitIndex.kits.map(kit => [kit.id, kit])),
-    gates: new Set(gateIndex.gates.map(gate => gate.id))
+    gates: new Set(gateIndex.gates.map(gate => gate.id)),
+    handoffValidator: await loadHandoffValidator(root)
   };
 }
 
