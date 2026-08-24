@@ -45,7 +45,9 @@ Then work through typography, color, surfaces, components, motion, and details.
 
 ## Scoring
 
-The rubric is the source of truth for dimensions, weights, and the 1–5 scale: read `rubrics/common.json` plus the file for the Surface class — `persuade.json`, `operate.json`, `read.json`, or `experience.json` — under the installed framework (`.createive/system/rubrics/`). Score every dimension the Surface's weights list, including the extra dimension that class adds.
+The rubric is the source of truth for dimensions and the 1–5 scale. Your packet's `rubric` field is a path relative to the installed framework root: `rubrics/read.json` means `.createive/system/rubrics/read.json`. Open it, follow its `inherits` to `common.json` in the same directory, and score every dimension `common.json` defines plus the one the class adds in `extraDimensions` — nine in all, or the eight of `common.json` alone when the packet points there because the Run declares no Surface class.
+
+The class file's `priorities` list carries no numbers and yields no aggregate score. It names the concerns that class weighs most, in order, and several of them cut across dimensions rather than matching one. Use it to rank findings and to say which way a trade-off falls: a weak score in the class's first priority costs more than the same score in its last. There is no average to compute — the verdict and the blocker list carry the decision.
 
 Each class file carries an `antiBias` line. Quote the one you applied and say where it changed a score. A critic who judges every Surface by the same instincts scores category conformance, not quality.
 
@@ -67,7 +69,7 @@ Return these parts, in this order:
 
 1. **Verdict** — `approve`, `repairable`, `structural return`, or `insufficient evidence`
 2. **Confidence** — `low`, `medium`, or `high`
-3. **Scores** — every weighted dimension, 1–5
+3. **Scores** — every dimension you scored, 1–5, no aggregate
 4. **Blockers** — each one meeting the `common.json` bar
 5. **Should-fix findings** — ranked by cost
 6. **Strengths to preserve** — what a repair must not spend
