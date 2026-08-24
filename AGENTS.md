@@ -8,6 +8,26 @@ Engineering agents also read:
 
 - `docs/agents/domain.md` for domain-document consumption and ADR policy;
 - `docs/agents/issue-tracker.md` before creating specs, tickets, or Wayfinder maps.
+
+## Agent skills
+
+### Issue tracker
+
+Specs, implementation tickets, and Wayfinder maps live in GitHub Issues. See `docs/agents/issue-tracker.md`.
+
+### Domain docs
+
+This is a single-context repository: use root `CONTEXT.md` and relevant ADRs under `docs/adr/`. See `docs/agents/domain.md`.
+
+### Matt Pocock engineering workflows
+
+- Keep `/to-spec` and `/grill-with-docs` in the Coordinator context: the former synthesizes the current conversation and the latter interviews the user interactively.
+- Delegate bounded red-green implementation to `matt-tdd-implementer`; it preloads `/tdd`, `/codebase-design`, and `/domain-modeling`.
+- Delegate independent primary-source research to `matt-researcher`; it preloads `/research` and `/domain-modeling`.
+- Delegate bounded architecture inspection and design-it-twice alternatives to `matt-architecture-scout`; it preloads `/codebase-design` and `/domain-modeling`.
+- Run `/improve-codebase-architecture` from the Coordinator. Delegate its read-only inspection phase to `matt-architecture-scout`, then keep candidate selection and grilling with the user in the Coordinator context.
+- These engineering specialists return evidence and recommendations as Handoffs. They never promote canonical Createive state.
+
 Createive separates permanent project truth from per-run work:
 
 - `.createive/project/` is canonical project state.
