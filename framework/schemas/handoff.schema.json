@@ -33,6 +33,16 @@
     "confidence": { "enum": ["low", "medium", "high"] },
     "requestedTransition": { "enum": ["advance", "branch", "return", "escalate", "stop"] },
     "requestedTarget": { "type": "string" },
-    "unresolved": { "type": "array", "items": { "type": "string" } }
+    "unresolved": { "type": "array", "items": { "type": "string" } },
+    "skill": {
+      "description": "Which Skills the specialist actually used, in the same shape the Phase Packet offers them, so offered and used are directly comparable. `supporting` honours the run's supporting-skill budget of 2.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["primary", "supporting"],
+      "properties": {
+        "primary": { "type": ["string", "null"], "minLength": 1 },
+        "supporting": { "type": "array", "maxItems": 2, "items": { "type": "string", "minLength": 1 } }
+      }
+    }
   }
 }

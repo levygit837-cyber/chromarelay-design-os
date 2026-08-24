@@ -14,13 +14,13 @@ const systemRoot = fileURLToPath(new URL("../../framework", import.meta.url));
 
 const phases = {
   CREATE: [
-    { id: "intake", role: "coordinator", kit: null, purpose: "route", inputs: ["request"], outputs: ["Run Contract"], gates: [], parallelism: "none", exit: "valid" },
-    { id: "grounding", role: "product-strategist", kit: "grounding", purpose: "ground", inputs: ["request"], outputs: ["Product Brief"], gates: ["grounding-completeness"], parallelism: "single", exit: "complete" }
+    { id: "intake", role: "coordinator", kit: null, purpose: "route", inputs: [{ name: "request", source: "run", path: "request.json" }], outputs: ["Run Contract"], gates: [], parallelism: "none", exit: "valid" },
+    { id: "grounding", role: "product-strategist", kit: "grounding", purpose: "ground", inputs: [{ name: "request", source: "run", path: "request.json" }], outputs: ["Product Brief"], gates: ["grounding-completeness"], parallelism: "single", exit: "complete" }
   ],
-  DOCUMENT: [{ id: "intake", role: "coordinator", kit: null, purpose: "document", inputs: ["request"], outputs: ["Run Contract"], gates: [], parallelism: "none", exit: "valid" }],
-  REDESIGN: [{ id: "intake", role: "coordinator", kit: null, purpose: "redesign", inputs: ["request"], outputs: ["Run Contract"], gates: [], parallelism: "none", exit: "valid" }],
-  EXPLORE: [{ id: "frame", role: "product-strategist", kit: "grounding", purpose: "frame", inputs: ["request"], outputs: ["Question"], gates: ["grounding-completeness"], parallelism: "single", exit: "valid" }],
-  REFINE: [{ id: "scope", role: "coordinator", kit: null, purpose: "scope", inputs: ["request"], outputs: ["Run Contract"], gates: [], parallelism: "none", exit: "valid" }]
+  DOCUMENT: [{ id: "intake", role: "coordinator", kit: null, purpose: "document", inputs: [{ name: "request", source: "run", path: "request.json" }], outputs: ["Run Contract"], gates: [], parallelism: "none", exit: "valid" }],
+  REDESIGN: [{ id: "intake", role: "coordinator", kit: null, purpose: "redesign", inputs: [{ name: "request", source: "run", path: "request.json" }], outputs: ["Run Contract"], gates: [], parallelism: "none", exit: "valid" }],
+  EXPLORE: [{ id: "frame", role: "product-strategist", kit: "grounding", purpose: "frame", inputs: [{ name: "request", source: "run", path: "request.json" }], outputs: ["Question"], gates: ["grounding-completeness"], parallelism: "single", exit: "valid" }],
+  REFINE: [{ id: "scope", role: "coordinator", kit: null, purpose: "scope", inputs: [{ name: "request", source: "run", path: "request.json" }], outputs: ["Run Contract"], gates: [], parallelism: "none", exit: "valid" }]
 } satisfies Record<WorkflowId, WorkflowDefinition["phases"]>;
 
 /** A registry whose Handoff validator is the real compiled framework schema. */
@@ -80,6 +80,57 @@ test("Handoff schema rejects an undeclared top-level field and names it", async 
     /handoff\.schema\.json[\s\S]*additional propert[\s\S]*rubric/i
   );
   assert.equal(await workspace.exists(".createive/runs/schema-run-002/handoffs/grounding/strategist-a.json"), false);
+});
+
+test("Handoff schema accepts a Handoff that reports the skill it actually used", async () => {
+  const { manager, workspace } = await runOnGroundingPhase("skill-run-001");
+  await manager.recordHandoff(honestHandoff("skill-run-001", {
+    skill: { primary: "createive-grounding", supporting: ["createive-research"] }
+  }));
+  const persisted = JSON.parse(await workspace.readText(".createive/runs/skill-run-001/handoffs/grounding/strategist-a.json")) as SpecialistHandoff;
+  assert.deepEqual(persisted.skill, { primary: "createive-grounding", supporting: ["createive-research"] });
+});
+
+test("Handoff schema accepts a skill report naming no primary", async () => {
+  const { manager, workspace } = await runOnGroundingPhase("skill-run-002");
+  await manager.recordHandoff(honestHandoff("skill-run-002", { skill: { primary: null, supporting: [] } }));
+  assert.equal(await workspace.exists(".createive/runs/skill-run-002/handoffs/grounding/strategist-a.json"), true);
+});
+
+test("Handoff schema rejects a skill report that is not an object", async () => {
+  const { manager } = await runOnGroundingPhase("skill-run-003");
+  await assert.rejects(
+    () => manager.recordHandoff(honestHandoff("skill-run-003", { skill: "createive-grounding" })),
+    /\/skill must be object/
+  );
+});
+
+test("Handoff schema rejects a skill report that omits supporting", async () => {
+  const { manager } = await runOnGroundingPhase("skill-run-004");
+  await assert.rejects(
+    () => manager.recordHandoff(honestHandoff("skill-run-004", { skill: { primary: "createive-grounding" } })),
+    /\/skill must have required property 'supporting'/
+  );
+});
+
+test("Handoff schema rejects a skill report naming more supporting Skills than the budget allows", async () => {
+  const { manager } = await runOnGroundingPhase("skill-run-005");
+  await assert.rejects(
+    () => manager.recordHandoff(honestHandoff("skill-run-005", {
+      skill: { primary: "createive-grounding", supporting: ["a", "b", "c"] }
+    })),
+    /\/skill\/supporting must NOT have more than 2 items/
+  );
+});
+
+test("Handoff schema rejects an undeclared field inside the skill report", async () => {
+  const { manager } = await runOnGroundingPhase("skill-run-006");
+  await assert.rejects(
+    () => manager.recordHandoff(honestHandoff("skill-run-006", {
+      skill: { primary: "createive-grounding", supporting: [], rubric: "createive-visual-quality" }
+    })),
+    /\/skill must NOT have additional properties \(rubric\)/
+  );
 });
 
 test("Handoff schema rejects a Handoff missing a required field", async () => {
