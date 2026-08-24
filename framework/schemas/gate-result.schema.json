@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://createive.dev/schemas/gate-result.schema.json",
+  "title": "Createive Gate Result",
+  "description": "One evaluated Gate, recorded against the Phase that declared it. Records what was claimed, by whom, and which existing files back it; it is not proof the Gate ran. A recorded pass is self-attestation until a runner produces the evidence itself.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "runId", "phase", "gate", "status", "summary", "recordedBy", "recordedAt", "evidenceRefs"],
+  "properties": {
+    "version": { "const": "1.0" },
+    "runId": { "type": "string", "minLength": 1 },
+    "phase": { "type": "string", "minLength": 1 },
+    "gate": { "type": "string", "minLength": 1 },
+    "status": { "enum": ["pass", "fail", "waived"] },
+    "summary": { "type": "string", "minLength": 1 },
+    "recordedBy": {
+      "description": "The agent that evaluated the Gate. May not equal waiver.approvedBy.",
+      "type": "string",
+      "minLength": 1
+    },
+    "recordedAt": { "type": "string", "format": "date-time" },
+    "evidenceRefs": {
+      "description": "Paths, relative to the Run root or the workspace root, that back this verdict. Checked for existence when recorded.",
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "validUntil": {
+      "description": "When this verdict stops counting. Evidence is perishable: a result expires because the world moved, not because the Run ended. Absent means it does not expire on its own.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "waiver": {
+      "description": "Required when status is waived. Uses the vocabulary of framework/templates/project/EXCEPTIONS.md: scope, reason, Evidence (evidenceRefs above), owner (approvedBy), revisit condition, and whether it is reusable.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scope", "reason", "approvedBy", "approvedAt", "revisitWhen"],
+      "properties": {
+        "scope": {
+          "description": "project is representable but rejected at record time: a project-wide waiver is a policy change and belongs in a Lock.",
+          "enum": ["project", "system", "surface", "component", "run"]
+        },
+        "reason": { "type": "string", "minLength": 1 },
+        "approvedBy": { "type": "string", "minLength": 1 },
+        "approvedAt": { "type": "string", "format": "date-time" },
+        "revisitWhen": { "type": "string", "minLength": 1 },
+        "reusable": { "type": "boolean" }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "const": "waived" } }, "required": ["status"] },
+      "then": { "required": ["waiver"] },
+      "else": { "not": { "required": ["waiver"] } }
+    }
+  ]
+}

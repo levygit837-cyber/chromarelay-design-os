@@ -9,13 +9,13 @@ import { MemoryWorkspace } from "../src/workspace.js";
 
 const phases = {
   CREATE: [
-    { id: "intake", role: "coordinator", kit: null, purpose: "route", inputs: ["request"], outputs: ["Run Contract"], gates: [], parallelism: "none", exit: "valid" },
-    { id: "grounding", role: "product-strategist", kit: "grounding", purpose: "ground", inputs: ["request"], outputs: ["Product Brief"], gates: ["grounding-completeness"], parallelism: "single", exit: "complete" }
+    { id: "intake", role: "coordinator", kit: null, purpose: "route", inputs: [{ name: "request", source: "run", path: "request.json" }], outputs: ["Run Contract"], gates: [], parallelism: "none", exit: "valid" },
+    { id: "grounding", role: "product-strategist", kit: "grounding", purpose: "ground", inputs: [{ name: "request", source: "run", path: "request.json" }], outputs: ["Product Brief"], gates: ["grounding-completeness"], parallelism: "single", exit: "complete" }
   ],
-  DOCUMENT: [{ id: "intake", role: "coordinator", kit: null, purpose: "document", inputs: ["request"], outputs: ["Run Contract"], gates: [], parallelism: "none", exit: "valid" }],
-  REDESIGN: [{ id: "intake", role: "coordinator", kit: null, purpose: "redesign", inputs: ["request"], outputs: ["Run Contract"], gates: [], parallelism: "none", exit: "valid" }],
-  EXPLORE: [{ id: "frame", role: "product-strategist", kit: "grounding", purpose: "frame", inputs: ["request"], outputs: ["Question"], gates: ["grounding-completeness"], parallelism: "single", exit: "valid" }],
-  REFINE: [{ id: "scope", role: "coordinator", kit: null, purpose: "scope", inputs: ["request"], outputs: ["Run Contract"], gates: [], parallelism: "none", exit: "valid" }]
+  DOCUMENT: [{ id: "intake", role: "coordinator", kit: null, purpose: "document", inputs: [{ name: "request", source: "run", path: "request.json" }], outputs: ["Run Contract"], gates: [], parallelism: "none", exit: "valid" }],
+  REDESIGN: [{ id: "intake", role: "coordinator", kit: null, purpose: "redesign", inputs: [{ name: "request", source: "run", path: "request.json" }], outputs: ["Run Contract"], gates: [], parallelism: "none", exit: "valid" }],
+  EXPLORE: [{ id: "frame", role: "product-strategist", kit: "grounding", purpose: "frame", inputs: [{ name: "request", source: "run", path: "request.json" }], outputs: ["Question"], gates: ["grounding-completeness"], parallelism: "single", exit: "valid" }],
+  REFINE: [{ id: "scope", role: "coordinator", kit: null, purpose: "scope", inputs: [{ name: "request", source: "run", path: "request.json" }], outputs: ["Run Contract"], gates: [], parallelism: "none", exit: "valid" }]
 } satisfies Record<WorkflowId, WorkflowDefinition["phases"]>;
 
 function registry(): RegistryBundle {
@@ -31,6 +31,26 @@ function registry(): RegistryBundle {
     gates: new Set(["grounding-completeness"]),
     handoffValidator: noopHandoffValidator()
   };
+}
+
+/**
+ * Records the Gate `grounding` declares, so a test about something else can leave that phase. These
+ * tests are about routing, audit, and authority; the Gate ledger has its own suite in
+ * `gate-ledger.test.ts`, and satisfying it here keeps each test asserting one thing.
+ */
+async function passGroundingGate(manager: DesignManager, workspace: MemoryWorkspace, runId: string, phase = "grounding"): Promise<void> {
+  await workspace.writeText(`.createive/runs/${runId}/reports/grounding.json`, "{}\n");
+  await manager.recordGateResult({
+    version: "1.0",
+    runId,
+    phase,
+    gate: "grounding-completeness",
+    status: "pass",
+    summary: "Every required Product Brief field is present",
+    recordedBy: "strategist-a",
+    recordedAt: "2026-08-24T10:00:00.000Z",
+    evidenceRefs: ["reports/grounding.json"]
+  });
 }
 
 test("routes new design work to CREATE", () => {
@@ -99,6 +119,7 @@ test("requires a specialist Handoff before advancing a specialist phase", async 
     unresolved: []
   };
   await manager.recordHandoff(handoff);
+  await passGroundingGate(manager, workspace, "create-test-002");
   const completed = await manager.advance("create-test-002");
   assert.equal(completed.status, "completed");
 });
@@ -125,6 +146,7 @@ test("reads unresolved and confidence from a persisted Handoff", async () => {
     requestedTransition: "advance",
     unresolved: ["pricing model", "brand assets"]
   });
+  await passGroundingGate(manager, workspace, "create-test-003");
 
   const advanced = await manager.advance("create-test-003");
   assert.equal(advanced.status, "completed");
@@ -166,7 +188,8 @@ test("every Phase Packet field is declared in the Phase Packet schema", async ()
 });
 
 async function runWithGroundingHandoff(runId: string, overrides: Partial<SpecialistHandoff> = {}): Promise<DesignManager> {
-  const manager = new DesignManager(new MemoryWorkspace(), registry());
+  const workspace = new MemoryWorkspace();
+  const manager = new DesignManager(workspace, registry());
   await manager.start({ objective: "Create a console", hasExistingDesign: false }, { runId });
   await manager.advance(runId, { force: true });
   await manager.recordHandoff({
@@ -186,6 +209,7 @@ async function runWithGroundingHandoff(runId: string, overrides: Partial<Special
     unresolved: ["pricing model", "brand assets"],
     ...overrides
   });
+  await passGroundingGate(manager, workspace, runId);
   return manager;
 }
 
@@ -338,16 +362,16 @@ test("accepts a specialist proposing a Decision", () => {
 // leaving `grounding` completes the Run, which holds only while `grounding` is terminal.
 const approvalPhases = {
   CREATE: [
-    { id: "intake", role: "coordinator", kit: null, purpose: "route", inputs: ["request"], outputs: ["Run Contract"], gates: [], parallelism: "none", exit: "valid" },
-    { id: "grounding", role: "product-strategist", kit: "grounding", purpose: "ground", inputs: ["request"], outputs: ["Product Brief"], gates: ["grounding-completeness"], parallelism: "single", exit: "complete" },
-    { id: "deterministic-audit", role: "deterministic-auditor", kit: null, purpose: "audit", inputs: ["Surface"], outputs: ["Detector Report"], gates: [], parallelism: "single", exit: "reported" },
-    { id: "visual-critique", role: "visual-critic", kit: null, purpose: "critique", inputs: ["Surface"], outputs: ["Visual Review"], gates: [], parallelism: "single", exit: "verdict" },
-    { id: "promotion", role: "memory-curator", kit: null, purpose: "promote", inputs: ["approved Run Artifacts"], outputs: ["Promotion"], gates: [], parallelism: "none", exit: "promoted" }
+    { id: "intake", role: "coordinator", kit: null, purpose: "route", inputs: [{ name: "request", source: "run", path: "request.json" }], outputs: ["Run Contract"], gates: [], parallelism: "none", exit: "valid" },
+    { id: "grounding", role: "product-strategist", kit: "grounding", purpose: "ground", inputs: [{ name: "request", source: "run", path: "request.json" }], outputs: ["Product Brief"], gates: ["grounding-completeness"], parallelism: "single", exit: "complete" },
+    { id: "deterministic-audit", role: "deterministic-auditor", kit: null, purpose: "audit", inputs: [{ name: "Surface", source: "run", path: "artifacts/surface.html" }], outputs: ["Detector Report"], gates: [], parallelism: "single", exit: "reported" },
+    { id: "visual-critique", role: "visual-critic", kit: null, purpose: "critique", inputs: [{ name: "Surface", source: "run", path: "artifacts/surface.html" }], outputs: ["Visual Review"], gates: [], parallelism: "single", exit: "verdict" },
+    { id: "promotion", role: "memory-curator", kit: null, purpose: "promote", inputs: [{ name: "Run Contract", source: "run", path: "run.json" }], outputs: ["Promotion"], gates: [], parallelism: "none", exit: "promoted" }
   ],
-  DOCUMENT: [{ id: "intake", role: "coordinator", kit: null, purpose: "document", inputs: ["request"], outputs: ["Run Contract"], gates: [], parallelism: "none", exit: "valid" }],
-  REDESIGN: [{ id: "intake", role: "coordinator", kit: null, purpose: "redesign", inputs: ["request"], outputs: ["Run Contract"], gates: [], parallelism: "none", exit: "valid" }],
-  EXPLORE: [{ id: "frame", role: "product-strategist", kit: "grounding", purpose: "frame", inputs: ["request"], outputs: ["Question"], gates: ["grounding-completeness"], parallelism: "single", exit: "valid" }],
-  REFINE: [{ id: "scope", role: "coordinator", kit: null, purpose: "scope", inputs: ["request"], outputs: ["Run Contract"], gates: [], parallelism: "none", exit: "valid" }]
+  DOCUMENT: [{ id: "intake", role: "coordinator", kit: null, purpose: "document", inputs: [{ name: "request", source: "run", path: "request.json" }], outputs: ["Run Contract"], gates: [], parallelism: "none", exit: "valid" }],
+  REDESIGN: [{ id: "intake", role: "coordinator", kit: null, purpose: "redesign", inputs: [{ name: "request", source: "run", path: "request.json" }], outputs: ["Run Contract"], gates: [], parallelism: "none", exit: "valid" }],
+  EXPLORE: [{ id: "frame", role: "product-strategist", kit: "grounding", purpose: "frame", inputs: [{ name: "request", source: "run", path: "request.json" }], outputs: ["Question"], gates: ["grounding-completeness"], parallelism: "single", exit: "valid" }],
+  REFINE: [{ id: "scope", role: "coordinator", kit: null, purpose: "scope", inputs: [{ name: "request", source: "run", path: "request.json" }], outputs: ["Run Contract"], gates: [], parallelism: "none", exit: "valid" }]
 } satisfies Record<WorkflowId, WorkflowDefinition["phases"]>;
 
 function approvalRegistry(): RegistryBundle {
@@ -382,6 +406,7 @@ async function runReadyForApproval(runId: string, options: { producerAgentId?: s
     agentId: producerAgentId,
     decisions: [approvedDecision({ id: decisionId, status: "proposed", approvedBy: undefined, approvedAt: undefined })]
   }));
+  await passGroundingGate(manager, workspace, runId);
   await manager.advance(runId);
   await manager.recordHandoff(handoffFixture({ runId, phase: "deterministic-audit", role: "deterministic-auditor", agentId: attesterAgentId }));
   await manager.advance(runId);
@@ -457,6 +482,203 @@ test("rejects a Handoff whose approvedBy never attested in the Run", async () =>
   })), /has no persisted Handoff in Run/);
 });
 
+// --- Resolvable Phase Packet inputs ----------------------------------------------------------
+//
+// A specialist runs as a child session with no conversation history: an input named "Product Brief"
+// is unactionable unless the Packet also carries its address. These fixtures declare inputs in the
+// four sources the Packet resolves — canonical, framework, run, and runtime artifact.
+const critiquePhases = {
+  CREATE: [
+    { id: "intake", role: "coordinator", kit: null, purpose: "route", inputs: [{ name: "request", source: "run", path: "request.json" }], outputs: ["Run Contract"], gates: [], parallelism: "none", exit: "valid" },
+    { id: "lighthouse-build", role: "builder", kit: null, purpose: "build", inputs: [{ name: "Constraints", source: "canonical", path: "CONSTRAINTS.md" }], outputs: ["Surface"], gates: [], parallelism: "single", exit: "renders" },
+    {
+      id: "visual-critique",
+      role: "visual-critic",
+      kit: null,
+      purpose: "critique",
+      inputs: [
+        { name: "anonymous screenshots", source: "artifact", kind: "Screenshot Set" },
+        { name: "DESIGN excerpt", source: "canonical", path: "DESIGN.md" },
+        { name: "reference pack", source: "artifact", kind: "Reference Pack", required: false },
+        { name: "Handoff schema", source: "framework", path: "schemas/handoff.schema.json" },
+        { name: "request", source: "run", path: "request.json" }
+      ],
+      outputs: ["Visual Review"],
+      gates: [],
+      parallelism: "single",
+      exit: "verdict"
+    }
+  ],
+  DOCUMENT: [{ id: "intake", role: "coordinator", kit: null, purpose: "document", inputs: [{ name: "request", source: "run", path: "request.json" }], outputs: ["Run Contract"], gates: [], parallelism: "none", exit: "valid" }],
+  REDESIGN: [{ id: "intake", role: "coordinator", kit: null, purpose: "redesign", inputs: [{ name: "request", source: "run", path: "request.json" }], outputs: ["Run Contract"], gates: [], parallelism: "none", exit: "valid" }],
+  EXPLORE: [{ id: "frame", role: "product-strategist", kit: "grounding", purpose: "frame", inputs: [{ name: "request", source: "run", path: "request.json" }], outputs: ["Question"], gates: ["grounding-completeness"], parallelism: "single", exit: "valid" }],
+  REFINE: [{ id: "scope", role: "coordinator", kit: null, purpose: "scope", inputs: [{ name: "request", source: "run", path: "request.json" }], outputs: ["Run Contract"], gates: [], parallelism: "none", exit: "valid" }]
+} satisfies Record<WorkflowId, WorkflowDefinition["phases"]>;
+
+function registryWithCritique(): RegistryBundle {
+  const base = registry();
+  return {
+    workflows: Object.fromEntries(Object.entries(critiquePhases).map(([id, workflowPhases]) => [id, { id, version: "test", purpose: id, phases: workflowPhases }])) as Record<WorkflowId, WorkflowDefinition>,
+    roles: {
+      ...base.roles,
+      builder: { id: "builder", purpose: "build", modelRole: "builder", primarySkill: "build", maySpawn: false, mayWrite: [], mustNot: ["critique"] },
+      "visual-critic": { id: "visual-critic", purpose: "judge", modelRole: "critic", primarySkill: "critique", maySpawn: false, mayWrite: [], mustNot: ["create"] }
+    },
+    kits: base.kits,
+    gates: base.gates,
+    handoffValidator: base.handoffValidator
+  };
+}
+
+function screenshotHandoff(runId: string): SpecialistHandoff {
+  return {
+    version: "1.0",
+    runId,
+    phase: "lighthouse-build",
+    role: "builder",
+    agentId: "builder-a",
+    summary: "Lighthouse surface built",
+    claims: [],
+    evidence: [],
+    artifacts: [{
+      id: "surface-render",
+      kind: "Screenshot Set",
+      path: `.createive/runs/${runId}/evidence/desktop.png`,
+      status: "proposed",
+      producerRole: "builder",
+      agentId: "builder-a",
+      runId,
+      phase: "lighthouse-build",
+      createdAt: "2026-08-24T10:00:00.000Z",
+      sourceRefs: []
+    }],
+    decisions: [],
+    risks: [],
+    confidence: "high",
+    requestedTransition: "advance",
+    unresolved: []
+  };
+}
+
+test("resolves a previous phase Artifact input to the path the producer recorded", async () => {
+  const workspace = new MemoryWorkspace({ ".createive/project/DESIGN.md": "# DESIGN\n" });
+  const manager = new DesignManager(workspace, registryWithCritique());
+  await manager.start({ objective: "Improve the console", hasExistingDesign: false, surfaceClass: "OPERATE" }, { runId: "packet-run-001" });
+  await manager.advance("packet-run-001", { force: true });
+  await manager.recordHandoff(screenshotHandoff("packet-run-001"));
+  await manager.advance("packet-run-001");
+
+  const packet = await manager.phasePacket("packet-run-001");
+  assert.equal(packet.phase, "visual-critique");
+
+  const shots = packet.inputs.find(input => input.name === "anonymous screenshots");
+  assert.equal(shots?.status, "resolved");
+  assert.equal(shots?.path, ".createive/runs/packet-run-001/evidence/desktop.png");
+});
+
+test("resolves a canonical contract input under the project root", async () => {
+  const workspace = new MemoryWorkspace({ ".createive/project/DESIGN.md": "# DESIGN\n" });
+  const manager = new DesignManager(workspace, registryWithCritique());
+  await manager.start({ objective: "Improve the console", hasExistingDesign: false }, { runId: "packet-run-002" });
+  await manager.advance("packet-run-002", { force: true });
+  await manager.recordHandoff(screenshotHandoff("packet-run-002"));
+  await manager.advance("packet-run-002");
+
+  const packet = await manager.phasePacket("packet-run-002");
+  const design = packet.inputs.find(input => input.name === "DESIGN excerpt");
+  assert.equal(design?.path, ".createive/project/DESIGN.md");
+  assert.equal(design?.status, "canonical");
+});
+
+test("reports a canonical contract that does not exist yet as absent instead of claiming it", async () => {
+  const manager = new DesignManager(new MemoryWorkspace(), registryWithCritique());
+  await manager.start({ objective: "Improve the console", hasExistingDesign: false }, { runId: "packet-run-003" });
+  await manager.advance("packet-run-003", { force: true });
+  await manager.recordHandoff(screenshotHandoff("packet-run-003"));
+  await manager.advance("packet-run-003");
+
+  const packet = await manager.phasePacket("packet-run-003");
+  const design = packet.inputs.find(input => input.name === "DESIGN excerpt");
+  assert.equal(design?.status, "absent-canonical");
+  assert.equal(design?.path, ".createive/project/DESIGN.md");
+  assert.ok(packet.unresolvedInputs.includes("DESIGN excerpt"));
+});
+
+test("refuses to compile a Packet when a required Artifact input is missing", async () => {
+  const manager = new DesignManager(new MemoryWorkspace(), registryWithCritique());
+  await manager.start({ objective: "Improve the console", hasExistingDesign: false }, { runId: "packet-run-004" });
+  await manager.advance("packet-run-004", { force: true });
+  // Leaving lighthouse-build with --force and no Handoff means no Screenshot Set was ever recorded.
+  await assert.rejects(() => manager.advance("packet-run-004", { force: true }), /anonymous screenshots/);
+  // The refusal happens before the transition is persisted, so the Run keeps a compilable Packet.
+  const run = await manager.getRun("packet-run-004");
+  assert.equal(run.currentPhase, "lighthouse-build");
+  const packet = await manager.phasePacket("packet-run-004");
+  assert.equal(packet.phase, "lighthouse-build");
+});
+
+test("emits an optional Artifact input as absent instead of failing", async () => {
+  const workspace = new MemoryWorkspace({ ".createive/project/DESIGN.md": "# DESIGN\n" });
+  const manager = new DesignManager(workspace, registryWithCritique());
+  await manager.start({ objective: "Improve the console", hasExistingDesign: false }, { runId: "packet-run-005" });
+  await manager.advance("packet-run-005", { force: true });
+  await manager.recordHandoff(screenshotHandoff("packet-run-005"));
+  await manager.advance("packet-run-005");
+
+  const packet = await manager.phasePacket("packet-run-005");
+  const optional = packet.inputs.find(input => input.name === "reference pack");
+  assert.equal(optional?.status, "absent-optional");
+  assert.equal(optional?.path, null);
+  assert.ok(packet.unresolvedInputs.includes("reference pack"));
+});
+
+test("resolves framework and run inputs against their own roots", async () => {
+  const workspace = new MemoryWorkspace({
+    ".createive/project/DESIGN.md": "# DESIGN\n",
+    ".createive/system/schemas/handoff.schema.json": "{}\n"
+  });
+  const manager = new DesignManager(workspace, registryWithCritique());
+  await manager.start({ objective: "Improve the console", hasExistingDesign: false }, { runId: "packet-run-006" });
+  await manager.advance("packet-run-006", { force: true });
+  await manager.recordHandoff(screenshotHandoff("packet-run-006"));
+  await manager.advance("packet-run-006");
+
+  const packet = await manager.phasePacket("packet-run-006");
+  const schema = packet.inputs.find(input => input.name === "Handoff schema");
+  assert.equal(schema?.status, "framework");
+  assert.equal(schema?.path, ".createive/system/schemas/handoff.schema.json");
+
+  const request = packet.inputs.find(input => input.name === "request");
+  assert.equal(request?.status, "run");
+  assert.equal(request?.path, ".createive/runs/packet-run-006/request.json");
+});
+
+test("no Packet input is a concept name without an address", async () => {
+  const workspace = new MemoryWorkspace({
+    ".createive/project/DESIGN.md": "# DESIGN\n",
+    ".createive/system/schemas/handoff.schema.json": "{}\n"
+  });
+  const manager = new DesignManager(workspace, registryWithCritique());
+  await manager.start({ objective: "Improve the console", hasExistingDesign: false }, { runId: "packet-run-007" });
+  await manager.advance("packet-run-007", { force: true });
+  await manager.recordHandoff(screenshotHandoff("packet-run-007"));
+  await manager.advance("packet-run-007");
+
+  const packet = await manager.phasePacket("packet-run-007");
+  for (const input of packet.inputs) {
+    assert.ok("path" in input, `input ${input.name} has no path field`);
+    if (input.status === "absent-optional") continue;
+    assert.ok(input.path?.startsWith(".createive/"), `input ${input.name} is not addressable`);
+  }
+  // Every declared input is accounted for: resolved or explicitly named as unresolved.
+  assert.equal(packet.inputs.length, 5);
+  assert.deepEqual(packet.unresolvedInputs, ["reference pack"]);
+
+  // The Packet on disk carries the same resolved addresses the caller received.
+  const persisted = JSON.parse(await workspace.readText(".createive/runs/packet-run-007/phase-packets/visual-critique.json"));
+  assert.deepEqual(persisted.inputs, packet.inputs);
+});
+
 test("locking a project Decision puts it on the Run locks", async () => {
   const { manager, attesterAgentId } = await runReadyForApproval("approval-run-013");
   const result = await manager.approve("approval-run-013", {
@@ -469,4 +691,186 @@ test("locking a project Decision puts it on the Run locks", async () => {
   assert.deepEqual(run.lockedDecisions, ["d-direction"]);
   const packet = await manager.phasePacket("approval-run-013");
   assert.deepEqual(packet.locks, ["d-direction"]);
+});
+
+// --- Non-linear transitions: advance() honours what the Handoff requested ----------------------
+//
+// A four-phase Workflow, because `return` is only expressible against a phase that exists behind
+// the one in flight. `intake` is the Coordinator's, so it advances without a Handoff.
+const transitionPhases = {
+  CREATE: [
+    { id: "intake", role: "coordinator", kit: null, purpose: "route", inputs: [], outputs: ["Run Contract"], gates: [], parallelism: "none", exit: "valid" },
+    { id: "grounding", role: "product-strategist", kit: "grounding", purpose: "ground", inputs: [], outputs: ["Product Brief"], gates: [], parallelism: "single", exit: "complete" },
+    { id: "direction", role: "art-director", kit: null, purpose: "direct", inputs: [], outputs: ["Direction"], gates: [], parallelism: "independent", exit: "candidates exist" },
+    { id: "critique", role: "visual-critic", kit: null, purpose: "judge", inputs: [], outputs: ["Verdict"], gates: [], parallelism: "independent", exit: "verdict recorded" }
+  ],
+  DOCUMENT: [{ id: "intake", role: "coordinator", kit: null, purpose: "document", inputs: [], outputs: ["Run Contract"], gates: [], parallelism: "none", exit: "valid" }],
+  REDESIGN: [{ id: "intake", role: "coordinator", kit: null, purpose: "redesign", inputs: [], outputs: ["Run Contract"], gates: [], parallelism: "none", exit: "valid" }],
+  EXPLORE: [{ id: "intake", role: "coordinator", kit: null, purpose: "explore", inputs: [], outputs: ["Run Contract"], gates: [], parallelism: "none", exit: "valid" }],
+  REFINE: [{ id: "intake", role: "coordinator", kit: null, purpose: "refine", inputs: [], outputs: ["Run Contract"], gates: [], parallelism: "none", exit: "valid" }]
+} satisfies Record<WorkflowId, WorkflowDefinition["phases"]>;
+
+function transitionRegistry(): RegistryBundle {
+  const base = registry();
+  return {
+    ...base,
+    workflows: Object.fromEntries(Object.entries(transitionPhases).map(([id, workflowPhases]) => [id, { id, version: "test", purpose: id, phases: workflowPhases }])) as unknown as Record<WorkflowId, WorkflowDefinition>,
+    roles: {
+      ...base.roles,
+      "art-director": { id: "art-director", purpose: "direct", modelRole: "creative", primarySkill: "art-direction", maySpawn: false, mayWrite: [], mustNot: ["critique own work"] },
+      "visual-critic": { id: "visual-critic", purpose: "judge", modelRole: "critic", primarySkill: "critique", maySpawn: false, mayWrite: [], mustNot: ["create"] }
+    }
+  };
+}
+
+function transitionHandoff(runId: string, phase: string, role: string, overrides: Partial<SpecialistHandoff> = {}): SpecialistHandoff {
+  return {
+    version: "1.0",
+    runId,
+    phase,
+    role,
+    agentId: `${role}-a`,
+    summary: `${phase} reported`,
+    claims: [],
+    evidence: [],
+    artifacts: [],
+    decisions: [],
+    risks: [],
+    confidence: "high",
+    requestedTransition: "advance",
+    unresolved: [],
+    ...overrides
+  };
+}
+
+/** A Run parked in `direction` with `grounding` behind it, both phases already attested. */
+async function runAtDirection(runId: string): Promise<{ manager: DesignManager; workspace: MemoryWorkspace }> {
+  const workspace = new MemoryWorkspace();
+  const manager = new DesignManager(workspace, transitionRegistry());
+  await manager.start({ objective: "Create a console", hasExistingDesign: false }, { runId });
+  await manager.advance(runId, { force: true });
+  await manager.recordHandoff(transitionHandoff(runId, "grounding", "product-strategist"));
+  await manager.advance(runId);
+  return { manager, workspace };
+}
+
+async function events(workspace: MemoryWorkspace, runId: string): Promise<Record<string, unknown>[]> {
+  const raw = await workspace.readText(`.createive/runs/${runId}/events.jsonl`);
+  return raw.split("\n").filter(line => line.trim().length > 0).map(line => JSON.parse(line) as Record<string, unknown>);
+}
+
+test("a Handoff requesting return sends the Run back to the phase it named", async () => {
+  const { manager } = await runAtDirection("transition-run-001");
+  await manager.recordHandoff(transitionHandoff("transition-run-001", "direction", "art-director", {
+    requestedTransition: "return",
+    requestedTarget: "grounding"
+  }));
+  const run = await manager.advance("transition-run-001");
+  assert.equal(run.currentPhase, "grounding");
+  assert.equal(run.status, "active");
+  assert.equal(run.phaseHistory.filter(entry => entry.phase === "grounding").length, 2);
+});
+
+test("a return naming a phase outside the Workflow is refused by name", async () => {
+  const { manager } = await runAtDirection("transition-run-002");
+  await manager.recordHandoff(transitionHandoff("transition-run-002", "direction", "art-director", {
+    requestedTransition: "return",
+    requestedTarget: "canonization"
+  }));
+  await assert.rejects(() => manager.advance("transition-run-002"), /canonization/);
+  assert.equal((await manager.getRun("transition-run-002")).currentPhase, "direction");
+});
+
+test("a return naming a phase ahead of the one in flight is refused", async () => {
+  const { manager } = await runAtDirection("transition-run-003");
+  await manager.recordHandoff(transitionHandoff("transition-run-003", "direction", "art-director", {
+    requestedTransition: "return",
+    requestedTarget: "critique"
+  }));
+  await assert.rejects(() => manager.advance("transition-run-003"), /critique/);
+});
+
+test("a Handoff requesting escalate parks the Run for a human", async () => {
+  const { manager } = await runAtDirection("transition-run-004");
+  await manager.recordHandoff(transitionHandoff("transition-run-004", "direction", "art-director", {
+    requestedTransition: "escalate"
+  }));
+  const run = await manager.advance("transition-run-004");
+  assert.equal(run.status, "awaiting-human");
+  assert.equal(run.currentPhase, "direction");
+});
+
+test("a Handoff requesting stop cancels the Run", async () => {
+  const { manager } = await runAtDirection("transition-run-005");
+  await manager.recordHandoff(transitionHandoff("transition-run-005", "direction", "art-director", {
+    requestedTransition: "stop"
+  }));
+  const run = await manager.advance("transition-run-005");
+  assert.equal(run.status, "cancelled");
+});
+
+test("two returns to the same phase count as two repair cycles", async () => {
+  const { manager, workspace } = await runAtDirection("transition-run-006");
+  for (let cycle = 0; cycle < 2; cycle += 1) {
+    await manager.recordHandoff(transitionHandoff("transition-run-006", "direction", "art-director", {
+      requestedTransition: "return",
+      requestedTarget: "grounding"
+    }));
+    await manager.advance("transition-run-006");
+    await manager.recordHandoff(transitionHandoff("transition-run-006", "grounding", "product-strategist"));
+    await manager.advance("transition-run-006");
+  }
+  const run = await manager.getRun("transition-run-006");
+  assert.equal(run.currentPhase, "direction");
+  assert.equal(run.phaseHistory.filter(entry => entry.phase === "grounding").length, 3);
+  const returned = (await events(workspace, "transition-run-006")).filter(event => event["type"] === "phase.returned");
+  assert.deepEqual(returned.map(event => event["repairCycle"]), [1, 2]);
+});
+
+test("the event log records the transition requested alongside the one effected", async () => {
+  const { manager, workspace } = await runAtDirection("transition-run-007");
+  await manager.recordHandoff(transitionHandoff("transition-run-007", "direction", "art-director", {
+    requestedTransition: "return",
+    requestedTarget: "grounding"
+  }));
+  await manager.advance("transition-run-007", { transition: "advance" });
+  const log = await events(workspace, "transition-run-007");
+  const transitioned = log.filter(event => typeof event["requested"] === "string");
+  const divergent = transitioned.filter(event => event["requested"] !== event["effected"]);
+  assert.equal(divergent.length, 1);
+  assert.equal(divergent[0]?.["requested"], "return");
+  assert.equal(divergent[0]?.["effected"], "advance");
+  assert.equal((await manager.getRun("transition-run-007")).currentPhase, "critique");
+});
+
+test("branch is recorded as requested and effected as an advance", async () => {
+  const { manager, workspace } = await runAtDirection("transition-run-008");
+  await manager.recordHandoff(transitionHandoff("transition-run-008", "direction", "art-director", {
+    requestedTransition: "branch"
+  }));
+  const run = await manager.advance("transition-run-008");
+  assert.equal(run.currentPhase, "critique");
+  const advanced = (await events(workspace, "transition-run-008")).find(event => event["to"] === "critique");
+  assert.equal(advanced?.["requested"], "branch");
+  assert.equal(advanced?.["effected"], "advance");
+});
+
+test("the gravest transition among parallel Handoffs is the one honoured", async () => {
+  const { manager } = await runAtDirection("transition-run-009");
+  await manager.recordHandoff(transitionHandoff("transition-run-009", "direction", "art-director", { agentId: "director-a" }));
+  await manager.recordHandoff(transitionHandoff("transition-run-009", "direction", "art-director", {
+    agentId: "director-b",
+    requestedTransition: "return",
+    requestedTarget: "grounding"
+  }));
+  const run = await manager.advance("transition-run-009");
+  assert.equal(run.currentPhase, "grounding");
+});
+
+test("a return with no target names the field it is missing", async () => {
+  const { manager } = await runAtDirection("transition-run-010");
+  await manager.recordHandoff(transitionHandoff("transition-run-010", "direction", "art-director", {
+    requestedTransition: "return"
+  }));
+  await assert.rejects(() => manager.advance("transition-run-010"), /requestedTarget/);
 });

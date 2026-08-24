@@ -8,7 +8,9 @@
       "role": "coordinator",
       "kit": null,
       "purpose": "Classify Surface, decision level, autonomy, scope, constraints, and existing state.",
-      "inputs": ["Design Work request"],
+      "inputs": [
+        { "name": "Design Work request", "source": "run", "path": "request.json" }
+      ],
       "outputs": ["Run Contract"],
       "gates": [],
       "parallelism": "none",
@@ -19,7 +21,10 @@
       "role": "product-strategist",
       "kit": "grounding",
       "purpose": "Establish user, task, product truth, desired perception, constraints, and open creative space.",
-      "inputs": ["Run Contract", "existing product facts"],
+      "inputs": [
+        { "name": "Run Contract", "source": "run", "path": "run.json" },
+        { "name": "existing product facts", "source": "canonical", "path": "PRODUCT.md", "required": false }
+      ],
       "outputs": ["Product Brief", "Constraint Draft"],
       "gates": ["grounding-completeness"],
       "parallelism": "single",
@@ -30,7 +35,10 @@
       "role": "art-director",
       "kit": "creative-direction-product",
       "purpose": "Explore domain objects, materials, metaphors, environments, rhythms, and likely defaults before visual composition.",
-      "inputs": ["Product Brief", "Constraints"],
+      "inputs": [
+        { "name": "Product Brief", "source": "artifact", "kind": "Product Brief" },
+        { "name": "Constraints", "source": "artifact", "kind": "Constraint Draft" }
+      ],
       "outputs": ["Domain Map", "Anti-default Ledger", "Creative Opportunities"],
       "gates": [],
       "parallelism": "single",
@@ -41,7 +49,11 @@
       "role": "art-director",
       "kit": "creative-direction-product",
       "purpose": "Produce independent coherent Directions under different lenses.",
-      "inputs": ["Product Brief", "Domain Map", "Constraints"],
+      "inputs": [
+        { "name": "Product Brief", "source": "artifact", "kind": "Product Brief" },
+        { "name": "Domain Map", "source": "artifact", "kind": "Domain Map" },
+        { "name": "Constraints", "source": "artifact", "kind": "Constraint Draft" }
+      ],
       "outputs": ["Direction candidates"],
       "gates": [],
       "parallelism": "3-5 isolated contexts",
@@ -53,7 +65,9 @@
       "role": "art-director",
       "kit": "creative-direction-product",
       "purpose": "Render enough of each Direction to judge hierarchy, signature, component language, and system potential.",
-      "inputs": ["Direction candidates"],
+      "inputs": [
+        { "name": "Direction candidates", "source": "artifact", "kind": "Direction candidates" }
+      ],
       "outputs": ["visual specimens", "risk notes"],
       "gates": ["direction-eligibility"],
       "parallelism": "per candidate",
@@ -64,7 +78,11 @@
       "role": "visual-critic",
       "kit": "visual-critique-product",
       "purpose": "Run blind pairwise comparisons and evaluate system potential.",
-      "inputs": ["Product Brief", "anonymous specimens", "Direction contracts"],
+      "inputs": [
+        { "name": "Product Brief", "source": "artifact", "kind": "Product Brief" },
+        { "name": "anonymous specimens", "source": "artifact", "kind": "visual specimens" },
+        { "name": "Direction contracts", "source": "artifact", "kind": "Direction candidates" }
+      ],
       "outputs": ["Tournament Report", "Selected Direction or escalation"],
       "gates": ["direction-tournament"],
       "parallelism": "2+ independent critics for high-risk work",
@@ -76,7 +94,11 @@
       "role": "system-architect",
       "kit": "design-system",
       "purpose": "Translate the Selected Direction into design grammar, tokens, scope, exceptions, and Locks.",
-      "inputs": ["Selected Direction", "Product Brief", "Constraints"],
+      "inputs": [
+        { "name": "Selected Direction", "source": "artifact", "kind": "Selected Direction or escalation" },
+        { "name": "Product Brief", "source": "artifact", "kind": "Product Brief" },
+        { "name": "Constraints", "source": "artifact", "kind": "Constraint Draft" }
+      ],
       "outputs": ["DESIGN draft", "token drafts", "Decision records"],
       "gates": ["contract-consistency"],
       "parallelism": "single",
@@ -87,7 +109,11 @@
       "role": "product-strategist",
       "kit": "grounding",
       "purpose": "Define information hierarchy, focal point, actions, responsive transformations, and state matrix.",
-      "inputs": ["Product Brief", "Selected Direction", "DESIGN draft"],
+      "inputs": [
+        { "name": "Product Brief", "source": "artifact", "kind": "Product Brief" },
+        { "name": "Selected Direction", "source": "artifact", "kind": "Selected Direction or escalation" },
+        { "name": "DESIGN draft", "source": "artifact", "kind": "DESIGN draft" }
+      ],
       "outputs": ["Surface Brief", "Information Architecture", "Responsive Model", "State Matrix"],
       "gates": [],
       "parallelism": "single",
@@ -98,7 +124,11 @@
       "role": "component-architect",
       "kit": "components",
       "purpose": "Resolve each component requirement by reuse, composition, extension, or justified creation.",
-      "inputs": ["Surface Brief", "component inventory", "DESIGN draft"],
+      "inputs": [
+        { "name": "Surface Brief", "source": "artifact", "kind": "Surface Brief" },
+        { "name": "component inventory", "source": "canonical", "path": "DESIGN.md", "required": false },
+        { "name": "DESIGN draft", "source": "artifact", "kind": "DESIGN draft" }
+      ],
       "outputs": ["Component Plan", "component state contracts"],
       "gates": ["component-reuse"],
       "parallelism": "single",
@@ -109,7 +139,12 @@
       "role": "builder",
       "kit": "implementation",
       "purpose": "Implement one representative Surface through an isolated worktree.",
-      "inputs": ["Surface Brief", "DESIGN draft", "tokens", "Component Plan"],
+      "inputs": [
+        { "name": "Surface Brief", "source": "artifact", "kind": "Surface Brief" },
+        { "name": "DESIGN draft", "source": "artifact", "kind": "DESIGN draft" },
+        { "name": "tokens", "source": "artifact", "kind": "token drafts" },
+        { "name": "Component Plan", "source": "artifact", "kind": "Component Plan" }
+      ],
       "outputs": ["implementation patch", "renderable Surface", "implementation notes"],
       "gates": ["build-health"],
       "parallelism": "isolated single writer",
@@ -120,7 +155,10 @@
       "role": "deterministic-auditor",
       "kit": "deterministic-audit",
       "purpose": "Collect objective implementation Evidence.",
-      "inputs": ["implementation", "acceptance contracts"],
+      "inputs": [
+        { "name": "implementation", "source": "artifact", "kind": "renderable Surface" },
+        { "name": "acceptance contracts", "source": "artifact", "kind": "Surface Brief" }
+      ],
       "outputs": ["Audit Report", "screenshots", "state captures"],
       "gates": ["build-health", "token-drift", "responsive-geometry", "accessibility", "state-coverage"],
       "parallelism": "independent from builder",
@@ -131,7 +169,12 @@
       "role": "visual-critic",
       "kit": "visual-critique-product",
       "purpose": "Judge the rendered Surface blindly against product and design intent.",
-      "inputs": ["anonymous screenshots", "Product Brief", "DESIGN excerpt", "Surface Brief"],
+      "inputs": [
+        { "name": "anonymous screenshots", "source": "artifact", "kind": "screenshots" },
+        { "name": "Product Brief", "source": "artifact", "kind": "Product Brief" },
+        { "name": "DESIGN excerpt", "source": "artifact", "kind": "DESIGN draft" },
+        { "name": "Surface Brief", "source": "artifact", "kind": "Surface Brief" }
+      ],
       "outputs": ["Visual Review"],
       "gates": ["visual-quality"],
       "parallelism": "1-3 critics based on risk",
@@ -143,7 +186,10 @@
       "role": "repairer",
       "kit": "repair",
       "purpose": "Apply one coherent batch of approved findings.",
-      "inputs": ["approved findings", "implementation baseline"],
+      "inputs": [
+        { "name": "approved findings", "source": "artifact", "kind": "Visual Review" },
+        { "name": "implementation baseline", "source": "artifact", "kind": "implementation patch" }
+      ],
       "outputs": ["repair patch", "before/after evidence"],
       "gates": ["build-health", "visual-quality"],
       "parallelism": "isolated single writer",
@@ -155,7 +201,10 @@
       "role": "memory-curator",
       "kit": "memory",
       "purpose": "Promote approved reusable contracts and record provenance.",
-      "inputs": ["approved Run Artifacts", "Gate evidence"],
+      "inputs": [
+        { "name": "approved Run Artifacts", "source": "run", "path": "run.json" },
+        { "name": "Gate evidence", "source": "artifact", "kind": "Audit Report" }
+      ],
       "outputs": ["canonical Artifacts", "Promotion Manifest"],
       "gates": ["promotion-readiness"],
       "parallelism": "single",

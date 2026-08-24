@@ -8,7 +8,10 @@
       "role": "coordinator",
       "kit": null,
       "purpose": "Classify polish, recompose, or reformulate; identify non-goals and reclassification triggers.",
-      "inputs": ["Design Work request", "project state"],
+      "inputs": [
+        { "name": "Design Work request", "source": "run", "path": "request.json" },
+        { "name": "project state", "source": "canonical", "path": "DESIGN.md", "required": false }
+      ],
       "outputs": ["Run Contract", "bounded target"],
       "gates": [],
       "parallelism": "none",
@@ -19,7 +22,9 @@
       "role": "inspector",
       "kit": "inspection",
       "purpose": "Capture current render, code, states, token usage, and usage contexts.",
-      "inputs": ["bounded target"],
+      "inputs": [
+        { "name": "bounded target", "source": "artifact", "kind": "bounded target" }
+      ],
       "outputs": ["Baseline", "context captures"],
       "gates": ["build-health"],
       "parallelism": "single",
@@ -30,7 +35,11 @@
       "role": "visual-critic",
       "kit": "visual-critique-product",
       "purpose": "Identify the highest-impact cause rather than list cosmetic symptoms.",
-      "inputs": ["Baseline", "Surface Brief", "DESIGN excerpt"],
+      "inputs": [
+        { "name": "Baseline", "source": "artifact", "kind": "Baseline" },
+        { "name": "Surface Brief", "source": "artifact", "kind": "bounded target", "required": false },
+        { "name": "DESIGN excerpt", "source": "canonical", "path": "DESIGN.md", "required": false }
+      ],
       "outputs": ["Diagnosis", "priority findings"],
       "gates": [],
       "parallelism": "independent",
@@ -41,7 +50,9 @@
       "role": "coordinator",
       "kit": null,
       "purpose": "Convert diagnosis into a testable intervention, expected Evidence, and rollback rule.",
-      "inputs": ["Diagnosis"],
+      "inputs": [
+        { "name": "Diagnosis", "source": "artifact", "kind": "Diagnosis" }
+      ],
       "outputs": ["Refinement Hypothesis"],
       "gates": [],
       "parallelism": "none",
@@ -52,7 +63,9 @@
       "role": "art-director",
       "kit": "creative-direction-product",
       "purpose": "Explore only the uncertain decision with two or three materially different mechanisms.",
-      "inputs": ["Refinement Hypothesis"],
+      "inputs": [
+        { "name": "Refinement Hypothesis", "source": "artifact", "kind": "Refinement Hypothesis" }
+      ],
       "outputs": ["focused options", "comparison"],
       "gates": ["direction-tournament"],
       "parallelism": "2-3 isolated contexts",
@@ -64,7 +77,10 @@
       "role": "repairer",
       "kit": "repair",
       "purpose": "Apply a single coherent change batch addressing the hypothesis.",
-      "inputs": ["selected intervention", "Baseline"],
+      "inputs": [
+        { "name": "selected intervention", "source": "artifact", "kind": "focused options", "required": false },
+        { "name": "Baseline", "source": "artifact", "kind": "Baseline" }
+      ],
       "outputs": ["patch", "candidate renders"],
       "gates": ["build-health"],
       "parallelism": "isolated single writer",
@@ -75,7 +91,11 @@
       "role": "visual-critic",
       "kit": "visual-critique-product",
       "purpose": "Compare before and after without revealing which is new.",
-      "inputs": ["randomized Baseline/candidate", "Refinement Hypothesis"],
+      "inputs": [
+        { "name": "randomized Baseline", "source": "artifact", "kind": "Baseline" },
+        { "name": "randomized candidate", "source": "artifact", "kind": "candidate renders" },
+        { "name": "Refinement Hypothesis", "source": "artifact", "kind": "Refinement Hypothesis" }
+      ],
       "outputs": ["Comparison Report"],
       "gates": ["baseline-preference", "visual-quality"],
       "parallelism": "independent",
@@ -86,7 +106,9 @@
       "role": "deterministic-auditor",
       "kit": "deterministic-audit",
       "purpose": "Verify no functional, token, state, responsive, or accessibility regression.",
-      "inputs": ["candidate implementation"],
+      "inputs": [
+        { "name": "candidate implementation", "source": "artifact", "kind": "patch" }
+      ],
       "outputs": ["Audit Report"],
       "gates": ["build-health", "token-drift", "responsive-geometry", "accessibility", "state-coverage"],
       "parallelism": "independent",
@@ -97,7 +119,11 @@
       "role": "memory-curator",
       "kit": "memory",
       "purpose": "Promote winning reusable decisions or restore Baseline without residue.",
-      "inputs": ["Comparison Report", "Audit Report", "patch"],
+      "inputs": [
+        { "name": "Comparison Report", "source": "artifact", "kind": "Comparison Report" },
+        { "name": "Audit Report", "source": "artifact", "kind": "Audit Report" },
+        { "name": "patch", "source": "artifact", "kind": "patch" }
+      ],
       "outputs": ["Promotion or Revert Manifest"],
       "gates": ["promotion-readiness"],
       "parallelism": "single",

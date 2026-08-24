@@ -2,7 +2,8 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { DesignManager } from "./design-manager.js";
-import type { DesignRequest, SpecialistHandoff } from "./domain.js";
+import type { DesignRequest, GateResult, RequestedTransition, SpecialistHandoff } from "./domain.js";
+import { REQUESTED_TRANSITIONS } from "./domain.js";
 import { FileWorkspace } from "./workspace.js";
 import { loadRegistryBundle, validateRegistryBundle } from "./registry.js";
 
@@ -52,8 +53,9 @@ Commands:
   status [run-id] [--root .] [--system framework]
   phase [run-id] [--root .] [--system framework]
   handoff <run-id> <handoff.json> [--root .] [--system framework]
+  gate <run-id> <gate-result.json> [--root .] [--system framework]
   approve [run-id] --attestation <phase>/<agentId> [--decisions id,id] [--artifacts id,id] [--lock] [--root .] [--system framework]
-  advance [run-id] [--root .] [--system framework] [--force] [--skip]
+  advance [run-id] [--root .] [--system framework] [--force --reason "why"] [--skip] [--transition advance|branch|return|escalate|stop]
   validate [run-id] [--root .] [--system framework]
   validate-framework [--system framework]
 `);
@@ -116,6 +118,16 @@ async function main(): Promise<void> {
       console.log(JSON.stringify({ recorded: true, runId, phase: handoff.phase, agentId: handoff.agentId }, null, 2));
       return;
     }
+    case "gate": {
+      const runId = args.positional[0];
+      const resultPath = args.positional[1];
+      if (!runId || !resultPath) usage();
+      const result = await jsonFile<GateResult>(resultPath);
+      if (result.runId !== runId) throw new Error(`Gate result Run ${result.runId} does not match ${runId}`);
+      await manager.recordGateResult(result);
+      console.log(JSON.stringify({ recorded: true, runId, phase: result.phase, gate: result.gate, status: result.status }, null, 2));
+      return;
+    }
     case "approve": {
       const attestation = flag(args, "attestation");
       if (!attestation) usage();
@@ -130,7 +142,17 @@ async function main(): Promise<void> {
       return;
     }
     case "advance": {
-      const run = await manager.advance(args.positional[0], { force: args.flags.has("force"), skip: args.flags.has("skip") });
+      const reason = flag(args, "reason");
+      const transition = flag(args, "transition");
+      if (transition && !REQUESTED_TRANSITIONS.includes(transition as RequestedTransition)) {
+        throw new Error(`--transition must be one of ${REQUESTED_TRANSITIONS.join(", ")}, got ${transition}`);
+      }
+      const run = await manager.advance(args.positional[0], {
+        force: args.flags.has("force"),
+        skip: args.flags.has("skip"),
+        ...(reason ? { reason } : {}),
+        ...(transition ? { transition: transition as RequestedTransition } : {})
+      });
       console.log(JSON.stringify(run, null, 2));
       return;
     }

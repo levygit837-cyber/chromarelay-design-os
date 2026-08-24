@@ -8,7 +8,10 @@
       "role": "product-strategist",
       "kit": "grounding",
       "purpose": "Express the creative tension as a product-specific question with constraints and defaults to overcome.",
-      "inputs": ["Design Work request", "product truth"],
+      "inputs": [
+        { "name": "Design Work request", "source": "run", "path": "request.json" },
+        { "name": "product truth", "source": "canonical", "path": "PRODUCT.md", "required": false }
+      ],
       "outputs": ["Creative Question"],
       "gates": ["grounding-completeness"],
       "parallelism": "single",
@@ -19,7 +22,9 @@
       "role": "art-director",
       "kit": "creative-direction-product",
       "purpose": "Define dimensions that produce useful diversity without prescribing recipes.",
-      "inputs": ["Creative Question"],
+      "inputs": [
+        { "name": "Creative Question", "source": "artifact", "kind": "Creative Question" }
+      ],
       "outputs": ["Exploration Axes", "lens assignments"],
       "gates": [],
       "parallelism": "single",
@@ -30,7 +35,11 @@
       "role": "art-director",
       "kit": "creative-direction-product",
       "purpose": "Create coherent independent Directions under isolated contexts.",
-      "inputs": ["Creative Question", "assigned lens", "constraints"],
+      "inputs": [
+        { "name": "Creative Question", "source": "artifact", "kind": "Creative Question" },
+        { "name": "assigned lens", "source": "artifact", "kind": "lens assignments" },
+        { "name": "constraints", "source": "canonical", "path": "CONSTRAINTS.md", "required": false }
+      ],
       "outputs": ["Direction candidates"],
       "gates": [],
       "parallelism": "3-5 isolated contexts",
@@ -42,7 +51,10 @@
       "role": "product-strategist",
       "kit": "grounding",
       "purpose": "Remove concepts that fail product truth, usability, states, responsiveness, or implementation viability.",
-      "inputs": ["Direction candidates", "product constraints"],
+      "inputs": [
+        { "name": "Direction candidates", "source": "artifact", "kind": "Direction candidates" },
+        { "name": "product constraints", "source": "canonical", "path": "CONSTRAINTS.md", "required": false }
+      ],
       "outputs": ["Eligibility Report", "eligible candidates"],
       "gates": ["direction-eligibility"],
       "parallelism": "independent from creators",
@@ -53,7 +65,9 @@
       "role": "art-director",
       "kit": "creative-direction-product",
       "purpose": "Create comparable visual specimens at the minimum fidelity needed for the decision.",
-      "inputs": ["eligible Directions"],
+      "inputs": [
+        { "name": "eligible Directions", "source": "artifact", "kind": "eligible candidates" }
+      ],
       "outputs": ["visual specimens", "system-potential notes"],
       "gates": [],
       "parallelism": "per candidate",
@@ -64,7 +78,10 @@
       "role": "visual-critic",
       "kit": "visual-critique-product",
       "purpose": "Run blind pairwise visual comparison, then review system potential and risk.",
-      "inputs": ["anonymous specimens", "Creative Question"],
+      "inputs": [
+        { "name": "anonymous specimens", "source": "artifact", "kind": "visual specimens" },
+        { "name": "Creative Question", "source": "artifact", "kind": "Creative Question" }
+      ],
       "outputs": ["Tournament Report", "selected and reserve Directions"],
       "gates": ["direction-tournament"],
       "parallelism": "multiple critics based on risk",
@@ -76,7 +93,9 @@
       "role": "memory-curator",
       "kit": "memory",
       "purpose": "Record selected, reserve, rejected Directions and their Evidence without canonizing implementation contracts.",
-      "inputs": ["Tournament Report"],
+      "inputs": [
+        { "name": "Tournament Report", "source": "artifact", "kind": "Tournament Report" }
+      ],
       "outputs": ["Selected Direction record", "Direction archive"],
       "gates": ["promotion-readiness"],
       "parallelism": "single",
