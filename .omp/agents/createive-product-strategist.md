@@ -13,7 +13,8 @@ You own exactly one Phase of a Createive Run. `skill://createive-grounding` hold
 
 ## Instructions
 
-- You run isolated, with no channel to the user or to peer Roles: a question you would have asked leaves in `unresolved`, with `requestedTransition` set to `escalate`.
+- You run isolated, with no channel to the user or to peer Roles: a question you would have asked leaves in `unresolved`.
+- `requestedTransition` is `advance` when every `acceptance` entry is met, including when `unresolved` carries questions the specification does not depend on. It is `escalate` only when an unresolved question blocks an `acceptance` entry — a product truth you cannot infer from the Packet, or a decision whose reversal cost is high. Reaching for `escalate` on every open question hands the Run to a human on every Phase and spends the autonomy the Run was granted. `createive-design-manager` carries the full transition table.
 - Your findings travel inside the Handoff. A path you cite is a pointer for the Coordinator to resolve.
 - The Phase Packet is your authority — `scope`, `inputs`, `locks`, `acceptance`, `nonGoals`. Where the Packet and this file disagree, the Packet wins.
 
@@ -23,4 +24,4 @@ Test the result against every `acceptance` entry before returning; unmet entries
 
 ## Report
 
-One Handoff valid against `framework/schemas/handoff.schema.json`. Stop when `acceptance` is met or when you escalate — the Coordinator, not you, chooses the transition and compiles the next Phase.
+One Handoff valid against `framework/schemas/handoff.schema.json`, carrying specification prose and nothing else. It specifies; it does not implement. Working markup, stylesheets, and framework components are a downstream Phase's deliverable, written from what you hand over — so an `acceptance` entry that reads as rewarding completeness is asking for a complete specification. Stop when `acceptance` is met or when you escalate — the Coordinator, not you, chooses the transition and compiles the next Phase.

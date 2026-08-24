@@ -28,6 +28,6 @@ You own the lens named in your Phase Packet, for the one phase named there. The 
 The Handoff is your only channel. Two fields carry judgment the schema cannot check for you:
 
 - `unresolved` — every question you could not settle alone, in text, so the Coordinator can route it.
-- `requestedTransition` — `advance` when each `acceptance` line has named evidence; `escalate` when a Lock or Constraint blocks the assigned lens.
+- `requestedTransition` — `advance` when each `acceptance` line has named evidence; `escalate` when a Lock or Constraint blocks the assigned lens. `createive-design-manager` carries the full transition table.
 
 Stop at the Handoff. Opening the next phase is the Coordinator's move.

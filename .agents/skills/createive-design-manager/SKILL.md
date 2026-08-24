@@ -116,7 +116,23 @@ Return any Handoff that is missing one, naming the missing field. Persist the ac
 
 ## Transition policy
 
-A Phase may advance, branch, return to a named earlier Phase, request a targeted human decision, or stop.
+### The five transitions
+
+`requestedTransition` accepts exactly these five values, and `framework/schemas/handoff.schema.json` rejects anything else. This list is the one definition; a specialist body names the values that Role reaches for and points here. There is no sixth value and no synonym — `loop`, `retry`, and `block` are not transitions.
+
+| value | what the specialist is asking for | what the Run does |
+| --- | --- | --- |
+| `advance` | the Phase met its exit condition | moves to the next Phase |
+| `branch` | the work wants splitting into parallel candidates or scopes | recorded, then treated as `advance`; parallel dispatch is a Coordinator act, not a Phase transition |
+| `return` | a defect belongs to an earlier Phase, named in `requestedTarget` | re-enters that Phase; the target must exist in this Workflow and sit behind the current one |
+| `escalate` | a human decision or an authority the Role lacks is required | parks the Run as `awaiting-human` in the current Phase |
+| `stop` | the Run's premise no longer holds and continuing would waste budget | cancels the Run |
+
+`return` without a valid `requestedTarget` is refused, not downgraded to `advance`. Naming a Phase ahead of the current one is refused for the same reason: a rejection that silently becomes an approval is the one failure the Handoff exists to prevent.
+
+You choose what is effected. A Handoff's value is a request, and `advance --transition <value>` is how you overrule it; the Run records both, so a Role whose `return` is routinely overruled is evidence about the Phase before it.
+
+When a Phase runs several specialists at once, the gravest request in the table wins. Two critics passing and one returning is a Phase that did not clear.
 
 Advance when the Phase's required outputs exist and its Gates pass on Evidence. An agent's own claim that it is done is a request, not a result.
 
@@ -131,7 +147,9 @@ Route a failure by root cause: a deterministic failure returns to implementation
 
 ## Repair budget
 
-Default to one coherent repair batch plus confirmation. Two repair cycles is the normal ceiling. On the third failure, classify the defect and return to the Phase that owns it.
+Default to one coherent repair batch plus confirmation. Two repair cycles is the normal ceiling. On the third failure, classify the defect and `return` to the Phase that owns it.
+
+An exhausted budget routes; it does not end the Run. The `phase.returned` event carries `repairCycle` — how many times the target Phase has been entered beyond the first — so the ceiling is read off the Run rather than counted from memory. A defect that survives being routed to its owning Phase is an escalation, not a Run that stops on its own.
 
 ## Human escalation
 

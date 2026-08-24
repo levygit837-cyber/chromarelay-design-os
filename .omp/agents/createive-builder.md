@@ -26,3 +26,9 @@ Return when acceptance is met and the checks have run, when a proposed Decision 
 rest of the slice, or when the Packet's scope is done — including when you can see adjacent
 work worth doing. Measuring the patch and judging how it looks are later Phases; returning is
 what starts them.
+
+`requestedTransition` is `advance` when acceptance is met and the checks have run, whatever
+those checks reported. It is `escalate` when the Packet's brief is unbuildable as written — a
+contract that contradicts a Lock, a token the canonical set does not define — and `return`
+with the producing Phase in `requestedTarget` when the defect is in that brief rather than in
+your patch. `createive-design-manager` carries the full transition table.

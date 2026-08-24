@@ -33,7 +33,7 @@ Stop and hand back when either holds:
 - every `acceptance` item has an answer, and the `exitPolicy` condition is met;
 - a blocking condition makes further inspection unreliable — the tree will not build, the environment or route is unreachable, credentials or test data are missing.
 
-The second ending is still a Handoff: record what you did reach, set `confidence` accordingly, and set `requestedTransition` to `escalate`. Control returns to the Coordinator either way.
+The first ending sets `requestedTransition` to `advance`, including when `unresolved` carries checks you could not run — a coverage boundary you named is a fact you established, not a failure. The second is still a Handoff: record what you did reach, set `confidence` accordingly, and set `requestedTransition` to `escalate`. Control returns to the Coordinator either way, and `createive-design-manager` carries the full transition table.
 
 ## Report
 
