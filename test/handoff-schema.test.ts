@@ -31,7 +31,7 @@ async function conformanceRegistry(): Promise<RegistryBundle> {
       coordinator: { id: "coordinator", purpose: "coordinate", modelRole: "coordinator", primarySkill: "manager", maySpawn: true, mayWrite: [], mustNot: ["critique"] },
       "product-strategist": { id: "product-strategist", purpose: "ground", modelRole: "product", primarySkill: "grounding", maySpawn: false, mayWrite: [], mustNot: ["implement"] }
     },
-    kits: { grounding: { id: "grounding", primary: "createive-grounding", supporting: [], roles: ["product-strategist"] } },
+    kits: { grounding: { id: "grounding", primary: "chromarelay-grounding", supporting: [], roles: ["product-strategist"] } },
     gates: new Set(["grounding-completeness"]),
     handoffValidator: await loadHandoffValidator(systemRoot)
   };
@@ -55,8 +55,8 @@ function honestHandoff(runId: string, overrides: Record<string, unknown> = {}): 
     role: "product-strategist",
     agentId: "strategist-a",
     summary: "Grounding complete",
-    claims: [{ claim: "The product truth is grounded in the request", status: "inferred", confidence: "medium", evidenceRefs: [`.createive/runs/${runId}/artifacts/PRODUCT.md`] }],
-    evidence: [`.createive/runs/${runId}/artifacts/PRODUCT.md`],
+    claims: [{ claim: "The product truth is grounded in the request", status: "inferred", confidence: "medium", evidenceRefs: [`.chromarelay/runs/${runId}/artifacts/PRODUCT.md`] }],
+    evidence: [`.chromarelay/runs/${runId}/artifacts/PRODUCT.md`],
     artifacts: [],
     decisions: [],
     risks: [],
@@ -70,37 +70,37 @@ function honestHandoff(runId: string, overrides: Record<string, unknown> = {}): 
 test("Handoff schema accepts an honest Handoff on a gate-declaring phase", async () => {
   const { manager, workspace } = await runOnGroundingPhase("schema-run-001");
   await manager.recordHandoff(honestHandoff("schema-run-001"));
-  assert.equal(await workspace.exists(".createive/runs/schema-run-001/handoffs/grounding/strategist-a.json"), true);
+  assert.equal(await workspace.exists(".chromarelay/runs/schema-run-001/handoffs/grounding/strategist-a.json"), true);
 });
 
 test("Handoff schema rejects an undeclared top-level field and names it", async () => {
   const { manager, workspace } = await runOnGroundingPhase("schema-run-002");
   await assert.rejects(
-    () => manager.recordHandoff(honestHandoff("schema-run-002", { rubric: "createive-visual-quality" })),
+    () => manager.recordHandoff(honestHandoff("schema-run-002", { rubric: "chromarelay-visual-quality" })),
     /handoff\.schema\.json[\s\S]*additional propert[\s\S]*rubric/i
   );
-  assert.equal(await workspace.exists(".createive/runs/schema-run-002/handoffs/grounding/strategist-a.json"), false);
+  assert.equal(await workspace.exists(".chromarelay/runs/schema-run-002/handoffs/grounding/strategist-a.json"), false);
 });
 
 test("Handoff schema accepts a Handoff that reports the skill it actually used", async () => {
   const { manager, workspace } = await runOnGroundingPhase("skill-run-001");
   await manager.recordHandoff(honestHandoff("skill-run-001", {
-    skill: { primary: "createive-grounding", supporting: ["createive-research"] }
+    skill: { primary: "chromarelay-grounding", supporting: ["chromarelay-research"] }
   }));
-  const persisted = JSON.parse(await workspace.readText(".createive/runs/skill-run-001/handoffs/grounding/strategist-a.json")) as SpecialistHandoff;
-  assert.deepEqual(persisted.skill, { primary: "createive-grounding", supporting: ["createive-research"] });
+  const persisted = JSON.parse(await workspace.readText(".chromarelay/runs/skill-run-001/handoffs/grounding/strategist-a.json")) as SpecialistHandoff;
+  assert.deepEqual(persisted.skill, { primary: "chromarelay-grounding", supporting: ["chromarelay-research"] });
 });
 
 test("Handoff schema accepts a skill report naming no primary", async () => {
   const { manager, workspace } = await runOnGroundingPhase("skill-run-002");
   await manager.recordHandoff(honestHandoff("skill-run-002", { skill: { primary: null, supporting: [] } }));
-  assert.equal(await workspace.exists(".createive/runs/skill-run-002/handoffs/grounding/strategist-a.json"), true);
+  assert.equal(await workspace.exists(".chromarelay/runs/skill-run-002/handoffs/grounding/strategist-a.json"), true);
 });
 
 test("Handoff schema rejects a skill report that is not an object", async () => {
   const { manager } = await runOnGroundingPhase("skill-run-003");
   await assert.rejects(
-    () => manager.recordHandoff(honestHandoff("skill-run-003", { skill: "createive-grounding" })),
+    () => manager.recordHandoff(honestHandoff("skill-run-003", { skill: "chromarelay-grounding" })),
     /\/skill must be object/
   );
 });
@@ -108,7 +108,7 @@ test("Handoff schema rejects a skill report that is not an object", async () => 
 test("Handoff schema rejects a skill report that omits supporting", async () => {
   const { manager } = await runOnGroundingPhase("skill-run-004");
   await assert.rejects(
-    () => manager.recordHandoff(honestHandoff("skill-run-004", { skill: { primary: "createive-grounding" } })),
+    () => manager.recordHandoff(honestHandoff("skill-run-004", { skill: { primary: "chromarelay-grounding" } })),
     /\/skill must have required property 'supporting'/
   );
 });
@@ -117,7 +117,7 @@ test("Handoff schema rejects a skill report naming more supporting Skills than t
   const { manager } = await runOnGroundingPhase("skill-run-005");
   await assert.rejects(
     () => manager.recordHandoff(honestHandoff("skill-run-005", {
-      skill: { primary: "createive-grounding", supporting: ["a", "b", "c"] }
+      skill: { primary: "chromarelay-grounding", supporting: ["a", "b", "c"] }
     })),
     /\/skill\/supporting must NOT have more than 2 items/
   );
@@ -127,7 +127,7 @@ test("Handoff schema rejects an undeclared field inside the skill report", async
   const { manager } = await runOnGroundingPhase("skill-run-006");
   await assert.rejects(
     () => manager.recordHandoff(honestHandoff("skill-run-006", {
-      skill: { primary: "createive-grounding", supporting: [], rubric: "createive-visual-quality" }
+      skill: { primary: "chromarelay-grounding", supporting: [], rubric: "chromarelay-visual-quality" }
     })),
     /\/skill must NOT have additional properties \(rubric\)/
   );
@@ -161,7 +161,7 @@ test("Handoff schema rejects an artifact createdAt that is not a date-time", asy
   const artifact = {
     id: "product-brief",
     kind: "Product Brief",
-    path: ".createive/runs/schema-run-006/artifacts/PRODUCT.md",
+    path: ".chromarelay/runs/schema-run-006/artifacts/PRODUCT.md",
     status: "proposed",
     producerRole: "product-strategist",
     agentId: "strategist-a",
@@ -181,7 +181,7 @@ test("Handoff schema rejects an artifact missing sourceRefs", async () => {
   const artifact = {
     id: "product-brief",
     kind: "Product Brief",
-    path: ".createive/runs/schema-run-007/artifacts/PRODUCT.md",
+    path: ".chromarelay/runs/schema-run-007/artifacts/PRODUCT.md",
     status: "proposed",
     producerRole: "product-strategist",
     agentId: "strategist-a",
@@ -220,7 +220,7 @@ test("a phase that declares gates rejects a Handoff with no claims", async () =>
     () => manager.recordHandoff(honestHandoff("gate-run-001", { claims: [], evidence: [] })),
     /Phase grounding declares gates \[grounding-completeness\] and requires at least one claim/
   );
-  assert.equal(await workspace.exists(".createive/runs/gate-run-001/handoffs/grounding/strategist-a.json"), false);
+  assert.equal(await workspace.exists(".chromarelay/runs/gate-run-001/handoffs/grounding/strategist-a.json"), false);
 });
 
 test("a phase that declares gates rejects a claim carrying no evidenceRef", async () => {
@@ -244,12 +244,12 @@ test("a phase that declares no gates accepts a Handoff with no claims", async ()
     claims: [],
     evidence: []
   }));
-  assert.equal(await workspace.exists(".createive/runs/gate-run-003/handoffs/intake/coordinator-a.json"), true);
+  assert.equal(await workspace.exists(".chromarelay/runs/gate-run-003/handoffs/intake/coordinator-a.json"), true);
 });
 
 test("Handoff schema reports every violation in one error", async () => {
   const { manager } = await runOnGroundingPhase("schema-run-009");
-  const handoff = honestHandoff("schema-run-009", { rubric: "createive-visual-quality", confidence: "certain" });
+  const handoff = honestHandoff("schema-run-009", { rubric: "chromarelay-visual-quality", confidence: "certain" });
   delete (handoff as unknown as Record<string, unknown>)["unresolved"];
   await assert.rejects(() => manager.recordHandoff(handoff), (error: unknown) => {
     const message = (error as Error).message;
@@ -262,11 +262,11 @@ test("Handoff schema reports every violation in one error", async () => {
 
 /**
  * Regression floor: the Handoffs of the real Run must satisfy both rules. A rule that rejects
- * honest work is a stall, not a fix. `.createive/` is gitignored, so this walks read-only and
+ * honest work is a stall, not a fix. `.chromarelay/` is gitignored, so this walks read-only and
  * skips where the Run is absent — the check only ever fails on a real regression.
  */
 test("every Handoff of the real Run satisfies both the schema and the gate rule", async t => {
-  const runRoot = fileURLToPath(new URL("../../.createive/runs/run-cli-landing-001/handoffs", import.meta.url));
+  const runRoot = fileURLToPath(new URL("../../.chromarelay/runs/run-cli-landing-001/handoffs", import.meta.url));
   let phaseDirs: string[];
   try {
     phaseDirs = await readdir(runRoot);

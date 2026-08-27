@@ -1,4 +1,4 @@
-# Arquitetura do Createive Design OS
+# Arquitetura do ChromaRelay Design OS
 
 ## Objetivo arquitetural
 
@@ -52,7 +52,7 @@ Consome os mesmos Run Contracts, Handoffs, Directions e rubrics do núcleo, mas 
 ## Estado
 
 ```text
-.createive/
+.chromarelay/
 ├── system/                 framework instalado; somente setup/upgrade escreve
 ├── project/                estado canônico; Coordinator promove
 │   ├── PRODUCT.md

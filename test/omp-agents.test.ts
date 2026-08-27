@@ -44,14 +44,14 @@ test("every OMP specialist agent declares a tools list", async () => {
   assert.deepEqual(missing, [], `specialists without a declared tools list: ${missing.join(", ")}`);
 });
 
-test("the memory-curator may only reach canonical state through createive_state", async () => {
+test("the memory-curator may only reach canonical state through chromarelay_state", async () => {
   const agentsDirectory = path.join(await repositoryRoot(), ".omp", "agents");
-  const declarations = frontmatter(await readFile(path.join(agentsDirectory, "createive-memory-curator.md"), "utf8"));
+  const declarations = frontmatter(await readFile(path.join(agentsDirectory, "chromarelay-memory-curator.md"), "utf8"));
   const tools = /^tools:\s*(\[.+\])\s*$/m.exec(declarations)?.[1];
   assert.ok(tools, "memory-curator declares no tools list");
   const declared = JSON.parse(tools) as string[];
-  assert.ok(declared.includes("createive_state"), `Promotion needs createive_state, declared: ${declared.join(", ")}`);
-  assert.equal(declared.includes("bash"), false, "bash would let Promotion bypass createive_state");
+  assert.ok(declared.includes("chromarelay_state"), `Promotion needs chromarelay_state, declared: ${declared.join(", ")}`);
+  assert.equal(declared.includes("bash"), false, "bash would let Promotion bypass chromarelay_state");
   assert.equal(declared.includes("edit"), false, "edit would let Promotion rewrite canonical state in place");
 });
 

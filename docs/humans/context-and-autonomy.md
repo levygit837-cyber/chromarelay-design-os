@@ -62,7 +62,7 @@ Ele não contém instruções contraditórias. O Context Compiler resolve preced
 - Builders e Repairers usam worktree isolada quando disponível.
 - Handoffs são persistidos antes de qualquer merge.
 - O Coordinator avalia patches e aplica apenas depois dos gates exigidos.
-- `.createive/project` não é área de rascunho.
+- `.chromarelay/project` não é área de rascunho.
 
 ## Locks
 

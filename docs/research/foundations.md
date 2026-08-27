@@ -30,4 +30,4 @@ The adapter follows current OMP source documentation:
 
 ## Interpretation
 
-Createive copies principles and integration contracts, not source text or implementation. External Skills remain advisory references and are not vendored as hidden authorities.
+ChromaRelay copies principles and integration contracts, not source text or implementation. External Skills remain advisory references and are not vendored as hidden authorities.

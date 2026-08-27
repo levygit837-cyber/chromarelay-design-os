@@ -1,4 +1,4 @@
-# Workflows do Createive
+# Workflows do ChromaRelay
 
 Cada Workflow é uma state machine reutilizável. O Coordinator pode pular fases somente quando a política da fase e o nível da decisão justificarem.
 

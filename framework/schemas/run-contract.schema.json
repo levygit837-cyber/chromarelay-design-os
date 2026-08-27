@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://createive.dev/schemas/run-contract.schema.json",
-  "title": "Createive Run Contract",
+  "$id": "https://chromarelay.dev/schemas/run-contract.schema.json",
+  "title": "ChromaRelay Run Contract",
   "type": "object",
   "additionalProperties": false,
   "required": ["version", "runId", "workflow", "objective", "scope", "autonomy", "status", "currentPhase", "decisionLevel", "authority", "skillBudget", "createdAt", "updatedAt"],

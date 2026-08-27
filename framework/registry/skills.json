@@ -7,88 +7,88 @@
   },
   "skills": [
     {
-      "id": "createive-design-manager",
+      "id": "chromarelay-design-manager",
       "class": ["PROCESS", "CONTRACT"],
       "authority": "orchestration",
       "roles": ["coordinator"],
-      "source": ".agents/skills/createive-design-manager/SKILL.md"
+      "source": ".agents/skills/chromarelay-design-manager/SKILL.md"
     },
     {
-      "id": "createive-grounding",
+      "id": "chromarelay-grounding",
       "class": ["PROCESS", "HEURISTIC"],
       "authority": "advisory",
       "roles": ["product-strategist"],
-      "source": ".agents/skills/createive-grounding/SKILL.md"
+      "source": ".agents/skills/chromarelay-grounding/SKILL.md"
     },
     {
-      "id": "createive-inspect",
+      "id": "chromarelay-inspect",
       "class": ["PROCESS", "CONTRACT"],
       "authority": "evidence",
       "roles": ["inspector"],
-      "source": ".agents/skills/createive-inspect/SKILL.md"
+      "source": ".agents/skills/chromarelay-inspect/SKILL.md"
     },
     {
-      "id": "createive-reference-analysis",
+      "id": "chromarelay-reference-analysis",
       "class": ["PROCESS", "HEURISTIC"],
       "authority": "evidence-candidate",
       "roles": ["reference-analyst"],
-      "source": ".agents/skills/createive-reference-analysis/SKILL.md"
+      "source": ".agents/skills/chromarelay-reference-analysis/SKILL.md"
     },
     {
-      "id": "createive-art-direction",
+      "id": "chromarelay-art-direction",
       "class": ["PROCESS", "HEURISTIC"],
       "authority": "advisory",
       "roles": ["art-director"],
-      "source": ".agents/skills/createive-art-direction/SKILL.md"
+      "source": ".agents/skills/chromarelay-art-direction/SKILL.md"
     },
     {
-      "id": "createive-systemize",
+      "id": "chromarelay-systemize",
       "class": ["PROCESS", "CONTRACT"],
       "authority": "draft-contract",
       "roles": ["system-architect"],
-      "source": ".agents/skills/createive-systemize/SKILL.md"
+      "source": ".agents/skills/chromarelay-systemize/SKILL.md"
     },
     {
-      "id": "createive-components",
+      "id": "chromarelay-components",
       "class": ["PROCESS", "CONTRACT"],
       "authority": "draft-contract",
       "roles": ["component-architect"],
-      "source": ".agents/skills/createive-components/SKILL.md"
+      "source": ".agents/skills/chromarelay-components/SKILL.md"
     },
     {
-      "id": "createive-build",
+      "id": "chromarelay-build",
       "class": ["PROCESS"],
       "authority": "implementation",
       "roles": ["builder"],
-      "source": ".agents/skills/createive-build/SKILL.md"
+      "source": ".agents/skills/chromarelay-build/SKILL.md"
     },
     {
-      "id": "createive-audit",
+      "id": "chromarelay-audit",
       "class": ["GATE", "TOOL"],
       "authority": "deterministic-evidence",
       "roles": ["deterministic-auditor"],
-      "source": ".agents/skills/createive-audit/SKILL.md"
+      "source": ".agents/skills/chromarelay-audit/SKILL.md"
     },
     {
-      "id": "createive-critique",
+      "id": "chromarelay-critique",
       "class": ["PROCESS", "HEURISTIC"],
       "authority": "qualitative-evidence",
       "roles": ["visual-critic"],
-      "source": ".agents/skills/createive-critique/SKILL.md"
+      "source": ".agents/skills/chromarelay-critique/SKILL.md"
     },
     {
-      "id": "createive-repair",
+      "id": "chromarelay-repair",
       "class": ["PROCESS"],
       "authority": "implementation",
       "roles": ["repairer"],
-      "source": ".agents/skills/createive-repair/SKILL.md"
+      "source": ".agents/skills/chromarelay-repair/SKILL.md"
     },
     {
-      "id": "createive-memory",
+      "id": "chromarelay-memory",
       "class": ["PROCESS", "CONTRACT"],
       "authority": "promotion",
       "roles": ["memory-curator"],
-      "source": ".agents/skills/createive-memory/SKILL.md"
+      "source": ".agents/skills/chromarelay-memory/SKILL.md"
     },
     {
       "id": "anthropic-frontend-design",

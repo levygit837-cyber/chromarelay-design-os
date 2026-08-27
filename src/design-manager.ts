@@ -161,11 +161,11 @@ export class DesignManager {
 
     const runRoot = this.runRoot(runId);
     await this.workspace.ensureDir(runRoot);
-    await this.workspace.ensureDir(".createive/project");
+    await this.workspace.ensureDir(".chromarelay/project");
     await this.workspace.writeText(`${runRoot}/run.json`, this.json(run));
     await this.workspace.writeText(`${runRoot}/request.json`, this.json({ request, route }));
     await this.workspace.writeText(`${runRoot}/events.jsonl`, `${JSON.stringify({ at: timestamp, type: "run.started", workflow: route.workflow, phase: firstPhase.id })}\n`);
-    await this.workspace.writeText(".createive/active-run.json", this.json({ runId, updatedAt: timestamp }));
+    await this.workspace.writeText(".chromarelay/active-run.json", this.json({ runId, updatedAt: timestamp }));
     await this.phasePacket(runId);
     return run;
   }
@@ -278,9 +278,9 @@ export class DesignManager {
       throw new ContractError(`Phase ${phase.id} declares input "${declared.name}" from ${declared.source} with no path`);
     }
     const root = declared.source === "canonical"
-      ? ".createive/project"
+      ? ".chromarelay/project"
       : declared.source === "framework"
-        ? ".createive/system"
+        ? ".chromarelay/system"
         : this.runRoot(run.runId);
     const path = `${root}/${declared.path}`;
     // Checking the file means `status` is an observation rather than an unverified assertion; the
@@ -984,7 +984,7 @@ export class DesignManager {
   }
 
   private runRoot(runId: string): string {
-    return `.createive/runs/${this.safeSegment(runId)}`;
+    return `.chromarelay/runs/${this.safeSegment(runId)}`;
   }
 
   private safeSegment(value: string): string {
@@ -994,15 +994,15 @@ export class DesignManager {
   }
 
   private async activeRunId(): Promise<string> {
-    const active = JSON.parse(await this.workspace.readText(".createive/active-run.json")) as { runId?: string };
-    if (!active.runId) throw new ContractError("No active Createive Run");
+    const active = JSON.parse(await this.workspace.readText(".chromarelay/active-run.json")) as { runId?: string };
+    if (!active.runId) throw new ContractError("No active ChromaRelay Run");
     return active.runId;
   }
 
   private async saveRun(run: RunContract): Promise<void> {
     this.validateRun(run);
     await this.workspace.writeText(`${this.runRoot(run.runId)}/run.json`, this.json(run));
-    await this.workspace.writeText(".createive/active-run.json", this.json({ runId: run.runId, updatedAt: run.updatedAt }));
+    await this.workspace.writeText(".chromarelay/active-run.json", this.json({ runId: run.runId, updatedAt: run.updatedAt }));
   }
 
   private async appendEvent(runId: string, event: Record<string, unknown>): Promise<void> {

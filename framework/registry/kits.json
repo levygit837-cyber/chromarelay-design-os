@@ -9,79 +9,79 @@
   "kits": [
     {
       "id": "grounding",
-      "primary": "createive-grounding",
+      "primary": "chromarelay-grounding",
       "supporting": [],
       "roles": ["product-strategist"]
     },
     {
       "id": "inspection",
-      "primary": "createive-inspect",
+      "primary": "chromarelay-inspect",
       "supporting": ["playwright"],
       "roles": ["inspector"]
     },
     {
       "id": "reference-intelligence",
-      "primary": "createive-reference-analysis",
+      "primary": "chromarelay-reference-analysis",
       "supporting": [],
       "roles": ["reference-analyst"]
     },
     {
       "id": "creative-direction-marketing",
-      "primary": "createive-art-direction",
+      "primary": "chromarelay-art-direction",
       "supporting": ["anthropic-frontend-design", "impeccable"],
       "roles": ["art-director"]
     },
     {
       "id": "creative-direction-product",
-      "primary": "createive-art-direction",
+      "primary": "chromarelay-art-direction",
       "supporting": ["interface-design", "ui-ux-pro-max"],
       "roles": ["art-director"]
     },
     {
       "id": "design-system",
-      "primary": "createive-systemize",
+      "primary": "chromarelay-systemize",
       "supporting": ["google-design-md"],
       "roles": ["system-architect"]
     },
     {
       "id": "components",
-      "primary": "createive-components",
+      "primary": "chromarelay-components",
       "supporting": ["storybook"],
       "roles": ["component-architect"]
     },
     {
       "id": "implementation",
-      "primary": "createive-build",
+      "primary": "chromarelay-build",
       "supporting": [],
       "roles": ["builder"]
     },
     {
       "id": "deterministic-audit",
-      "primary": "createive-audit",
+      "primary": "chromarelay-audit",
       "supporting": ["vercel-web-interface-guidelines", "axe-core"],
       "roles": ["deterministic-auditor"]
     },
     {
       "id": "visual-critique-product",
-      "primary": "createive-critique",
+      "primary": "chromarelay-critique",
       "supporting": ["interface-design"],
       "roles": ["visual-critic"]
     },
     {
       "id": "visual-critique-experience",
-      "primary": "createive-critique",
+      "primary": "chromarelay-critique",
       "supporting": ["impeccable"],
       "roles": ["visual-critic"]
     },
     {
       "id": "repair",
-      "primary": "createive-repair",
+      "primary": "chromarelay-repair",
       "supporting": [],
       "roles": ["repairer"]
     },
     {
       "id": "memory",
-      "primary": "createive-memory",
+      "primary": "chromarelay-memory",
       "supporting": ["google-design-md"],
       "roles": ["memory-curator"]
     }

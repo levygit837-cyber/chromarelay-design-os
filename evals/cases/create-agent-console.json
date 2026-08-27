@@ -10,8 +10,8 @@
     "same content and product data",
     "loading, empty, error, active, and blocked agent states"
   ],
-  "baseline": { "mode": "without-createive", "modelRole": "createive_builder" },
-  "candidate": { "mode": "with-createive", "modelRole": "createive_builder" },
+  "baseline": { "mode": "without-chromarelay", "modelRole": "chromarelay_builder" },
+  "candidate": { "mode": "with-chromarelay", "modelRole": "chromarelay_builder" },
   "gates": ["build-health", "responsive-geometry", "accessibility", "state-coverage", "visual-quality"],
   "rubric": "framework/rubrics/operate.json",
   "repetitions": 3,

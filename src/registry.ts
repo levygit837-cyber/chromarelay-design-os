@@ -67,5 +67,5 @@ export function validateRegistryBundle(bundle: RegistryBundle): string[] {
 
 export function assertValidRegistry(bundle: RegistryBundle): void {
   const errors = validateRegistryBundle(bundle);
-  if (errors.length > 0) throw new ContractError(`Invalid Createive framework:\n- ${errors.join("\n- ")}`);
+  if (errors.length > 0) throw new ContractError(`Invalid ChromaRelay framework:\n- ${errors.join("\n- ")}`);
 }

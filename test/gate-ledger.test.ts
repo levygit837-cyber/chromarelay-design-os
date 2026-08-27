@@ -25,7 +25,7 @@ function registry(): RegistryBundle {
       coordinator: { id: "coordinator", purpose: "coordinate", modelRole: "coordinator", primarySkill: "manager", maySpawn: true, mayWrite: [], mustNot: ["critique"] },
       "product-strategist": { id: "product-strategist", purpose: "ground", modelRole: "product", primarySkill: "grounding", maySpawn: false, mayWrite: [], mustNot: ["implement"] }
     },
-    kits: { grounding: { id: "grounding", primary: "createive-grounding", supporting: [], roles: ["product-strategist"] } },
+    kits: { grounding: { id: "grounding", primary: "chromarelay-grounding", supporting: [], roles: ["product-strategist"] } },
     gates: new Set(["grounding-completeness", "accessibility"]),
     handoffValidator: noopHandoffValidator()
   };
@@ -42,7 +42,7 @@ async function runOnGroundingPhase(runId: string): Promise<{ manager: DesignMana
   const manager = new DesignManager(workspace, registry());
   await manager.start({ objective: "Create a console", hasExistingDesign: false }, { runId });
   await manager.advance(runId, { force: true });
-  await workspace.writeText(`.createive/runs/${runId}/${EVIDENCE}`, "{}\n");
+  await workspace.writeText(`.chromarelay/runs/${runId}/${EVIDENCE}`, "{}\n");
   await manager.recordHandoff(handoffFixture(runId));
   return { manager, workspace };
 }
@@ -112,7 +112,7 @@ test("a Gate result whose evidenceRefs name a file that does not exist is reject
     () => manager.recordGateResult(gateResult("gate-ledger-004", { evidenceRefs: ["I ran axe, honest"] })),
     /Gate grounding-completeness names evidence "I ran axe, honest", which does not exist in Run gate-ledger-004/
   );
-  assert.equal(await workspace.exists(".createive/runs/gate-ledger-004/gate-results/grounding/grounding-completeness.json"), false);
+  assert.equal(await workspace.exists(".chromarelay/runs/gate-ledger-004/gate-results/grounding/grounding-completeness.json"), false);
 });
 
 test("a Gate result carrying no evidenceRefs is rejected", async () => {
@@ -154,7 +154,7 @@ test("a waived Gate is recorded as a blocker and an event, and lets the phase ad
   const run = await manager.advance("gate-ledger-008");
   assert.equal(run.currentPhase, "handover");
   assert.ok(run.blockers.some(blocker => blocker.includes("waived[grounding/grounding-completeness]")), `blockers were ${JSON.stringify(run.blockers)}`);
-  const events = await workspace.readText(".createive/runs/gate-ledger-008/events.jsonl");
+  const events = await workspace.readText(".chromarelay/runs/gate-ledger-008/events.jsonl");
   assert.match(events, /"type":"gate\.waived"/);
 });
 
@@ -200,7 +200,7 @@ test("force records which Gates it bypassed and an outcome distinguishable from 
   assert.deepEqual(exited?.bypassedGates, ["grounding-completeness"]);
   assert.equal(exited?.reason, "shipping the demo before the review window closes");
   assert.ok(run.blockers.some(blocker => blocker.includes("forced[grounding]: bypassed gate grounding-completeness")), `blockers were ${JSON.stringify(run.blockers)}`);
-  const events = await workspace.readText(".createive/runs/gate-ledger-013/events.jsonl");
+  const events = await workspace.readText(".chromarelay/runs/gate-ledger-013/events.jsonl");
   assert.match(events, /"type":"phase\.forced"/);
 });
 
@@ -218,7 +218,7 @@ test("every Gate result field the code persists is declared in the Gate result s
     status: "waived",
     waiver: { scope: "surface", reason: "no browser available", approvedBy: "coordinator-a", approvedAt: "2026-08-24T10:00:00.000Z", revisitWhen: "a browser is available", reusable: false }
   }));
-  const persisted = JSON.parse(await workspace.readText(".createive/runs/gate-ledger-016/gate-results/grounding/grounding-completeness.json"));
+  const persisted = JSON.parse(await workspace.readText(".chromarelay/runs/gate-ledger-016/gate-results/grounding/grounding-completeness.json"));
   const schema = JSON.parse(await readFile("framework/schemas/gate-result.schema.json", "utf8"));
 
   const declared = new Set(Object.keys(schema.properties));

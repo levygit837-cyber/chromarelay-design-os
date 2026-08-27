@@ -26,7 +26,7 @@ function registry(): RegistryBundle {
       "product-strategist": { id: "product-strategist", purpose: "ground", modelRole: "product", primarySkill: "grounding", maySpawn: false, mayWrite: [], mustNot: ["implement"] }
     },
     kits: {
-      grounding: { id: "grounding", primary: "createive-grounding", supporting: [], roles: ["product-strategist"] }
+      grounding: { id: "grounding", primary: "chromarelay-grounding", supporting: [], roles: ["product-strategist"] }
     },
     gates: new Set(["grounding-completeness"]),
     handoffValidator: noopHandoffValidator()
@@ -39,7 +39,7 @@ function registry(): RegistryBundle {
  * `gate-ledger.test.ts`, and satisfying it here keeps each test asserting one thing.
  */
 async function passGroundingGate(manager: DesignManager, workspace: MemoryWorkspace, runId: string, phase = "grounding"): Promise<void> {
-  await workspace.writeText(`.createive/runs/${runId}/reports/grounding.json`, "{}\n");
+  await workspace.writeText(`.chromarelay/runs/${runId}/reports/grounding.json`, "{}\n");
   await manager.recordGateResult({
     version: "1.0",
     runId,
@@ -83,16 +83,16 @@ test("starts a Run and persists a Phase Packet", async () => {
   const manager = new DesignManager(workspace, registry());
   const run = await manager.start({ objective: "Create a console", hasExistingDesign: false }, { runId: "create-test-001", now: new Date("2026-08-21T12:00:00.000Z") });
   assert.equal(run.currentPhase, "intake");
-  assert.equal(await workspace.exists(".createive/runs/create-test-001/run.json"), true);
-  assert.equal(await workspace.exists(".createive/runs/create-test-001/phase-packets/intake.json"), true);
-  assert.equal(JSON.parse(await workspace.readText(".createive/active-run.json")).runId, "create-test-001");
+  assert.equal(await workspace.exists(".chromarelay/runs/create-test-001/run.json"), true);
+  assert.equal(await workspace.exists(".chromarelay/runs/create-test-001/phase-packets/intake.json"), true);
+  assert.equal(JSON.parse(await workspace.readText(".chromarelay/active-run.json")).runId, "create-test-001");
 });
 
 test("starts a Run with the canonical project root available for Promotion", async () => {
   const workspace = new MemoryWorkspace();
   const manager = new DesignManager(workspace, registry());
   await manager.start({ objective: "Create a console", hasExistingDesign: false }, { runId: "create-test-003" });
-  assert.equal(await workspace.exists(".createive/project"), true);
+  assert.equal(await workspace.exists(".chromarelay/project"), true);
 });
 
 test("requires a specialist Handoff before advancing a specialist phase", async () => {
@@ -109,9 +109,9 @@ test("requires a specialist Handoff before advancing a specialist phase", async 
     role: "product-strategist",
     agentId: "strategist-a",
     summary: "Grounding complete",
-    claims: [{ claim: "Product truth is grounded", status: "inferred", confidence: "medium", evidenceRefs: [".createive/runs/create-test-002/artifacts/PRODUCT.md"] }],
-    evidence: [".createive/runs/create-test-002/artifacts/PRODUCT.md"],
-    artifacts: [{ id: "product-brief", kind: "Product Brief", path: ".createive/runs/create-test-002/artifacts/PRODUCT.md", status: "proposed", producerRole: "product-strategist", agentId: "strategist-a", runId: "create-test-002", phase: "grounding", createdAt: new Date().toISOString(), sourceRefs: [] }],
+    claims: [{ claim: "Product truth is grounded", status: "inferred", confidence: "medium", evidenceRefs: [".chromarelay/runs/create-test-002/artifacts/PRODUCT.md"] }],
+    evidence: [".chromarelay/runs/create-test-002/artifacts/PRODUCT.md"],
+    artifacts: [{ id: "product-brief", kind: "Product Brief", path: ".chromarelay/runs/create-test-002/artifacts/PRODUCT.md", status: "proposed", producerRole: "product-strategist", agentId: "strategist-a", runId: "create-test-002", phase: "grounding", createdAt: new Date().toISOString(), sourceRefs: [] }],
     decisions: [],
     risks: [],
     confidence: "high",
@@ -261,7 +261,7 @@ function approvedDecision(overrides: Record<string, unknown> = {}): DecisionReco
     choice: "Adopt Direction B",
     rationale: ["won the tournament"],
     alternatives: ["Direction A"],
-    evidence: [".createive/runs/approval-run-001/reports/visual-review.json"],
+    evidence: [".chromarelay/runs/approval-run-001/reports/visual-review.json"],
     risks: [],
     revisitWhen: [],
     approvedBy: "critic-a",
@@ -280,8 +280,8 @@ function handoffFixture(overrides: Partial<SpecialistHandoff> = {}): SpecialistH
     summary: "Lighthouse surface built",
     // Every gate-declaring phase requires an evidence-bearing claim, so the shared fixture carries
     // one. These tests are about authority separation; an unsupported claim would fail earlier.
-    claims: [{ claim: "The surface renders and basic health passes", status: "observed", confidence: "medium", evidenceRefs: [".createive/runs/approval-run-001/reports/build-health.json"] }],
-    evidence: [".createive/runs/approval-run-001/reports/build-health.json"],
+    claims: [{ claim: "The surface renders and basic health passes", status: "observed", confidence: "medium", evidenceRefs: [".chromarelay/runs/approval-run-001/reports/build-health.json"] }],
+    evidence: [".chromarelay/runs/approval-run-001/reports/build-health.json"],
     artifacts: [],
     decisions: [],
     risks: [],
@@ -336,7 +336,7 @@ test("rejects a specialist Handoff that self-approves an Artifact", () => {
       artifacts: [{
         id: "surface",
         kind: "Surface",
-        path: ".createive/runs/approval-run-001/artifacts/surface.html",
+        path: ".chromarelay/runs/approval-run-001/artifacts/surface.html",
         status: "approved",
         producerRole: "builder",
         agentId: "builder-a",
@@ -382,7 +382,7 @@ function approvalRegistry(): RegistryBundle {
       ...base.roles,
       "deterministic-auditor": { id: "deterministic-auditor", purpose: "measure", modelRole: "auditor", primarySkill: "detectors", maySpawn: false, mayWrite: [], mustNot: ["author Directions"] },
       "visual-critic": { id: "visual-critic", purpose: "judge", modelRole: "critic", primarySkill: "critique", maySpawn: false, mayWrite: [], mustNot: ["create"] },
-      "memory-curator": { id: "memory-curator", purpose: "promote", modelRole: "curator", primarySkill: "promotion", maySpawn: false, mayWrite: [".createive/project"], mustNot: ["critique"] }
+      "memory-curator": { id: "memory-curator", purpose: "promote", modelRole: "curator", primarySkill: "promotion", maySpawn: false, mayWrite: [".chromarelay/project"], mustNot: ["critique"] }
     },
     kits: base.kits,
     gates: base.gates,
@@ -423,7 +423,7 @@ test("approves a proposed Decision when a distinct agent attests", async () => {
   assert.equal(result.status, "approved");
   assert.deepEqual(result.decisions, ["d-direction"]);
 
-  const persisted = JSON.parse(await workspace.readText(".createive/runs/approval-run-006/decisions/d-direction.json"));
+  const persisted = JSON.parse(await workspace.readText(".chromarelay/runs/approval-run-006/decisions/d-direction.json"));
   assert.equal(persisted.status, "approved");
   assert.equal(persisted.approvedBy, attesterAgentId);
   assert.equal(persisted.approvedAt, result.approvedAt);
@@ -441,8 +441,8 @@ test("does not persist a Decision file when the Handoff is rejected", async () =
     agentId: "strategist-a",
     decisions: [approvedDecision({ approvedBy: "strategist-a" })]
   })), ContractError);
-  assert.equal(await workspace.exists(".createive/runs/approval-run-008/decisions/d-canonical.json"), false);
-  assert.equal(await workspace.exists(".createive/runs/approval-run-008/handoffs/grounding/strategist-a.json"), false);
+  assert.equal(await workspace.exists(".chromarelay/runs/approval-run-008/decisions/d-canonical.json"), false);
+  assert.equal(await workspace.exists(".chromarelay/runs/approval-run-008/handoffs/grounding/strategist-a.json"), false);
 });
 
 test("rejects an approval whose attestation has no persisted Handoff", async () => {
@@ -543,7 +543,7 @@ function screenshotHandoff(runId: string): SpecialistHandoff {
     artifacts: [{
       id: "surface-render",
       kind: "Screenshot Set",
-      path: `.createive/runs/${runId}/evidence/desktop.png`,
+      path: `.chromarelay/runs/${runId}/evidence/desktop.png`,
       status: "proposed",
       producerRole: "builder",
       agentId: "builder-a",
@@ -561,7 +561,7 @@ function screenshotHandoff(runId: string): SpecialistHandoff {
 }
 
 test("resolves a previous phase Artifact input to the path the producer recorded", async () => {
-  const workspace = new MemoryWorkspace({ ".createive/project/DESIGN.md": "# DESIGN\n" });
+  const workspace = new MemoryWorkspace({ ".chromarelay/project/DESIGN.md": "# DESIGN\n" });
   const manager = new DesignManager(workspace, registryWithCritique());
   await manager.start({ objective: "Improve the console", hasExistingDesign: false, surfaceClass: "OPERATE" }, { runId: "packet-run-001" });
   await manager.advance("packet-run-001", { force: true });
@@ -573,11 +573,11 @@ test("resolves a previous phase Artifact input to the path the producer recorded
 
   const shots = packet.inputs.find(input => input.name === "anonymous screenshots");
   assert.equal(shots?.status, "resolved");
-  assert.equal(shots?.path, ".createive/runs/packet-run-001/evidence/desktop.png");
+  assert.equal(shots?.path, ".chromarelay/runs/packet-run-001/evidence/desktop.png");
 });
 
 test("resolves a canonical contract input under the project root", async () => {
-  const workspace = new MemoryWorkspace({ ".createive/project/DESIGN.md": "# DESIGN\n" });
+  const workspace = new MemoryWorkspace({ ".chromarelay/project/DESIGN.md": "# DESIGN\n" });
   const manager = new DesignManager(workspace, registryWithCritique());
   await manager.start({ objective: "Improve the console", hasExistingDesign: false }, { runId: "packet-run-002" });
   await manager.advance("packet-run-002", { force: true });
@@ -586,7 +586,7 @@ test("resolves a canonical contract input under the project root", async () => {
 
   const packet = await manager.phasePacket("packet-run-002");
   const design = packet.inputs.find(input => input.name === "DESIGN excerpt");
-  assert.equal(design?.path, ".createive/project/DESIGN.md");
+  assert.equal(design?.path, ".chromarelay/project/DESIGN.md");
   assert.equal(design?.status, "canonical");
 });
 
@@ -600,7 +600,7 @@ test("reports a canonical contract that does not exist yet as absent instead of 
   const packet = await manager.phasePacket("packet-run-003");
   const design = packet.inputs.find(input => input.name === "DESIGN excerpt");
   assert.equal(design?.status, "absent-canonical");
-  assert.equal(design?.path, ".createive/project/DESIGN.md");
+  assert.equal(design?.path, ".chromarelay/project/DESIGN.md");
   assert.ok(packet.unresolvedInputs.includes("DESIGN excerpt"));
 });
 
@@ -618,7 +618,7 @@ test("refuses to compile a Packet when a required Artifact input is missing", as
 });
 
 test("emits an optional Artifact input as absent instead of failing", async () => {
-  const workspace = new MemoryWorkspace({ ".createive/project/DESIGN.md": "# DESIGN\n" });
+  const workspace = new MemoryWorkspace({ ".chromarelay/project/DESIGN.md": "# DESIGN\n" });
   const manager = new DesignManager(workspace, registryWithCritique());
   await manager.start({ objective: "Improve the console", hasExistingDesign: false }, { runId: "packet-run-005" });
   await manager.advance("packet-run-005", { force: true });
@@ -634,8 +634,8 @@ test("emits an optional Artifact input as absent instead of failing", async () =
 
 test("resolves framework and run inputs against their own roots", async () => {
   const workspace = new MemoryWorkspace({
-    ".createive/project/DESIGN.md": "# DESIGN\n",
-    ".createive/system/schemas/handoff.schema.json": "{}\n"
+    ".chromarelay/project/DESIGN.md": "# DESIGN\n",
+    ".chromarelay/system/schemas/handoff.schema.json": "{}\n"
   });
   const manager = new DesignManager(workspace, registryWithCritique());
   await manager.start({ objective: "Improve the console", hasExistingDesign: false }, { runId: "packet-run-006" });
@@ -646,17 +646,17 @@ test("resolves framework and run inputs against their own roots", async () => {
   const packet = await manager.phasePacket("packet-run-006");
   const schema = packet.inputs.find(input => input.name === "Handoff schema");
   assert.equal(schema?.status, "framework");
-  assert.equal(schema?.path, ".createive/system/schemas/handoff.schema.json");
+  assert.equal(schema?.path, ".chromarelay/system/schemas/handoff.schema.json");
 
   const request = packet.inputs.find(input => input.name === "request");
   assert.equal(request?.status, "run");
-  assert.equal(request?.path, ".createive/runs/packet-run-006/request.json");
+  assert.equal(request?.path, ".chromarelay/runs/packet-run-006/request.json");
 });
 
 test("no Packet input is a concept name without an address", async () => {
   const workspace = new MemoryWorkspace({
-    ".createive/project/DESIGN.md": "# DESIGN\n",
-    ".createive/system/schemas/handoff.schema.json": "{}\n"
+    ".chromarelay/project/DESIGN.md": "# DESIGN\n",
+    ".chromarelay/system/schemas/handoff.schema.json": "{}\n"
   });
   const manager = new DesignManager(workspace, registryWithCritique());
   await manager.start({ objective: "Improve the console", hasExistingDesign: false }, { runId: "packet-run-007" });
@@ -668,14 +668,14 @@ test("no Packet input is a concept name without an address", async () => {
   for (const input of packet.inputs) {
     assert.ok("path" in input, `input ${input.name} has no path field`);
     if (input.status === "absent-optional") continue;
-    assert.ok(input.path?.startsWith(".createive/"), `input ${input.name} is not addressable`);
+    assert.ok(input.path?.startsWith(".chromarelay/"), `input ${input.name} is not addressable`);
   }
   // Every declared input is accounted for: resolved or explicitly named as unresolved.
   assert.equal(packet.inputs.length, 5);
   assert.deepEqual(packet.unresolvedInputs, ["reference pack"]);
 
   // The Packet on disk carries the same resolved addresses the caller received.
-  const persisted = JSON.parse(await workspace.readText(".createive/runs/packet-run-007/phase-packets/visual-critique.json"));
+  const persisted = JSON.parse(await workspace.readText(".chromarelay/runs/packet-run-007/phase-packets/visual-critique.json"));
   assert.deepEqual(persisted.inputs, packet.inputs);
 });
 
@@ -755,7 +755,7 @@ async function runAtDirection(runId: string): Promise<{ manager: DesignManager; 
 }
 
 async function events(workspace: MemoryWorkspace, runId: string): Promise<Record<string, unknown>[]> {
-  const raw = await workspace.readText(`.createive/runs/${runId}/events.jsonl`);
+  const raw = await workspace.readText(`.chromarelay/runs/${runId}/events.jsonl`);
   return raw.split("\n").filter(line => line.trim().length > 0).map(line => JSON.parse(line) as Record<string, unknown>);
 }
 
