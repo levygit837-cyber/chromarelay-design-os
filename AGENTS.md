@@ -15,6 +15,33 @@ Engineering agents also read:
 
 Specs, implementation tickets, and Wayfinder maps live in GitHub Issues. See `docs/agents/issue-tracker.md`.
 
+### Idea inbox
+
+Raw ideas live in `IDEAS.md` (index) plus one file per idea under `ideas/`
+(`inbox/`, `considering/`, `archive/`). Discussion and decisions happen in
+GitHub Issues; the inbox is memory, not a tracker. If this section outgrows
+a short block, graduate it to an on-demand skill instead of expanding it here.
+
+Context hygiene (always applies): read only the `IDEAS.md` index by default
+(one line per idea). Read a single idea file only when the user names it or
+triage reaches it. Search by filename/title over `ideas/inbox/` and
+`ideas/considering/` only. Never bulk-read idea files, and never search
+`ideas/archive/` unless explicitly checking a possible duplicate.
+
+Capture ("note an idea: ..."): create
+`ideas/inbox/YYYY-MM-DD-slug.md` from the template in `IDEAS.md`, append one
+line to the Active index, and reply with the title plus at most 1-2 questions
+for missing essentials (Context, Problem, Worth-doing-if). Never reorganize,
+triage, or judge at capture time; never read other idea files to do it.
+
+Lifecycle ("list my inbox", "triage ideas"): read the index top to bottom.
+Each item has three exits: promote to a GitHub issue (`idea` label) for
+discussion and scoping, keep with a review date, or close with a reason.
+Close by filling Decision and moving the file to `ideas/archive/`, removing
+the index line. Never delete a closed idea: the recorded reason stops the
+same idea from being re-debated. Duplicate-looking captures get one explicit
+archive check (Decision section only) before a new file is created.
+
 ### Domain docs
 
 This is a single-context repository: use root `CONTEXT.md` and relevant ADRs under `docs/adr/`. See `docs/agents/domain.md`.
