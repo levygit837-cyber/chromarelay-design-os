@@ -8,6 +8,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -16,13 +20,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: npm install
+      - run: npm ci
       - run: npm run check
       - name: Typecheck harness adapter
         run: npm run typecheck:omp
       - run: npm run validate:framework
       - name: Smoke-test portable overlay
         run: |
-          mkdir -p /tmp/chromarelay-target
-          node scripts/install.mjs --target /tmp/chromarelay-target --omp
-          node dist/src/cli.js validate-framework --system /tmp/chromarelay-target/.chromarelay/system
+          TARGET="$(mktemp -d)"
+          node scripts/install.mjs --target "$TARGET" --omp
+          node dist/src/cli.js validate-framework --system "$TARGET/.chromarelay/system"
