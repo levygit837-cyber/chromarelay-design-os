@@ -1,15 +1,15 @@
 # Merge these entries into ~/.omp/agent/config.yml and map aliases to models available in your environment.
 modelRoles:
-  createive_coordinator: "@slow"
-  createive_product: "@slow"
-  createive_research: "@task"
-  createive_art: "@designer"
-  createive_system: "@slow"
-  createive_builder: "@default"
-  createive_auditor: "@task"
-  createive_critic: "@slow"
-  createive_repair: "@default"
-  createive_advisor: "@slow"
+  chromarelay_coordinator: "@slow"
+  chromarelay_product: "@slow"
+  chromarelay_research: "@task"
+  chromarelay_art: "@designer"
+  chromarelay_system: "@slow"
+  chromarelay_builder: "@default"
+  chromarelay_auditor: "@task"
+  chromarelay_critic: "@slow"
+  chromarelay_repair: "@default"
+  chromarelay_advisor: "@slow"
 
 task:
   maxConcurrency: 6

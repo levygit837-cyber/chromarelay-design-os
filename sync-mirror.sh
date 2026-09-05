@@ -1,19 +1,46 @@
 #!/bin/bash
-# Espelha as entradas ocultas do repo para nomes visiveis em mirror/,
+# Espelha dot entries do topo do repo para nomes visiveis em mirror/,
 # para o painel de arquivos do Factory desktop (que oculta dotfiles).
-# Rodado pelo launchd a cada 3s; rsync -a --delete = copia exata.
+# Dinamico: qualquer .*/ novo no topo entra no espelho; entries que
+# sumirem da origem saem do espelho.
+#
+# Regras:
+#   .git            -> ignorado (ruido/tamanho)
+#   .DS_Store       -> ignorado em todos os niveis
+#   arquivos exceto .gitignore -> ignorados (ex.: .env, .mcp.json)
+#   demais dotdirs  -> espelhados 1:1 com rsync -a --delete
 set -euo pipefail
 cd "$(dirname "$0")"
 
-DIRS=(.agents .bootstrap .chromarelay .claude .github .omp)
-FILES=(.gitignore)
+MIRROR=./mirror
+mkdir -p "$MIRROR"
 
-for e in "${DIRS[@]}"; do
+wanted=()
+
+for e in .[^.]*; do
+  # shell sem dotglob e sem nullglob: pula o padrao literal quando nada casa
+  [ -e "$e" ] || continue
+  case "$e" in
+    .git|.DS_Store|"$MIRROR") continue ;;
+  esac
   name="${e#.}"
-  mkdir -p "mirror/$name"
-  rsync -a --delete --exclude '.DS_Store' "$e/" "mirror/$name/" 2>/dev/null || true
+  if [ -d "$e" ]; then
+    wanted+=("$name")
+    mkdir -p "$MIRROR/$name"
+    rsync -a --delete --exclude '.DS_Store' "$e/" "$MIRROR/$name/"
+  elif [ "$e" = ".gitignore" ]; then
+    wanted+=("$name")
+    cp "$e" "$MIRROR/$name"
+  fi
 done
 
-for f in "${FILES[@]}"; do
-  [ -f "$f" ] && cp "$f" "mirror/${f#.}"
+# remove entradas do espelho cuja origem sumiu (rename/apagado)
+for m in "$MIRROR"/*; do
+  [ -e "$m" ] || continue
+  base="$(basename "$m")"
+  keep=0
+  for w in ${wanted[@]+"${wanted[@]}"}; do
+    [ "$base" = "$w" ] && { keep=1; break; }
+  done
+  [ "$keep" = "0" ] && rm -rf "$m"
 done
