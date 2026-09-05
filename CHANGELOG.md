@@ -1,52 +1,52 @@
 # Changelog
 
-Todas as mudanças notáveis neste projeto são documentadas neste arquivo.
+All notable changes to this project are documented in this file.
 
-O formato segue de perto o [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
-e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
 ## [0.1.0] - 2026-09-05
 
-Versão inicial de base do ChromaRelay Design OS: o núcleo portátil de
-gerenciamento de trabalho de design para times de agentes, instalável como
-Project Overlay em outro repositório.
+Baseline release of ChromaRelay Design OS: the portable design-work
+management core for agent teams, installable as a Project Overlay in
+another repository.
 
 ### Added
 
-- Núcleo `DesignManager`: roteamento entre os cinco workflows (`CREATE`,
-  `DOCUMENT`, `REDESIGN`, `EXPLORE`, `REFINE`), máquina de estados de fases,
-  Handoffs estruturados e Promotion para o estado canônico do projeto.
-- CLI (`route`, `start`, `status`, `phase`, `handoff`, `advance`, `validate`,
-  `validate-framework`) para operar Runs a partir do terminal.
-- Instalador do Project Overlay (`scripts/install.mjs --target ... --omp`,
-  com `--minimal`, `--force` e `--dry-run`).
-- Framework declarativo em `framework/`: registries de workflows, agentes,
-  kits, gates, skills e surfaces, além de schemas, templates e rubricas.
-- Skills de agente por papel e adapter OMP (agentes, comandos, prompts,
-  hook de guarda e custom tool `chromarelay_state`).
-- Phase Packets com entradas resolvíveis, livro-razão de resultados de Gate
-  e transições honradas entre fases.
-- Atribuição de Skill em cada Handoff (rastreabilidade de qual Skill
-  produziu o trabalho).
-- Invariantes de autoridade e orçamento de contexto: o Coordinator é o
-  único dono do estado canônico, o criador nunca é o juiz final do próprio
-  trabalho, e cada fase recebe no máximo 1 skill primária e 2 de apoio.
+- `DesignManager` core: routing across the five workflows (`CREATE`,
+  `DOCUMENT`, `REDESIGN`, `EXPLORE`, `REFINE`), phase state machine,
+  structured Handoffs, and Promotion to canonical project state.
+- CLI (`route`, `start`, `status`, `phase`, `handoff`, `advance`,
+  `validate`, `validate-framework`) for operating Runs from the terminal.
+- Project Overlay installer (`scripts/install.mjs --target ... --omp`,
+  with `--minimal`, `--force`, and `--dry-run`).
+- Declarative framework in `framework/`: workflow, agent, kit, gate,
+  skill, and surface registries, plus schemas, templates, and rubrics.
+- Role-based agent skills and OMP adapter (agents, commands, prompts,
+  guard hook, and `chromarelay_state` custom tool).
+- Phase Packets with resolvable inputs, Gate result ledger, and honoured
+  phase transitions.
+- Skill attribution on every Handoff (traceability of which Skill
+  produced the work).
+- Authority and context-budget invariants: the Coordinator is the sole
+  owner of canonical state, a creator is never the final judge of its own
+  work, and each phase gets at most 1 primary and 2 supporting skills.
 
 ### Changed
 
-- Renomeação do sistema de Createive para ChromaRelay em todo o
-  repositório, framework, skills e documentação.
-- Corpos de agente alinhados aos contratos das skills, sem duplicação, e
-  falando o enum de transições do Coordinator.
+- System renamed from Createive to ChromaRelay across the repository,
+  framework, skills, and documentation.
+- Agent bodies aligned to skill contracts, deduplicated, and speaking the
+  Coordinator transition enum.
 
 ### Fixed
 
-- Fechamento dos sete gaps de conformidade P-0/P-1 (incluindo a Skill de
-  crítica referenciando um campo de rubrica existente).
-- Validação cruzada do framework (`validate-framework`) cobrindo
-  referências de fases a papéis, kits e gates conhecidos.
+- Closed the seven P-0/P-1 conformance gaps (including the critique Skill
+  referencing an existing rubric field).
+- Framework cross-validation (`validate-framework`) covering phase
+  references to known roles, kits, and gates.
 
 [Unreleased]: https://github.com/levygit837-cyber/chromarelay-design-os/compare/v0.1.0...HEAD
 [0.1.0]: https://github.com/levygit837-cyber/chromarelay-design-os/releases/tag/v0.1.0
