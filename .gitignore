@@ -5,8 +5,8 @@ dist/
 coverage/
 
 # Runtime state in this source repository
-.createive/runs/
-.createive/active-run.json
+.chromarelay/runs/
+.chromarelay/active-run.json
 
 # Eval outputs can be large; manifests and cases remain tracked
 evals/runs/

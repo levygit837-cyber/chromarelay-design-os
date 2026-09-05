@@ -1,6 +1,6 @@
-# Createive Design OS
+# ChromaRelay Design OS
 
-Createive é um sistema portátil de gerenciamento de trabalho criativo para agentes. Ele coordena descoberta, documentação, exploração de direções, criação de sistemas de design, implementação, auditoria, crítica visual, reparo e promoção de decisões aprovadas.
+ChromaRelay é um sistema portátil de gerenciamento de trabalho criativo para agentes. Ele coordena descoberta, documentação, exploração de direções, criação de sistemas de design, implementação, auditoria, crítica visual, reparo e promoção de decisões aprovadas.
 
 O objetivo não é impor um estilo. O objetivo é preservar liberdade durante a exploração e aumentar consistência depois que uma direção é escolhida.
 
@@ -28,7 +28,7 @@ Os workflows compartilham o mesmo núcleo, mas entram e saem em fases diferentes
 
 ## Arquitetura
 
-Createive usa um **Coordinator** como único dono do estado canônico. Especialistas trabalham em Runs isolados, devolvem Handoffs estruturados e não promovem diretamente decisões para o projeto.
+ChromaRelay usa um **Coordinator** como único dono do estado canônico. Especialistas trabalham em Runs isolados, devolvem Handoffs estruturados e não promovem diretamente decisões para o projeto.
 
 ```text
 Request
@@ -73,7 +73,7 @@ node scripts/install.mjs --target /caminho/do/projeto --omp
 No projeto de destino:
 
 ```text
-/createive <descreva o trabalho>
+/chromarelay <descreva o trabalho>
 ```
 
 O Coordinator classificará o pedido, criará um Run Contract e carregará apenas o kit necessário para a primeira fase.

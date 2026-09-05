@@ -6,7 +6,7 @@ O playground começa neste repositório, sob `evals/`, porque precisa compartilh
 
 ## Pergunta principal
 
-O sistema melhora designs em relação a um agente forte sem Createive?
+O sistema melhora designs em relação a um agente forte sem ChromaRelay?
 
 A resposta não deve depender apenas de um score do mesmo modelo que criou o design.
 
@@ -15,8 +15,8 @@ A resposta não deve depender apenas de um score do mesmo modelo que criou o des
 Para cada Eval Case:
 
 1. congele brief, assets, stack e seed quando aplicável;
-2. execute Baseline sem Createive;
-3. execute Candidate com Createive;
+2. execute Baseline sem ChromaRelay;
+3. execute Candidate com ChromaRelay;
 4. normalize ambiente, viewport e dados;
 5. aplique gates determinísticos;
 6. faça comparação visual pareada e cega;
@@ -75,5 +75,5 @@ Extraia o eval harness quando pelo menos uma condição ocorrer:
 
 - fixtures e screenshots dominarem o tamanho do repo;
 - CI de evals tiver ciclo e credenciais próprios;
-- outros sistemas consumirem o runner sem consumir Createive;
+- outros sistemas consumirem o runner sem consumir ChromaRelay;
 - releases de rubrics precisarem de versionamento independente.

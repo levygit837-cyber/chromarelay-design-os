@@ -1,6 +1,6 @@
 # Domain documentation
 
-Createive is currently a single-context repository.
+ChromaRelay is currently a single-context repository.
 
 ## Before exploring or changing the system
 
@@ -21,7 +21,7 @@ For architecture, use module, interface, implementation, seam, adapter, depth, l
 
 When a new domain concept is necessary:
 
-- confirm it is specific to Createive rather than general programming vocabulary;
+- confirm it is specific to ChromaRelay rather than general programming vocabulary;
 - define what it is in one or two sentences;
 - choose one canonical term;
 - list misleading synonyms under `_Avoid_`;

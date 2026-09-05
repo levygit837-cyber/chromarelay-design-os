@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://createive.dev/schemas/audit-report.schema.json",
-  "title": "Createive Audit Report",
+  "$id": "https://chromarelay.dev/schemas/audit-report.schema.json",
+  "title": "ChromaRelay Audit Report",
   "type": "object",
   "additionalProperties": false,
   "required": ["runId", "phase", "target", "environment", "checks", "summary", "blockers", "evidenceRefs", "createdAt"],

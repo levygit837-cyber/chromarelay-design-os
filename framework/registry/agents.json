@@ -4,17 +4,17 @@
     {
       "id": "coordinator",
       "purpose": "Own Run state, compile context, dispatch specialists, resolve transitions, and promote approved work.",
-      "modelRole": "createive_coordinator",
-      "primarySkill": "createive-design-manager",
+      "modelRole": "chromarelay_coordinator",
+      "primarySkill": "chromarelay-design-manager",
       "maySpawn": true,
-      "mayWrite": [".createive/runs", ".createive/project via Promotion"],
+      "mayWrite": [".chromarelay/runs", ".chromarelay/project via Promotion"],
       "mustNot": ["author the final visual verdict", "silently reopen Locks", "dump all Skills into a Phase Packet"]
     },
     {
       "id": "inspector",
       "purpose": "Extract observed facts from code, renders, tokens, components, states, and history.",
-      "modelRole": "createive_research",
-      "primarySkill": "createive-inspect",
+      "modelRole": "chromarelay_research",
+      "primarySkill": "chromarelay-inspect",
       "maySpawn": false,
       "mayWrite": [],
       "mustNot": ["normalize inconsistencies while documenting", "turn frequency into intention", "edit product code"]
@@ -22,8 +22,8 @@
     {
       "id": "product-strategist",
       "purpose": "Clarify user, task, product truth, constraints, desired perception, and information architecture.",
-      "modelRole": "createive_product",
-      "primarySkill": "createive-grounding",
+      "modelRole": "chromarelay_product",
+      "primarySkill": "chromarelay-grounding",
       "maySpawn": false,
       "mayWrite": [],
       "mustNot": ["pick visual details before product intent", "invent product facts"]
@@ -31,8 +31,8 @@
     {
       "id": "reference-analyst",
       "purpose": "Extract transferable design grammar and non-transferable identity from references.",
-      "modelRole": "createive_research",
-      "primarySkill": "createive-reference-analysis",
+      "modelRole": "chromarelay_research",
+      "primarySkill": "chromarelay-reference-analysis",
       "maySpawn": false,
       "mayWrite": [],
       "mustNot": ["copy distinctive compositions or assets", "treat a reference as the product brief"]
@@ -40,8 +40,8 @@
     {
       "id": "art-director",
       "purpose": "Produce a coherent Direction grounded in product domain, with real compositional divergence and system potential.",
-      "modelRole": "createive_art",
-      "primarySkill": "createive-art-direction",
+      "modelRole": "chromarelay_art",
+      "primarySkill": "chromarelay-art-direction",
       "maySpawn": false,
       "mayWrite": [],
       "mustNot": ["see competing Directions during initial divergence", "judge its own work as final critic", "implement production code"]
@@ -49,8 +49,8 @@
     {
       "id": "system-architect",
       "purpose": "Translate the selected Direction into design grammar, tokens, scopes, exceptions, and contracts.",
-      "modelRole": "createive_system",
-      "primarySkill": "createive-systemize",
+      "modelRole": "chromarelay_system",
+      "primarySkill": "chromarelay-systemize",
       "maySpawn": false,
       "mayWrite": ["Run drafts only"],
       "mustNot": ["dilute a selected Direction for implementation convenience", "promote directly"]
@@ -58,8 +58,8 @@
     {
       "id": "component-architect",
       "purpose": "Inventory, reuse, compose, extend, or propose components and state contracts.",
-      "modelRole": "createive_system",
-      "primarySkill": "createive-components",
+      "modelRole": "chromarelay_system",
+      "primarySkill": "chromarelay-components",
       "maySpawn": false,
       "mayWrite": ["Run drafts only"],
       "mustNot": ["invent components before querying the existing registry", "hand-roll accessible primitives without reason"]
@@ -67,8 +67,8 @@
     {
       "id": "builder",
       "purpose": "Implement the selected Direction through canonical tokens and component contracts.",
-      "modelRole": "createive_builder",
-      "primarySkill": "createive-build",
+      "modelRole": "chromarelay_builder",
+      "primarySkill": "chromarelay-build",
       "maySpawn": false,
       "mayWrite": ["isolated product worktree", "Run evidence"],
       "mustNot": ["create a new Direction silently", "modify canonical state", "invent undocumented component props"]
@@ -76,8 +76,8 @@
     {
       "id": "deterministic-auditor",
       "purpose": "Measure build, runtime, semantics, token, component, state, responsive, accessibility, and regression facts.",
-      "modelRole": "createive_auditor",
-      "primarySkill": "createive-audit",
+      "modelRole": "chromarelay_auditor",
+      "primarySkill": "chromarelay-audit",
       "maySpawn": false,
       "mayWrite": ["Run reports and evidence"],
       "mustNot": ["approve aesthetics", "edit the implementation under audit"]
@@ -85,8 +85,8 @@
     {
       "id": "visual-critic",
       "purpose": "Judge product fit, hierarchy, specificity, composition, typography, coherence, responsiveness, and craft from blind evidence.",
-      "modelRole": "createive_critic",
-      "primarySkill": "createive-critique",
+      "modelRole": "chromarelay_critic",
+      "primarySkill": "chromarelay-critique",
       "maySpawn": false,
       "mayWrite": [],
       "mustNot": ["read creator reasoning before first verdict", "edit code", "turn personal taste into a defect"]
@@ -94,8 +94,8 @@
     {
       "id": "repairer",
       "purpose": "Apply only approved findings as one coherent bounded repair batch.",
-      "modelRole": "createive_repair",
-      "primarySkill": "createive-repair",
+      "modelRole": "chromarelay_repair",
+      "primarySkill": "chromarelay-repair",
       "maySpawn": false,
       "mayWrite": ["isolated product worktree", "Run evidence"],
       "mustNot": ["expand scope", "reopen Direction", "patch structural defects locally"]
@@ -103,8 +103,8 @@
     {
       "id": "memory-curator",
       "purpose": "Promote reusable approved Decisions and Artifacts while preserving provenance and exceptions.",
-      "modelRole": "createive_coordinator",
-      "primarySkill": "createive-memory",
+      "modelRole": "chromarelay_coordinator",
+      "primarySkill": "chromarelay-memory",
       "maySpawn": false,
       "mayWrite": ["canonical state through Promotion"],
       "mustNot": ["promote experiments", "promote one-off accidents", "remove rejected history"]

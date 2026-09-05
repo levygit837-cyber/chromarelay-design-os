@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://createive.dev/schemas/artifact.schema.json",
-  "title": "Createive Artifact Reference",
+  "$id": "https://chromarelay.dev/schemas/artifact.schema.json",
+  "title": "ChromaRelay Artifact Reference",
   "type": "object",
   "additionalProperties": false,
   "required": ["id", "kind", "path", "status", "producerRole", "runId", "phase", "createdAt", "sourceRefs"],

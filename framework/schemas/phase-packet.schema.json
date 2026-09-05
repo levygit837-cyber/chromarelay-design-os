@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://createive.dev/schemas/phase-packet.schema.json",
-  "title": "Createive Phase Packet",
+  "$id": "https://chromarelay.dev/schemas/phase-packet.schema.json",
+  "title": "ChromaRelay Phase Packet",
   "type": "object",
   "additionalProperties": false,
   "required": ["runId", "workflow", "phase", "role", "goal", "scope", "inputs", "unresolvedInputs", "locks", "openDecisions", "rubric", "skillKit", "outputSchema", "acceptance", "exitPolicy", "nonGoals", "omittedContext"],
@@ -42,7 +42,7 @@
     "openDecisions": { "type": "array", "items": { "type": "string" } },
     "rubric": {
       "type": "string",
-      "description": "Path to the Surface rubric, relative to the installed framework root (e.g. .createive/system/)."
+      "description": "Path to the Surface rubric, relative to the installed framework root (e.g. .chromarelay/system/)."
     },
     "authority": { "type": "array", "items": { "type": "string" } },
     "skillKit": {

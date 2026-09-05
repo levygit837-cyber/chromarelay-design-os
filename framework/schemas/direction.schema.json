@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://createive.dev/schemas/direction.schema.json",
-  "title": "Createive Creative Direction",
+  "$id": "https://chromarelay.dev/schemas/direction.schema.json",
+  "title": "ChromaRelay Creative Direction",
   "type": "object",
   "additionalProperties": false,
   "required": ["id", "thesis", "productInterpretation", "domainWorld", "composition", "typography", "color", "surfaces", "motion", "signature", "antiDefaults", "systemPotential", "risks", "divergenceAxes", "evidencePlan"],

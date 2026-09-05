@@ -23,6 +23,6 @@ jobs:
       - run: npm run validate:framework
       - name: Smoke-test portable overlay
         run: |
-          mkdir -p /tmp/createive-target
-          node scripts/install.mjs --target /tmp/createive-target --omp
-          node dist/src/cli.js validate-framework --system /tmp/createive-target/.createive/system
+          mkdir -p /tmp/chromarelay-target
+          node scripts/install.mjs --target /tmp/chromarelay-target --omp
+          node dist/src/cli.js validate-framework --system /tmp/chromarelay-target/.chromarelay/system

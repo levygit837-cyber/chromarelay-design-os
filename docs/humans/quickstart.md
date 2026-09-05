@@ -2,7 +2,7 @@
 
 ## 1. Instalar o sistema em um projeto
 
-No repositório Createive:
+No repositório ChromaRelay:
 
 ```bash
 npm install
@@ -12,29 +12,29 @@ node scripts/install.mjs --target /caminho/do/projeto --omp
 
 O instalador faz merge, sem apagar arquivos existentes:
 
-- copia o framework para `.createive/system/`;
-- cria o estado inicial de `.createive/project/`;
+- copia o framework para `.chromarelay/system/`;
+- cria o estado inicial de `.chromarelay/project/`;
 - instala Skills portáveis em `.agents/skills/`;
 - instala agentes, comandos, prompts, hook e custom tool em `.omp/`;
 - adiciona um bloco delimitado ao `AGENTS.md` do projeto.
 
-Use `--minimal` para instalar apenas o núcleo e a Skill do Coordinator. Use `--force` somente para atualizar arquivos Createive que você já revisou.
+Use `--minimal` para instalar apenas o núcleo e a Skill do Coordinator. Use `--force` somente para atualizar arquivos ChromaRelay que você já revisou.
 
 ## 2. Abrir OMP no projeto de destino
 
 Configure model roles conforme `docs/humans/omp-integration.md`, abra o OMP no root e invoque:
 
 ```text
-/createive Quero criar uma central para gerenciar agentes de pesquisa...
+/chromarelay Quero criar uma central para gerenciar agentes de pesquisa...
 ```
 
 Também é possível declarar o Workflow:
 
 ```text
-/createive workflow=DOCUMENT documente o design atual antes de sugerir mudanças
-/createive workflow=REDESIGN transforme o site mantendo conteúdo e comportamento
-/createive workflow=EXPLORE gere direções para uma interface de orquestração
-/createive workflow=REFINE melhore a primeira dobra sem alterar a identidade
+/chromarelay workflow=DOCUMENT documente o design atual antes de sugerir mudanças
+/chromarelay workflow=REDESIGN transforme o site mantendo conteúdo e comportamento
+/chromarelay workflow=EXPLORE gere direções para uma interface de orquestração
+/chromarelay workflow=REFINE melhore a primeira dobra sem alterar a identidade
 ```
 
 ## 3. O que o humano precisa fornecer
@@ -64,7 +64,7 @@ Não é necessário escolher grid, fonte, cor ou layout. Esses são problemas do
 ## 5. Como acompanhar
 
 ```text
-/createive-status
+/chromarelay-status
 ```
 
 O status mostra Workflow, Phase atual, Artifacts necessários, agentes ativos, blockers e próxima decisão.
@@ -74,7 +74,7 @@ No OMP, use `Alt+A` para acompanhar subagentes. O Coordinator continua sendo o �
 ## 6. Como retomar
 
 ```text
-/createive-resume
+/chromarelay-resume
 ```
 
 A retomada lê `active-run.json`, o Run Contract e o último Phase Packet. Ela não injeta todo o transcript anterior.

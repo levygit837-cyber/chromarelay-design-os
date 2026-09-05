@@ -26,20 +26,20 @@ This is a single-context repository: use root `CONTEXT.md` and relevant ADRs und
 - Delegate independent primary-source research to `matt-researcher`; it preloads `/research` and `/domain-modeling`.
 - Delegate bounded architecture inspection and design-it-twice alternatives to `matt-architecture-scout`; it preloads `/codebase-design` and `/domain-modeling`.
 - Run `/improve-codebase-architecture` from the Coordinator. Delegate its read-only inspection phase to `matt-architecture-scout`, then keep candidate selection and grilling with the user in the Coordinator context.
-- These engineering specialists return evidence and recommendations as Handoffs. They never promote canonical Createive state.
+- These engineering specialists return evidence and recommendations as Handoffs. They never promote canonical ChromaRelay state.
 
-Createive separates permanent project truth from per-run work:
+ChromaRelay separates permanent project truth from per-run work:
 
-- `.createive/project/` is canonical project state.
-- `.createive/system/` is installed framework state.
-- `.createive/runs/<run-id>/` is mutable run state.
+- `.chromarelay/project/` is canonical project state.
+- `.chromarelay/system/` is installed framework state.
+- `.chromarelay/runs/<run-id>/` is mutable run state.
 - Specialists return Handoffs. The Coordinator alone promotes accepted work into canonical state.
 
 ## Role and context discipline
 
-- The main agent is the **Coordinator**. It reads `.agents/skills/createive-design-manager/SKILL.md`.
+- The main agent is the **Coordinator**. It reads `.agents/skills/chromarelay-design-manager/SKILL.md`.
 - Specialist agents read their assigned Phase Packet and their single primary skill.
-- Do not load every Createive skill. Default budget: one primary process skill, up to two narrow supporting references, and required tool guidance.
+- Do not load every ChromaRelay skill. Default budget: one primary process skill, up to two narrow supporting references, and required tool guidance.
 - Do not let a creator perform the final visual judgment of its own work.
 - Do not expose creator reasoning to the blind visual critic before its first verdict.
 - Do not treat a skill heuristic as a project requirement.
@@ -58,8 +58,8 @@ When sources conflict, follow the higher source and record the conflict.
 
 ## Mutation policy
 
-- Raw writes to `.createive/system/` are never part of a design Run.
-- Raw writes to `.createive/project/` are reserved for setup or recovery. Normal promotion goes through the Createive state tool/CLI.
+- Raw writes to `.chromarelay/system/` are never part of a design Run.
+- Raw writes to `.chromarelay/project/` are reserved for setup or recovery. Normal promotion goes through the ChromaRelay state tool/CLI.
 - Read-only roles must not edit the product codebase.
 - Builder and Repairer changes should run in isolated worktrees when the harness supports it.
 - Record evidence and outputs under the active Run before asking for promotion.

@@ -5,7 +5,7 @@ Issues, implementation specs, Wayfinder maps, and tracer-bullet tickets for this
 ## Use by work shape
 
 - **Known implementation route:** use `to-tickets` to create vertical tracer-bullet issues with explicit blocking edges.
-- **Fog of war:** use Wayfinder only when the destination is known but material decisions cannot yet be specified. The map is a planning artifact; normal Createive Runs do not create a map by default.
+- **Fog of war:** use Wayfinder only when the destination is known but material decisions cannot yet be specified. The map is a planning artifact; normal ChromaRelay Runs do not create a map by default.
 - **Current conversation already contains the complete decision:** use `to-spec` to synthesize it without restarting discovery.
 - **Small work that fits one context:** implement directly from a Run Contract or approved issue; do not create ceremonial tickets.
 
@@ -16,7 +16,7 @@ Each implementation ticket must:
 - deliver a narrow but complete and verifiable behavior;
 - fit one fresh agent context;
 - name genuine blockers only;
-- use Createive domain vocabulary from `CONTEXT.md`;
+- use ChromaRelay domain vocabulary from `CONTEXT.md`;
 - respect relevant ADRs and Locks;
 - avoid stale file-path prescriptions unless a prototype encodes a decision more precisely than prose.
 

@@ -5,8 +5,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const SOURCE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const MARKER_START = "<!-- BEGIN CREATEIVE -->";
-const MARKER_END = "<!-- END CREATEIVE -->";
+const MARKER_START = "<!-- BEGIN CHROMARELAY -->";
+const MARKER_END = "<!-- END CHROMARELAY -->";
 
 function parseArgs(argv) {
   const result = { target: null, omp: false, minimal: false, force: false, dryRun: false };
@@ -78,19 +78,19 @@ async function main() {
   if (options.minimal) {
     for (const relative of ["registry", "rubrics", "workflows", "schemas", "templates/project", "templates/run/PHASE_PACKET.md"]) {
       const source = path.join(SOURCE_ROOT, "framework", relative);
-      const destination = path.join(target, ".createive/system", relative);
+      const destination = path.join(target, ".chromarelay/system", relative);
       if ((await exists(source)) && (await stat(source)).isDirectory()) await installTree(source, destination);
       else if (await exists(source)) await installText(source, destination);
     }
-    await installTree(path.join(SOURCE_ROOT, ".agents/skills/createive-design-manager"), path.join(target, ".agents/skills/createive-design-manager"));
+    await installTree(path.join(SOURCE_ROOT, ".agents/skills/chromarelay-design-manager"), path.join(target, ".agents/skills/chromarelay-design-manager"));
   } else {
-    await installTree(path.join(SOURCE_ROOT, "framework"), path.join(target, ".createive/system"));
+    await installTree(path.join(SOURCE_ROOT, "framework"), path.join(target, ".chromarelay/system"));
     await installTree(path.join(SOURCE_ROOT, ".agents/skills"), path.join(target, ".agents/skills"));
   }
 
   for (const template of await walkFiles(path.join(SOURCE_ROOT, "framework/templates/project"))) {
     const relative = path.relative(path.join(SOURCE_ROOT, "framework/templates/project"), template);
-    const destination = path.join(target, ".createive/project", relative);
+    const destination = path.join(target, ".chromarelay/project", relative);
     const previousForce = options.force;
     options.force = false;
     await installText(template, destination);
@@ -101,13 +101,13 @@ async function main() {
     for (const directory of ["agents", "commands", "prompts", "hooks", "tools"]) {
       await installTree(path.join(SOURCE_ROOT, ".omp", directory), path.join(target, ".omp", directory));
     }
-    await installText(path.join(SOURCE_ROOT, ".omp/README.md"), path.join(target, ".omp/CREATEIVE.md"));
-    await installText(path.join(SOURCE_ROOT, ".omp/config.example.yml"), path.join(target, ".omp/createive.config.example.yml"));
+    await installText(path.join(SOURCE_ROOT, ".omp/README.md"), path.join(target, ".omp/CHROMARELAY.md"));
+    await installText(path.join(SOURCE_ROOT, ".omp/config.example.yml"), path.join(target, ".omp/chromarelay.config.example.yml"));
   }
 
   const agentsPath = path.join(target, "AGENTS.md");
   const existingAgents = await exists(agentsPath) ? await readFile(agentsPath, "utf8") : "# Agent Instructions\n";
-  const block = `${MARKER_START}\n## Createive Design Operations\n\nFor multi-stage visual or design-system work, use \`.agents/skills/createive-design-manager/SKILL.md\`. Canonical state lives in \`.createive/project/\`; mutable work lives in \`.createive/runs/\`. Only the Coordinator promotes approved work. Read \`CONTEXT.md\` when present and do not load all Createive Skills at once.\n${MARKER_END}`;
+  const block = `${MARKER_START}\n## ChromaRelay Design Operations\n\nFor multi-stage visual or design-system work, use \`.agents/skills/chromarelay-design-manager/SKILL.md\`. Canonical state lives in \`.chromarelay/project/\`; mutable work lives in \`.chromarelay/runs/\`. Only the Coordinator promotes approved work. Read \`CONTEXT.md\` when present and do not load all ChromaRelay Skills at once.\n${MARKER_END}`;
   const markerPattern = new RegExp(`${MARKER_START.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}[\\s\\S]*?${MARKER_END.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`);
   const nextAgents = markerPattern.test(existingAgents)
     ? existingAgents.replace(markerPattern, block)
@@ -120,9 +120,9 @@ async function main() {
   }
 
   if (!options.dryRun) {
-    await mkdir(path.join(target, ".createive/runs"), { recursive: true });
+    await mkdir(path.join(target, ".chromarelay/runs"), { recursive: true });
     const manifest = {
-      createiveVersion: "0.1.0",
+      chromarelayVersion: "0.1.0",
       installedAt: new Date().toISOString(),
       source: SOURCE_ROOT,
       mode: options.minimal ? "minimal" : "full",
@@ -130,7 +130,7 @@ async function main() {
       files: installed,
       skipped
     };
-    await writeFile(path.join(target, ".createive/install-manifest.json"), `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
+    await writeFile(path.join(target, ".chromarelay/install-manifest.json"), `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
   }
 
   console.log(JSON.stringify({ target, dryRun: options.dryRun, planned, skipped }, null, 2));

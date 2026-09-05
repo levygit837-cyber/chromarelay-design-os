@@ -45,7 +45,7 @@ async function jsonFile<T>(filePath: string): Promise<T> {
 }
 
 function usage(): never {
-  console.error(`Createive CLI
+  console.error(`ChromaRelay CLI
 
 Commands:
   route <request.json> [--system framework]
@@ -67,7 +67,7 @@ async function main(): Promise<void> {
   if (!args.command) usage();
 
   const root = path.resolve(flag(args, "root", ".")!);
-  const system = path.resolve(flag(args, "system", path.join(root, ".createive/system"))!);
+  const system = path.resolve(flag(args, "system", path.join(root, ".chromarelay/system"))!);
   const registry = await loadRegistryBundle(system);
 
   if (args.command === "validate-framework") {

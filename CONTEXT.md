@@ -1,6 +1,6 @@
-# Createive Design Operations
+# ChromaRelay Design Operations
 
-Createive coordinates creative design work across specialized agents while protecting project truth, context boundaries, and evidence-backed decisions.
+ChromaRelay coordinates creative design work across specialized agents while protecting project truth, context boundaries, and evidence-backed decisions.
 
 ## Language
 
@@ -85,9 +85,9 @@ The controlled transition of approved Run Artifacts and Decisions into canonical
 _Avoid_: Copying files
 
 **Project Overlay**:
-The portable Createive files installed into a target repository without taking ownership of that repository's application architecture.
+The portable ChromaRelay files installed into a target repository without taking ownership of that repository's application architecture.
 _Avoid_: Fork
 
 **Adapter**:
-A concrete integration satisfying a Createive interface at a seam, such as the OMP adapter or a filesystem workspace.
+A concrete integration satisfying a ChromaRelay interface at a seam, such as the OMP adapter or a filesystem workspace.
 _Avoid_: Integration layer

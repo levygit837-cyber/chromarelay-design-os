@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://createive.dev/schemas/handoff.schema.json",
-  "title": "Createive Specialist Handoff",
+  "$id": "https://chromarelay.dev/schemas/handoff.schema.json",
+  "title": "ChromaRelay Specialist Handoff",
   "type": "object",
   "additionalProperties": false,
   "required": ["version", "runId", "phase", "role", "agentId", "summary", "claims", "evidence", "artifacts", "decisions", "risks", "confidence", "requestedTransition", "unresolved"],

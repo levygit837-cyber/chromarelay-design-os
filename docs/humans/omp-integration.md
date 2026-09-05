@@ -1,6 +1,6 @@
 # Integração com OMP / oh-my-pi
 
-Createive usa OMP como adapter principal de execução. O núcleo continua independente do harness.
+ChromaRelay usa OMP como adapter principal de execução. O núcleo continua independente do harness.
 
 ## Subagentes e `task.batch`
 
@@ -12,7 +12,7 @@ O Coordinator deve usar um batch para trabalhos independentes, com contexto comp
   "tasks": [
     {
       "name": "instrument-direction",
-      "agent": "createive-art-director",
+      "agent": "chromarelay-art-director",
       "task": "# Target\nDirection A\n# Change\nExplore o produto como instrumento de precisão.\n# Acceptance\nUma tese coerente, riscos e specimen.",
       "effort": "hi",
       "outputSchema": {},
@@ -46,16 +46,16 @@ Agentes referenciam aliases, não IDs concretos. Exemplo para `~/.omp/agent/conf
 
 ```yaml
 modelRoles:
-  createive_coordinator: "@slow"
-  createive_product: "@slow"
-  createive_research: "@task"
-  createive_art: "@designer"
-  createive_system: "@slow"
-  createive_builder: "@default"
-  createive_auditor: "@task"
-  createive_critic: "@slow"
-  createive_repair: "@default"
-  createive_advisor: "@slow"
+  chromarelay_coordinator: "@slow"
+  chromarelay_product: "@slow"
+  chromarelay_research: "@task"
+  chromarelay_art: "@designer"
+  chromarelay_system: "@slow"
+  chromarelay_builder: "@default"
+  chromarelay_auditor: "@task"
+  chromarelay_critic: "@slow"
+  chromarelay_repair: "@default"
+  chromarelay_advisor: "@slow"
 
 task:
   maxConcurrency: 6
@@ -88,27 +88,27 @@ Templates em `.omp/prompts/` servem para formatos repetitivos internos, como Dir
 
 Comandos em `.omp/commands/` são entry points humanos:
 
-- `/createive` inicia e roteia;
-- `/createive-resume` retoma o Run ativo;
-- `/createive-status` resume estado sem alterar;
-- `/createive-eval` cria um Eval Case.
+- `/chromarelay` inicia e roteia;
+- `/chromarelay-resume` retoma o Run ativo;
+- `/chromarelay-status` resume estado sem alterar;
+- `/chromarelay-eval` cria um Eval Case.
 
 Eles expandem para instruções do Coordinator; não duplicam a lógica da state machine.
 
 ## Hook de proteção
 
-O hook Createive bloqueia raw writes em:
+O hook ChromaRelay bloqueia raw writes em:
 
-- `.createive/system/`;
-- `.createive/project/`.
+- `.chromarelay/system/`;
+- `.chromarelay/project/`.
 
 Promotion normal usa o custom tool/CLI. O hook não bloqueia código do produto nem arquivos de Run.
 
-A variável `CREATEIVE_UNSAFE_CANONICAL_WRITE=1` existe apenas para recuperação manual consciente.
+A variável `CHROMARELAY_UNSAFE_CANONICAL_WRITE=1` existe apenas para recuperação manual consciente.
 
 ## Custom tool
 
-O custom tool `createive_state` oferece operações determinísticas de status, registro de eventos, validação de paths e Promotion. Ele não decide estética e não executa crítica.
+O custom tool `chromarelay_state` oferece operações determinísticas de status, registro de eventos, validação de paths e Promotion. Ele não decide estética e não executa crítica.
 
 Custom tools são apropriadas aqui porque o modelo precisa chamar código com schema e efeitos controlados. Skills continuam estáticas; hooks continuam interceptores.
 

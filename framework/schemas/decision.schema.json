@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://createive.dev/schemas/decision.schema.json",
-  "title": "Createive Decision",
+  "$id": "https://chromarelay.dev/schemas/decision.schema.json",
+  "title": "ChromaRelay Decision",
   "type": "object",
   "additionalProperties": false,
   "required": ["id", "scope", "status", "choice", "rationale", "alternatives", "evidence", "risks", "revisitWhen"],
