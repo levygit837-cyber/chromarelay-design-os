@@ -1,34 +1,34 @@
 # ChromaRelay Design OS
 
-ChromaRelay é um sistema portátil de gerenciamento de trabalho criativo para agentes. Ele coordena descoberta, documentação, exploração de direções, criação de sistemas de design, implementação, auditoria, crítica visual, reparo e promoção de decisões aprovadas.
+ChromaRelay is a portable creative-work management system for agents. It coordinates discovery, documentation, direction exploration, design-system creation, implementation, auditing, visual critique, repair, and promotion of approved decisions.
 
-O objetivo não é impor um estilo. O objetivo é preservar liberdade durante a exploração e aumentar consistência depois que uma direção é escolhida.
+The goal is not to impose a style. The goal is to preserve freedom during exploration and increase consistency after a direction is chosen.
 
-## Princípios
+## Principles
 
-1. **Divergir antes de decidir.** Direções criativas são produzidas em contextos independentes e comparadas antes da implementação.
-2. **Convergir depois da escolha.** A direção selecionada vira contrato, tokens, componentes e regras de superfície.
-3. **Criador não é juiz final.** Auditoria determinística e crítica visual são responsabilidades separadas.
-4. **Skills são orientação, não verdade.** Requisitos, decisões bloqueadas e contratos do projeto têm precedência.
-5. **Contexto mínimo por fase.** Cada agente recebe apenas o necessário para sua responsabilidade atual.
-6. **Evidência antes de promoção.** Experimentos permanecem em Runs; apenas decisões aprovadas entram no estado canônico.
-7. **Processo proporcional.** Mudanças triviais não passam por um torneio criativo; decisões sistêmicas não são tratadas como pequenos patches.
+1. **Diverge before deciding.** Creative directions are produced in independent contexts and compared before implementation.
+2. **Converge after the choice.** The selected direction becomes contract, tokens, components, and surface rules.
+3. **Creator is not final judge.** Deterministic auditing and visual critique are separate responsibilities.
+4. **Skills are guidance, not truth.** Requirements, locked decisions, and project contracts take precedence.
+5. **Minimum context per phase.** Each agent receives only what it needs for its current responsibility.
+6. **Evidence before promotion.** Experiments stay in Runs; only approved decisions enter canonical state.
+7. **Proportional process.** Trivial changes don't go through a creative tournament; systemic decisions aren't treated as small patches.
 
 ## Workflows
 
-| Workflow | Uso principal |
+| Workflow | Primary use |
 | --- | --- |
-| `CREATE` | Criar uma direção e uma implementação do zero |
-| `DOCUMENT` | Transformar um design existente sem documentação em um modelo operacional confiável |
-| `REDESIGN` | Substituir uma expressão visual fraca preservando verdades e comportamentos do produto |
-| `EXPLORE` | Gerar e selecionar direções criativas independentes |
-| `REFINE` | Melhorar uma base localizada por hipótese, comparação e verificação |
+| `CREATE` | Create a direction and an implementation from scratch |
+| `DOCUMENT` | Turn an existing undocumented design into a reliable operational model |
+| `REDESIGN` | Replace a weak visual expression while preserving product truths and behaviors |
+| `EXPLORE` | Generate and select independent creative directions |
+| `REFINE` | Improve a localized base through hypothesis, comparison, and verification |
 
-Os workflows compartilham o mesmo núcleo, mas entram e saem em fases diferentes. Consulte [docs/humans/workflows.md](docs/humans/workflows.md).
+The workflows share the same core but enter and exit at different phases. See [docs/humans/workflows.md](docs/humans/workflows.md).
 
-## Arquitetura
+## Architecture
 
-ChromaRelay usa um **Coordinator** como único dono do estado canônico. Especialistas trabalham em Runs isolados, devolvem Handoffs estruturados e não promovem diretamente decisões para o projeto.
+ChromaRelay uses a **Coordinator** as the sole owner of canonical state. Specialists work in isolated Runs, return structured Handoffs, and never promote decisions to the project directly.
 
 ```text
 Request
@@ -43,47 +43,47 @@ Request
   -> Promotion to Canonical Project State
 ```
 
-O núcleo é portátil. O adapter principal incluído neste repositório é para [OMP / oh-my-pi](https://omp.sh), com agentes especializados, model roles, prompt templates, slash commands, hooks, custom tools, isolamento e coordenação por `hub`/IRC.
+The core is portable. The main adapter included in this repository is for [OMP / oh-my-pi](https://omp.sh), with specialized agents, model roles, prompt templates, slash commands, hooks, custom tools, isolation, and coordination via `hub`/IRC.
 
-## Estrutura do repositório
+## Repository structure
 
 ```text
-.agents/skills/       Skills portáveis e carregadas sob demanda
-.omp/                 Adapter OMP: agentes, comandos, prompts, hook e custom tool
-framework/            Registries, workflows, schemas, templates e rubrics
-src/                  Núcleo TypeScript e CLI
-scripts/              Instalador do Project Overlay
-examples/             Exemplos mínimos
-evals/                Playground de evals, isolado por seam
-docs/humans/          Instruções para pessoas
-docs/agents/          Contratos para agentes
-docs/architecture/    Arquitetura do sistema
-docs/adr/             Decisões difíceis de reverter
+.agents/skills/       Portable on-demand Skills
+.omp/                 OMP adapter: agents, commands, prompts, hook, and custom tool
+framework/            Registries, workflows, schemas, templates, and rubrics
+src/                  TypeScript core and CLI
+scripts/              Project Overlay installer
+examples/             Minimal examples
+evals/                Eval playground, isolated by seam
+docs/humans/          Instructions for people
+docs/agents/          Contracts for agents
+docs/architecture/    System architecture
+docs/adr/             Hard-to-reverse decisions
 ```
 
-## Início rápido
+## Quickstart
 
 ```bash
 npm install
 npm run build
 npm test
-node scripts/install.mjs --target /caminho/do/projeto --omp
+node scripts/install.mjs --target /path/to/project --omp
 ```
 
-No projeto de destino:
+In the target project:
 
 ```text
-/chromarelay <descreva o trabalho>
+/chromarelay <describe the work>
 ```
 
-O Coordinator classificará o pedido, criará um Run Contract e carregará apenas o kit necessário para a primeira fase.
+The Coordinator will classify the request, create a Run Contract, and load only the kit needed for the first phase.
 
-Leia [docs/humans/quickstart.md](docs/humans/quickstart.md) e [docs/humans/omp-integration.md](docs/humans/omp-integration.md).
+Read [docs/humans/quickstart.md](docs/humans/quickstart.md) and [docs/humans/omp-integration.md](docs/humans/omp-integration.md).
 
 ## Evals
 
-O playground de evals fica neste repositório porque os contracts, rubrics e fixtures precisam evoluir junto com o sistema. Ele está atrás de interfaces próprias e poderá ser separado quando tiver ciclo de release, volume de artefatos ou custo de CI independentes. Veja [ADR-0002](docs/adr/0002-keep-evals-in-this-repository-initially.md).
+The eval playground lives in this repository because contracts, rubrics, and fixtures need to evolve together with the system. It sits behind its own interfaces and can be split out once it has an independent release cycle, artifact volume, or CI cost. See [ADR-0002](docs/adr/0002-keep-evals-in-this-repository-initially.md).
 
-## Estado
+## State
 
-Esta base define o sistema operacional, os contratos, o adapter OMP e o harness inicial. Integrações visuais específicas, registries externos de componentes e runners multimodais podem ser adicionados sem ampliar a interface do Coordinator.
+This codebase defines the operating system, the contracts, the OMP adapter, and the initial harness. Specific visual integrations, external component registries, and multimodal runners can be added without widening the Coordinator interface.

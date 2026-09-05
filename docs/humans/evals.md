@@ -1,79 +1,79 @@
-# Playground de Evals
+# Eval Playground
 
-## Decisão
+## Decision
 
-O playground começa neste repositório, sob `evals/`, porque precisa compartilhar schemas, rubrics e versões do Workflow. Ele usa um seam próprio para permitir extração posterior.
+The playground starts in this repository, under `evals/`, because it needs to share Workflow schemas, rubrics, and versions. It uses its own seam to allow later extraction.
 
-## Pergunta principal
+## Core question
 
-O sistema melhora designs em relação a um agente forte sem ChromaRelay?
+Does the system improve designs relative to a strong agent without ChromaRelay?
 
-A resposta não deve depender apenas de um score do mesmo modelo que criou o design.
+The answer must not depend only on a score from the same model that created the design.
 
-## Comparação básica
+## Basic comparison
 
-Para cada Eval Case:
+For each Eval Case:
 
-1. congele brief, assets, stack e seed quando aplicável;
-2. execute Baseline sem ChromaRelay;
-3. execute Candidate com ChromaRelay;
-4. normalize ambiente, viewport e dados;
-5. aplique gates determinísticos;
-6. faça comparação visual pareada e cega;
-7. use críticos de modelos diferentes;
-8. registre custo, latência, iterações e intervenção humana.
+1. freeze brief, assets, stack, and seed when applicable;
+2. run the Baseline without ChromaRelay;
+3. run the Candidate with ChromaRelay;
+4. normalize environment, viewport, and data;
+5. apply deterministic gates;
+6. run blind paired visual comparison;
+7. use critics from different models;
+8. record cost, latency, iterations, and human intervention.
 
-## Métricas
+## Metrics
 
-### Qualidade
+### Quality
 
 - product fit;
-- hierarquia;
-- especificidade;
-- composição;
-- tipografia;
-- coerência;
-- responsividade;
+- hierarchy;
+- specificity;
+- composition;
+- typography;
+- coherence;
+- responsiveness;
 - craft;
-- qualidade fora do happy path.
+- off-happy-path quality.
 
-### Consistência
+### Consistency
 
-- drift de tokens;
-- reutilização de componentes;
-- variação não justificada entre Surfaces;
-- fidelidade a Locks.
+- token drift;
+- component reuse;
+- unjustified variation across Surfaces;
+- Lock fidelity.
 
-### Criatividade
+### Creativity
 
-- distância material entre Directions;
-- memorabilidade;
-- ausência de default template;
+- material distance between Directions;
+- memorability;
+- absence of default template;
 - system potential;
-- originalidade sem cópia.
+- originality without copying.
 
-### Operacional
+### Operational
 
-- tokens e custo;
+- tokens and cost;
 - wall time;
-- número de Runs/fases;
-- reparos necessários;
-- taxa de falha de schema;
-- quantidade de decisões humanas.
+- number of Runs/phases;
+- repairs needed;
+- schema failure rate;
+- number of human decisions.
 
-## Blindagem
+## Blinding
 
-- remova nomes `baseline` e `candidate` dos pacotes de julgamento;
-- randomize lado A/B;
-- não forneça reasoning do criador;
-- mantenha detector report oculto até o primeiro parecer visual;
-- registre discordância, não force consenso artificial.
+- remove the `baseline` and `candidate` names from judgment packets;
+- randomize A/B side;
+- don't provide creator reasoning;
+- keep the detector report hidden until the first visual verdict;
+- record disagreement; don't force artificial consensus.
 
-## Quando separar o repositório
+## When to split the repository
 
-Extraia o eval harness quando pelo menos uma condição ocorrer:
+Extract the eval harness when at least one condition occurs:
 
-- fixtures e screenshots dominarem o tamanho do repo;
-- CI de evals tiver ciclo e credenciais próprios;
-- outros sistemas consumirem o runner sem consumir ChromaRelay;
-- releases de rubrics precisarem de versionamento independente.
+- fixtures and screenshots dominate the repo size;
+- eval CI has its own cycle and credentials;
+- other systems consume the runner without consuming ChromaRelay;
+- rubric releases need independent versioning.
