@@ -1,11 +1,11 @@
 #!/bin/bash
-# Watcher em tempo real do mirror/: dispara sync-mirror.sh a cada mudança
-# nas dot entries (FSEvents do macOS). Roda via LaunchAgent do usuario.
+# Watcher em tempo real do mirror/: dispara o sync a cada lote de eventos
+# do FSEvents na raiz do repo. Roda via LaunchAgent do usuario.
+# Exige REPO e SYNC no ambiente (definidos no plist).
 set -euo pipefail
-cd "$(dirname "$0")"
-
-exec /opt/homebrew/bin/fswatch -r -l 0.5 --event Created --event Updated --event Removed --event Renamed --event MovedFrom --event MovedTo \
-  .agents .bootstrap .chromarelay .claude .github .omp .gitignore \
-  | while IFS= read -r _; do
-      ./sync-mirror.sh 2>/dev/null || true
-    done
+: "${REPO:?REPO precisa apontar para a raiz do repositorio}"
+: "${SYNC:?SYNC precisa apontar para o sync-mirror.sh}"
+cd /tmp || exit 1
+/opt/homebrew/bin/fswatch -o -r -l 0.5 "$REPO" 2>/dev/null | while IFS= read -r _; do
+  REPO="$REPO" bash "$SYNC" >/dev/null 2>&1 || true
+done

@@ -10,9 +10,15 @@
 #   arquivos exceto .gitignore -> ignorados (ex.: .env, .mcp.json)
 #   demais dotdirs  -> espelhados 1:1 com rsync -a --delete
 set -euo pipefail
-cd "$(dirname "$0")"
+# REPO pode vir do ambiente (watcher fora de ~/Documents); cai para o
+# diretorio do script quando executado a mao dentro do repo.
+REPO="${REPO:-$(dirname "$0")}"
+cd "$REPO"
 
-MIRROR=./mirror
+MIRROR="$REPO/mirror"
+# trava anti-loop: o proprio mirror/ nunca entra no wanted (o case acima
+# filtra pelo nome) e arquivos do sync sao dotfiles rastreados — nunca
+# listados como origem porque so dotdirs + .gitignore sao espelhados.
 mkdir -p "$MIRROR"
 
 wanted=()
@@ -21,7 +27,7 @@ for e in .[^.]*; do
   # shell sem dotglob e sem nullglob: pula o padrao literal quando nada casa
   [ -e "$e" ] || continue
   case "$e" in
-    .git|.DS_Store|"$MIRROR") continue ;;
+    .git|.DS_Store|mirror) continue ;;
   esac
   name="${e#.}"
   if [ -d "$e" ]; then
@@ -40,7 +46,8 @@ for m in "$MIRROR"/*; do
   base="$(basename "$m")"
   keep=0
   for w in ${wanted[@]+"${wanted[@]}"}; do
-    [ "$base" = "$w" ] && { keep=1; break; }
+    if [ "$base" = "$w" ]; then keep=1; break; fi
   done
-  [ "$keep" = "0" ] && rm -rf "$m"
+  if [ "$keep" = "0" ]; then rm -rf "$m"; fi
 done
+
