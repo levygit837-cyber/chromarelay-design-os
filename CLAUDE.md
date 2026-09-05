@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 npm install
 npm run build              # tsc -p tsconfig.json -> dist/
 npm test                   # node --test dist/test/*.test.js (requires a build first)
-npm run check              # build + test; this is what CI runs
+npm run check              # build + test + typecheck:omp; this is what CI runs
 npm run validate:framework # build + CLI validate-framework against ./framework
 ```
 
