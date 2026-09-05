@@ -1,0 +1,65 @@
+{
+  "version": "1.0",
+  "runId": "run-cli-landing-001",
+  "phase": "visual-specimens",
+  "role": "art-director",
+  "agentId": "art-director-01",
+  "summary": "Delivered specimens as prose descriptions because no render capability is reachable from this phase. Reported one eligibility blocker on Direction C (280vh of scroll against a 30-second decision task) since gate direction-eligibility has no executor.",
+  "claims": [
+    {
+      "claim": "The specimens are prose descriptions, not renders; hierarchy, composition and typography cannot be assessed from them.",
+      "status": "observed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/artifacts/visual-specimens.md"
+      ]
+    },
+    {
+      "claim": "Direction C has a structural conflict with the product task: 280vh of scroll for a surface whose job is a 30-second decision.",
+      "status": "observed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/artifacts/visual-specimens.md"
+      ]
+    },
+    {
+      "claim": "Gate direction-eligibility was not executed by any mechanism; this Handoff reports the blocker instead.",
+      "status": "observed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/phase-packets/visual-specimens.json"
+      ]
+    }
+  ],
+  "evidence": [
+    ".chromarelay/runs/run-cli-landing-001/artifacts/visual-specimens.md"
+  ],
+  "artifacts": [
+    {
+      "id": "visual-specimens",
+      "kind": "visual-specimens",
+      "path": ".chromarelay/runs/run-cli-landing-001/artifacts/visual-specimens.md",
+      "status": "proposed",
+      "producerRole": "art-director",
+      "agentId": "art-director-01",
+      "runId": "run-cli-landing-001",
+      "phase": "visual-specimens",
+      "createdAt": "2026-08-24T18:36:00.000Z",
+      "sourceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/artifacts/direction-a-instrument.md",
+        ".chromarelay/runs/run-cli-landing-001/artifacts/direction-b-split-ledger.md",
+        ".chromarelay/runs/run-cli-landing-001/artifacts/direction-c-trace.md"
+      ]
+    }
+  ],
+  "decisions": [],
+  "risks": [
+    "The tournament that follows will compare prose, so its verdict measures argumentation quality, not visual quality.",
+    "All three specimens share one author, so anonymization in the tournament cannot work as designed."
+  ],
+  "confidence": "low",
+  "requestedTransition": "advance",
+  "unresolved": [
+    "direction-eligibility has no executor; the blocker on Direction C is reported but not enforced"
+  ]
+}

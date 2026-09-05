@@ -1,0 +1,56 @@
+{
+  "runId": "run-cli-landing-001",
+  "workflow": "CREATE",
+  "phase": "deterministic-audit",
+  "role": "deterministic-auditor",
+  "goal": "Collect objective implementation Evidence.",
+  "scope": [
+    "cli-landing-page"
+  ],
+  "inputs": [
+    "implementation",
+    "acceptance contracts"
+  ],
+  "locks": [],
+  "openDecisions": [
+    "creative direction",
+    "composition",
+    "typography",
+    "motion"
+  ],
+  "authority": [
+    "Measure build, runtime, semantics, token, component, state, responsive, accessibility, and regression facts.",
+    "must not: approve aesthetics",
+    "must not: edit the implementation under audit"
+  ],
+  "skillKit": {
+    "primary": "chromarelay-audit",
+    "supporting": [
+      "vercel-web-interface-guidelines",
+      "axe-core"
+    ]
+  },
+  "outputSchema": "framework/schemas/handoff.schema.json",
+  "acceptance": [
+    "produce: Audit Report",
+    "produce: screenshots",
+    "produce: state captures",
+    "satisfy or report gate: build-health",
+    "satisfy or report gate: token-drift",
+    "satisfy or report gate: responsive-geometry",
+    "satisfy or report gate: accessibility",
+    "satisfy or report gate: state-coverage"
+  ],
+  "exitPolicy": "objective blockers resolved or recorded",
+  "nonGoals": [
+    "pricing page",
+    "documentation site",
+    "backend"
+  ],
+  "omittedContext": [
+    "unrelated project documents",
+    "unrelated Run history",
+    "Skills outside the active kit"
+  ],
+  "independenceControls": []
+}

@@ -1,0 +1,48 @@
+{
+  "runId": "run-cli-landing-001",
+  "workflow": "CREATE",
+  "phase": "grounding",
+  "role": "product-strategist",
+  "goal": "Establish user, task, product truth, desired perception, constraints, and open creative space.",
+  "scope": [
+    "cli-landing-page"
+  ],
+  "inputs": [
+    "Run Contract",
+    "existing product facts"
+  ],
+  "locks": [],
+  "openDecisions": [
+    "creative direction",
+    "composition",
+    "typography",
+    "motion"
+  ],
+  "authority": [
+    "Clarify user, task, product truth, constraints, desired perception, and information architecture.",
+    "must not: pick visual details before product intent",
+    "must not: invent product facts"
+  ],
+  "skillKit": {
+    "primary": "chromarelay-grounding",
+    "supporting": []
+  },
+  "outputSchema": "framework/schemas/handoff.schema.json",
+  "acceptance": [
+    "produce: Product Brief",
+    "produce: Constraint Draft",
+    "satisfy or report gate: grounding-completeness"
+  ],
+  "exitPolicy": "material ambiguity resolved or explicitly accepted",
+  "nonGoals": [
+    "pricing page",
+    "documentation site",
+    "backend"
+  ],
+  "omittedContext": [
+    "unrelated project documents",
+    "unrelated Run history",
+    "Skills outside the active kit"
+  ],
+  "independenceControls": []
+}

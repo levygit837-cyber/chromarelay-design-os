@@ -1,0 +1,110 @@
+{
+  "version": "1.0",
+  "runId": "run-cli-landing-001",
+  "phase": "direction-tournament",
+  "role": "visual-critic",
+  "agentId": "visual-critic-01",
+  "summary": "Scored three Directions independently against persuade.json, removed C on a productFit blocker, and selected A with one mandatory contract term. Verdict reliability is low for mechanical reasons: no render, failed anonymization, and no repetition-stability check.",
+  "claims": [
+    {
+      "claim": "The Phase Packet supplied input names, not paths; the artifacts had to be located by searching the Run directory.",
+      "status": "observed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/phase-packets/direction-tournament.json"
+      ]
+    },
+    {
+      "claim": "The packet contains no rubric path; framework/rubrics/persuade.json was derived from run.surfaceClass by the critic, not delivered.",
+      "status": "observed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/phase-packets/direction-tournament.json"
+      ]
+    },
+    {
+      "claim": "Anonymization failed: the three specimens live in one document with a shared authorial voice, so hiding creator identity has no effect.",
+      "status": "observed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/artifacts/visual-specimens.md"
+      ]
+    },
+    {
+      "claim": "Direction C obscures the product-critical action behind 280vh of scroll, which is a declared blocker in common.json.",
+      "status": "observed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/artifacts/tournament-report.md"
+      ]
+    },
+    {
+      "claim": "Direction A wins 35 to 32 over B, a margin inside noise for prose-based judgment.",
+      "status": "inferred",
+      "confidence": "low",
+      "evidenceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/artifacts/tournament-report.md"
+      ]
+    }
+  ],
+  "evidence": [
+    ".chromarelay/runs/run-cli-landing-001/artifacts/tournament-report.md",
+    "framework/rubrics/persuade.json",
+    "framework/rubrics/common.json"
+  ],
+  "artifacts": [
+    {
+      "id": "tournament-report",
+      "kind": "tournament-report",
+      "path": ".chromarelay/runs/run-cli-landing-001/artifacts/tournament-report.md",
+      "status": "proposed",
+      "producerRole": "visual-critic",
+      "agentId": "visual-critic-01",
+      "runId": "run-cli-landing-001",
+      "phase": "direction-tournament",
+      "createdAt": "2026-08-24T18:38:00.000Z",
+      "sourceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/artifacts/visual-specimens.md",
+        "framework/rubrics/persuade.json"
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "DEC-001-selected-direction",
+      "scope": "surface",
+      "status": "proposed",
+      "choice": "Direction A (Instrument): single 640px column on warm paper, one mono family, latency number as hero, three-value palette.",
+      "rationale": [
+        "Highest independent score (35/45) against the PERSUADE rubric.",
+        "Its weakness is a bounded repairable constraint (small-viewport type scaling) while B's is structural genericness.",
+        "Hierarchy scored 5: one element carries the composition, which suits a 30-second fit decision."
+      ],
+      "alternatives": [
+        "Direction B (Split Ledger) — scored 32; rejected for conventional composition whose distinction rests on a type-family detail.",
+        "Direction C (Trace) — scored 28; removed on a productFit blocker (280vh of scroll obscures the install action)."
+      ],
+      "evidence": [
+        ".chromarelay/runs/run-cli-landing-001/artifacts/tournament-report.md"
+      ],
+      "risks": [
+        "Selection was made from prose, not renders; three of eight rubric dimensions were scored from description.",
+        "3-point margin over B is inside noise for this judgment mode.",
+        "Repetition stability of this verdict was never measured."
+      ],
+      "revisitWhen": [
+        "the hero number exceeds four characters in real usage",
+        "a render of A and B exists and can be compared visually"
+      ]
+    }
+  ],
+  "risks": [
+    "This verdict is registered by the system as qualitative evidence with no marker that it was produced without renders or a delivered rubric."
+  ],
+  "confidence": "low",
+  "requestedTransition": "advance",
+  "unresolved": [
+    "gate direction-tournament has no executor",
+    "mandatory contract term for A (type clamp and maximum digit count) must be carried into canonization"
+  ]
+}

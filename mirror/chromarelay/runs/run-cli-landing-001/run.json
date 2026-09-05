@@ -1,0 +1,386 @@
+{
+  "version": "1.0",
+  "runId": "run-cli-landing-001",
+  "workflow": "CREATE",
+  "objective": "Create a self-contained single-file HTML landing page for a command-line tool that watches files and reruns tests on change.",
+  "scope": {
+    "kind": "surface",
+    "targets": [
+      "cli-landing-page"
+    ],
+    "nonGoals": [
+      "pricing page",
+      "documentation site",
+      "backend"
+    ]
+  },
+  "autonomy": "guarded",
+  "status": "completed",
+  "currentPhase": "promotion",
+  "decisionLevel": 3,
+  "surfaceClass": "PERSUADE",
+  "hardConstraints": [
+    "single self-contained HTML file",
+    "375px to 1440px",
+    "no build step"
+  ],
+  "lockedDecisions": [],
+  "openDecisions": [
+    "creative direction",
+    "composition",
+    "typography",
+    "motion"
+  ],
+  "authority": {
+    "canonicalOwner": "coordinator",
+    "promotionRole": "memory-curator",
+    "creatorMayFinalCritique": false
+  },
+  "skillBudget": {
+    "primary": 1,
+    "supporting": 2
+  },
+  "phaseHistory": [
+    {
+      "phase": "intake",
+      "enteredAt": "2026-08-24T18:25:17.294Z",
+      "exitedAt": "2026-08-24T18:25:54.172Z",
+      "outcome": "advanced"
+    },
+    {
+      "phase": "grounding",
+      "enteredAt": "2026-08-24T18:25:54.172Z",
+      "exitedAt": "2026-08-24T18:27:15.719Z",
+      "outcome": "advanced"
+    },
+    {
+      "phase": "domain-exploration",
+      "enteredAt": "2026-08-24T18:27:15.719Z",
+      "exitedAt": "2026-08-24T18:28:17.340Z",
+      "outcome": "advanced"
+    },
+    {
+      "phase": "direction-divergence",
+      "enteredAt": "2026-08-24T18:28:17.340Z",
+      "exitedAt": "2026-08-24T18:29:36.996Z",
+      "outcome": "advanced"
+    },
+    {
+      "phase": "visual-specimens",
+      "enteredAt": "2026-08-24T18:29:36.996Z",
+      "exitedAt": "2026-08-24T18:30:48.737Z",
+      "outcome": "advanced"
+    },
+    {
+      "phase": "direction-tournament",
+      "enteredAt": "2026-08-24T18:30:48.737Z",
+      "exitedAt": "2026-08-24T18:32:17.261Z",
+      "outcome": "advanced"
+    },
+    {
+      "phase": "canonization",
+      "enteredAt": "2026-08-24T18:32:17.261Z",
+      "exitedAt": "2026-08-24T18:33:15.475Z",
+      "outcome": "advanced"
+    },
+    {
+      "phase": "surface-architecture",
+      "enteredAt": "2026-08-24T18:33:15.475Z",
+      "exitedAt": "2026-08-24T18:33:51.756Z",
+      "outcome": "advanced"
+    },
+    {
+      "phase": "component-plan",
+      "enteredAt": "2026-08-24T18:33:51.756Z",
+      "exitedAt": "2026-08-24T18:34:30.168Z",
+      "outcome": "advanced"
+    },
+    {
+      "phase": "lighthouse-build",
+      "enteredAt": "2026-08-24T18:34:30.168Z",
+      "exitedAt": "2026-08-24T18:50:41.372Z",
+      "outcome": "advanced"
+    },
+    {
+      "phase": "deterministic-audit",
+      "enteredAt": "2026-08-24T18:50:41.372Z",
+      "exitedAt": "2026-08-24T18:52:30.309Z",
+      "outcome": "advanced"
+    },
+    {
+      "phase": "visual-critique",
+      "enteredAt": "2026-08-24T18:52:30.309Z",
+      "exitedAt": "2026-08-24T19:01:02.951Z",
+      "outcome": "advanced"
+    },
+    {
+      "phase": "repair",
+      "enteredAt": "2026-08-24T19:01:02.951Z",
+      "exitedAt": "2026-08-24T19:06:38.064Z",
+      "outcome": "advanced"
+    },
+    {
+      "phase": "promotion",
+      "enteredAt": "2026-08-24T19:06:38.064Z",
+      "exitedAt": "2026-08-24T19:09:16.873Z",
+      "outcome": "advanced"
+    }
+  ],
+  "artifactRefs": [
+    {
+      "id": "product-brief",
+      "kind": "product-brief",
+      "path": ".chromarelay/runs/run-cli-landing-001/artifacts/product-brief.md",
+      "status": "proposed",
+      "producerRole": "product-strategist",
+      "agentId": "product-strategist-01",
+      "runId": "run-cli-landing-001",
+      "phase": "grounding",
+      "createdAt": "2026-08-24T18:30:00.000Z",
+      "sourceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/request.json"
+      ]
+    },
+    {
+      "id": "domain-map",
+      "kind": "domain-map",
+      "path": ".chromarelay/runs/run-cli-landing-001/artifacts/domain-map.md",
+      "status": "proposed",
+      "producerRole": "art-director",
+      "agentId": "art-director-01",
+      "runId": "run-cli-landing-001",
+      "phase": "domain-exploration",
+      "createdAt": "2026-08-24T18:32:00.000Z",
+      "sourceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/artifacts/product-brief.md"
+      ]
+    },
+    {
+      "id": "direction-a-instrument",
+      "kind": "direction-candidate",
+      "path": ".chromarelay/runs/run-cli-landing-001/artifacts/direction-a-instrument.md",
+      "status": "proposed",
+      "producerRole": "art-director",
+      "agentId": "art-director-01",
+      "runId": "run-cli-landing-001",
+      "phase": "direction-divergence",
+      "createdAt": "2026-08-24T18:34:00.000Z",
+      "sourceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/artifacts/domain-map.md"
+      ]
+    },
+    {
+      "id": "direction-b-split-ledger",
+      "kind": "direction-candidate",
+      "path": ".chromarelay/runs/run-cli-landing-001/artifacts/direction-b-split-ledger.md",
+      "status": "proposed",
+      "producerRole": "art-director",
+      "agentId": "art-director-01",
+      "runId": "run-cli-landing-001",
+      "phase": "direction-divergence",
+      "createdAt": "2026-08-24T18:34:00.000Z",
+      "sourceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/artifacts/domain-map.md"
+      ]
+    },
+    {
+      "id": "direction-c-trace",
+      "kind": "direction-candidate",
+      "path": ".chromarelay/runs/run-cli-landing-001/artifacts/direction-c-trace.md",
+      "status": "proposed",
+      "producerRole": "art-director",
+      "agentId": "art-director-01",
+      "runId": "run-cli-landing-001",
+      "phase": "direction-divergence",
+      "createdAt": "2026-08-24T18:34:00.000Z",
+      "sourceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/artifacts/domain-map.md"
+      ]
+    },
+    {
+      "id": "visual-specimens",
+      "kind": "visual-specimens",
+      "path": ".chromarelay/runs/run-cli-landing-001/artifacts/visual-specimens.md",
+      "status": "proposed",
+      "producerRole": "art-director",
+      "agentId": "art-director-01",
+      "runId": "run-cli-landing-001",
+      "phase": "visual-specimens",
+      "createdAt": "2026-08-24T18:36:00.000Z",
+      "sourceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/artifacts/direction-a-instrument.md",
+        ".chromarelay/runs/run-cli-landing-001/artifacts/direction-b-split-ledger.md",
+        ".chromarelay/runs/run-cli-landing-001/artifacts/direction-c-trace.md"
+      ]
+    },
+    {
+      "id": "tournament-report",
+      "kind": "tournament-report",
+      "path": ".chromarelay/runs/run-cli-landing-001/artifacts/tournament-report.md",
+      "status": "proposed",
+      "producerRole": "visual-critic",
+      "agentId": "visual-critic-01",
+      "runId": "run-cli-landing-001",
+      "phase": "direction-tournament",
+      "createdAt": "2026-08-24T18:38:00.000Z",
+      "sourceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/artifacts/visual-specimens.md",
+        "framework/rubrics/persuade.json"
+      ]
+    },
+    {
+      "id": "design-draft",
+      "kind": "design-draft",
+      "path": ".chromarelay/runs/run-cli-landing-001/artifacts/design-draft.md",
+      "status": "proposed",
+      "producerRole": "system-architect",
+      "agentId": "system-architect-01",
+      "runId": "run-cli-landing-001",
+      "phase": "canonization",
+      "createdAt": "2026-08-24T18:40:00.000Z",
+      "sourceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/decisions/DEC-001-selected-direction.json",
+        ".chromarelay/runs/run-cli-landing-001/artifacts/product-brief.md"
+      ]
+    },
+    {
+      "id": "surface-brief",
+      "kind": "surface-brief",
+      "path": ".chromarelay/runs/run-cli-landing-001/artifacts/surface-brief.md",
+      "status": "proposed",
+      "producerRole": "product-strategist",
+      "agentId": "product-strategist-01",
+      "runId": "run-cli-landing-001",
+      "phase": "surface-architecture",
+      "createdAt": "2026-08-24T18:42:00.000Z",
+      "sourceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/artifacts/design-draft.md",
+        ".chromarelay/runs/run-cli-landing-001/artifacts/product-brief.md"
+      ]
+    },
+    {
+      "id": "component-plan",
+      "kind": "component-plan",
+      "path": ".chromarelay/runs/run-cli-landing-001/artifacts/component-plan.md",
+      "status": "proposed",
+      "producerRole": "component-architect",
+      "agentId": "component-architect-01",
+      "runId": "run-cli-landing-001",
+      "phase": "component-plan",
+      "createdAt": "2026-08-24T18:44:00.000Z",
+      "sourceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/artifacts/surface-brief.md",
+        ".chromarelay/runs/run-cli-landing-001/artifacts/design-draft.md"
+      ]
+    },
+    {
+      "id": "implementation-html",
+      "kind": "renderable-surface",
+      "path": ".chromarelay/runs/run-cli-landing-001/artifacts/index.html",
+      "status": "proposed",
+      "producerRole": "builder",
+      "agentId": "builder-01",
+      "runId": "run-cli-landing-001",
+      "phase": "lighthouse-build",
+      "createdAt": "2026-08-24T18:46:00.000Z",
+      "sourceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/artifacts/design-draft.md",
+        ".chromarelay/runs/run-cli-landing-001/artifacts/component-plan.md",
+        ".chromarelay/runs/run-cli-landing-001/artifacts/surface-brief.md"
+      ],
+      "evidenceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/artifacts/shot-1440.png"
+      ]
+    },
+    {
+      "id": "implementation-notes",
+      "kind": "implementation-notes",
+      "path": ".chromarelay/runs/run-cli-landing-001/artifacts/implementation-notes.md",
+      "status": "proposed",
+      "producerRole": "builder",
+      "agentId": "builder-01",
+      "runId": "run-cli-landing-001",
+      "phase": "lighthouse-build",
+      "createdAt": "2026-08-24T18:46:00.000Z",
+      "sourceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/artifacts/index.html"
+      ]
+    },
+    {
+      "id": "audit-report",
+      "kind": "audit-report",
+      "path": ".chromarelay/runs/run-cli-landing-001/artifacts/audit-report.md",
+      "status": "proposed",
+      "producerRole": "deterministic-auditor",
+      "agentId": "deterministic-auditor-01",
+      "runId": "run-cli-landing-001",
+      "phase": "deterministic-audit",
+      "createdAt": "2026-08-24T18:50:00.000Z",
+      "sourceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/artifacts/index.html"
+      ],
+      "evidenceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/artifacts/shot-1440.png"
+      ]
+    },
+    {
+      "id": "visual-review",
+      "kind": "visual-review",
+      "path": ".chromarelay/runs/run-cli-landing-001/artifacts/visual-review.md",
+      "status": "proposed",
+      "producerRole": "visual-critic",
+      "agentId": "visual-critic-02",
+      "runId": "run-cli-landing-001",
+      "phase": "visual-critique",
+      "createdAt": "2026-08-24T18:56:00.000Z",
+      "sourceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/artifacts/shot-1440-frozen.png",
+        "framework/rubrics/persuade.json"
+      ],
+      "evidenceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/artifacts/shot-full.png"
+      ]
+    },
+    {
+      "id": "repair-evidence",
+      "kind": "repair-evidence",
+      "path": ".chromarelay/runs/run-cli-landing-001/artifacts/repair-evidence.md",
+      "status": "proposed",
+      "producerRole": "repairer",
+      "agentId": "repairer-01",
+      "runId": "run-cli-landing-001",
+      "phase": "repair",
+      "createdAt": "2026-08-24T19:02:00.000Z",
+      "sourceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/artifacts/audit-report.md",
+        ".chromarelay/runs/run-cli-landing-001/artifacts/visual-review.md"
+      ],
+      "evidenceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/artifacts/shot-after-repair.png",
+        ".chromarelay/runs/run-cli-landing-001/artifacts/shot-before-repair.png"
+      ]
+    },
+    {
+      "id": "promotion-manifest",
+      "kind": "promotion-manifest",
+      "path": ".chromarelay/runs/run-cli-landing-001/artifacts/promotion-manifest.md",
+      "status": "proposed",
+      "producerRole": "memory-curator",
+      "agentId": "memory-curator-01",
+      "runId": "run-cli-landing-001",
+      "phase": "promotion",
+      "createdAt": "2026-08-24T19:06:00.000Z",
+      "sourceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/run.json"
+      ]
+    }
+  ],
+  "decisionRefs": [
+    "DEC-001-selected-direction",
+    "DEC-002-token-contract",
+    "DEC-003-visual-verdict"
+  ],
+  "blockers": [],
+  "createdAt": "2026-08-24T18:25:17.294Z",
+  "updatedAt": "2026-08-24T19:09:16.873Z"
+}

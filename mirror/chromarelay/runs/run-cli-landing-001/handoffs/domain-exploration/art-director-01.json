@@ -1,0 +1,53 @@
+{
+  "version": "1.0",
+  "runId": "run-cli-landing-001",
+  "phase": "domain-exploration",
+  "role": "art-director",
+  "agentId": "art-director-01",
+  "summary": "Mapped domain objects, materials, three metaphors, environment and rhythm. Anti-default Ledger rejects four defaults of the dev-tool landing genre and keeps monospace as a domain convention rather than a borrowed style.",
+  "claims": [
+    {
+      "claim": "Three materially different creative territories are available: instrument panel, two-column diff, heartbeat trace.",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/artifacts/domain-map.md"
+      ]
+    },
+    {
+      "claim": "The surface is glanced at from a second monitor, so the resting state must be legible in peripheral vision.",
+      "status": "inferred",
+      "confidence": "low",
+      "evidenceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/artifacts/domain-map.md"
+      ]
+    }
+  ],
+  "evidence": [
+    ".chromarelay/runs/run-cli-landing-001/artifacts/domain-map.md",
+    ".chromarelay/runs/run-cli-landing-001/artifacts/product-brief.md"
+  ],
+  "artifacts": [
+    {
+      "id": "domain-map",
+      "kind": "domain-map",
+      "path": ".chromarelay/runs/run-cli-landing-001/artifacts/domain-map.md",
+      "status": "proposed",
+      "producerRole": "art-director",
+      "agentId": "art-director-01",
+      "runId": "run-cli-landing-001",
+      "phase": "domain-exploration",
+      "createdAt": "2026-08-24T18:32:00.000Z",
+      "sourceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/artifacts/product-brief.md"
+      ]
+    }
+  ],
+  "decisions": [],
+  "risks": [
+    "The peripheral-vision claim is inferred from the usage environment and was not observed."
+  ],
+  "confidence": "medium",
+  "requestedTransition": "advance",
+  "unresolved": []
+}

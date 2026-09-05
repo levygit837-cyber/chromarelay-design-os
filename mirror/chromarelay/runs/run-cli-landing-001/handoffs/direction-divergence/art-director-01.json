@@ -1,0 +1,85 @@
+{
+  "version": "1.0",
+  "runId": "run-cli-landing-001",
+  "phase": "direction-divergence",
+  "role": "art-director",
+  "agentId": "art-director-01",
+  "summary": "Produced three Direction candidates diverging on ground value, composition structure, and type family count. A single agent authored all three, which the phase declares should happen in 3-5 isolated contexts.",
+  "claims": [
+    {
+      "claim": "Each candidate diverges materially on at least three axes: ground value, composition structure, type family count.",
+      "status": "proposed",
+      "confidence": "medium",
+      "evidenceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/artifacts/direction-a-instrument.md",
+        ".chromarelay/runs/run-cli-landing-001/artifacts/direction-b-split-ledger.md",
+        ".chromarelay/runs/run-cli-landing-001/artifacts/direction-c-trace.md"
+      ]
+    },
+    {
+      "claim": "The declared independence control 'hide competing candidates' was not satisfied: one context authored all three candidates.",
+      "status": "observed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/phase-packets/direction-divergence.json"
+      ]
+    }
+  ],
+  "evidence": [
+    ".chromarelay/runs/run-cli-landing-001/artifacts/direction-a-instrument.md",
+    ".chromarelay/runs/run-cli-landing-001/artifacts/direction-b-split-ledger.md",
+    ".chromarelay/runs/run-cli-landing-001/artifacts/direction-c-trace.md",
+    ".chromarelay/runs/run-cli-landing-001/artifacts/domain-map.md"
+  ],
+  "artifacts": [
+    {
+      "id": "direction-a-instrument",
+      "kind": "direction-candidate",
+      "path": ".chromarelay/runs/run-cli-landing-001/artifacts/direction-a-instrument.md",
+      "status": "proposed",
+      "producerRole": "art-director",
+      "agentId": "art-director-01",
+      "runId": "run-cli-landing-001",
+      "phase": "direction-divergence",
+      "createdAt": "2026-08-24T18:34:00.000Z",
+      "sourceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/artifacts/domain-map.md"
+      ]
+    },
+    {
+      "id": "direction-b-split-ledger",
+      "kind": "direction-candidate",
+      "path": ".chromarelay/runs/run-cli-landing-001/artifacts/direction-b-split-ledger.md",
+      "status": "proposed",
+      "producerRole": "art-director",
+      "agentId": "art-director-01",
+      "runId": "run-cli-landing-001",
+      "phase": "direction-divergence",
+      "createdAt": "2026-08-24T18:34:00.000Z",
+      "sourceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/artifacts/domain-map.md"
+      ]
+    },
+    {
+      "id": "direction-c-trace",
+      "kind": "direction-candidate",
+      "path": ".chromarelay/runs/run-cli-landing-001/artifacts/direction-c-trace.md",
+      "status": "proposed",
+      "producerRole": "art-director",
+      "agentId": "art-director-01",
+      "runId": "run-cli-landing-001",
+      "phase": "direction-divergence",
+      "createdAt": "2026-08-24T18:34:00.000Z",
+      "sourceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/artifacts/domain-map.md"
+      ]
+    }
+  ],
+  "decisions": [],
+  "risks": [
+    "Single-context authorship of all three candidates means divergence is asserted, not structurally guaranteed. The system accepted this without objection."
+  ],
+  "confidence": "medium",
+  "requestedTransition": "advance",
+  "unresolved": []
+}

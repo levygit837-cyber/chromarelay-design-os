@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" https://rdap.org/domain/anthropic.com)",
+      "Bash(grep -n \"^#\\\\{1,3\\\\} \" \"/Users/levy/.claude/projects/-Users-levy-Documents-Workspace-Projects-Agents-Systems-chromarelay-design-os/70c5fec6-2350-4d54-ba74-ef9ba4fdde1e/tool-results/toolu_01GSpCGQRFVFZYkcYDr3kQJw.txt\")",
+      "Bash(grep -n \"^#\\\\{1,3\\\\} \" \"/Users/levy/.claude/projects/-Users-levy-Documents-Workspace-Projects-Agents-Systems-chromarelay-design-os/70c5fec6-2350-4d54-ba74-ef9ba4fdde1e/tool-results/toolu_018H7LZrzQgU1PcXs2yeLV7u.txt\")",
+      "Bash(grep -n \"^#\\\\{1,3\\\\} \" \"/Users/levy/.claude/projects/-Users-levy-Documents-Workspace-Projects-Agents-Systems-chromarelay-design-os/70c5fec6-2350-4d54-ba74-ef9ba4fdde1e/tool-results/toolu_01T5LyH7wFWGTeuj9YUg3y9Z.txt\")"
+    ]
+  }
+}

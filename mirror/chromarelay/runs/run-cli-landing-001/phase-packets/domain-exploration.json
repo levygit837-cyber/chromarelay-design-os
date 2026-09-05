@@ -1,0 +1,53 @@
+{
+  "runId": "run-cli-landing-001",
+  "workflow": "CREATE",
+  "phase": "domain-exploration",
+  "role": "art-director",
+  "goal": "Explore domain objects, materials, metaphors, environments, rhythms, and likely defaults before visual composition.",
+  "scope": [
+    "cli-landing-page"
+  ],
+  "inputs": [
+    "Product Brief",
+    "Constraints"
+  ],
+  "locks": [],
+  "openDecisions": [
+    "creative direction",
+    "composition",
+    "typography",
+    "motion"
+  ],
+  "authority": [
+    "Produce a coherent Direction grounded in product domain, with real compositional divergence and system potential.",
+    "must not: see competing Directions during initial divergence",
+    "must not: judge its own work as final critic",
+    "must not: implement production code"
+  ],
+  "skillKit": {
+    "primary": "chromarelay-art-direction",
+    "supporting": [
+      "interface-design",
+      "ui-ux-pro-max"
+    ]
+  },
+  "outputSchema": "framework/schemas/handoff.schema.json",
+  "acceptance": [
+    "produce: Domain Map",
+    "produce: Anti-default Ledger",
+    "produce: Creative Opportunities"
+  ],
+  "exitPolicy": "at least three materially different creative territories are available",
+  "nonGoals": [
+    "pricing page",
+    "documentation site",
+    "backend"
+  ],
+  "omittedContext": [
+    "unrelated project documents",
+    "unrelated Run history",
+    "Skills outside the active kit",
+    "peer Direction candidates"
+  ],
+  "independenceControls": []
+}

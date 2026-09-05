@@ -1,0 +1,81 @@
+{
+  "version": "1.0",
+  "runId": "run-cli-landing-001",
+  "phase": "canonization",
+  "role": "system-architect",
+  "agentId": "system-architect-01",
+  "summary": "Produced DESIGN draft with token contracts for Direction A, carrying the tournament's mandatory hero clamp and four-character rule as explicit contract terms. Contracts validate with no unresolved conflict.",
+  "claims": [
+    {
+      "claim": "The selected Direction arrived as neither a lock nor a path; locks was empty and the decision had to be read by searching the Run decisions directory.",
+      "status": "observed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/phase-packets/canonization.json"
+      ]
+    },
+    {
+      "claim": "Token contracts cover color (3 values), type (1 family, 3 sizes), space (5 steps) and layout with no unresolved conflict.",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/artifacts/design-draft.md"
+      ]
+    }
+  ],
+  "evidence": [
+    ".chromarelay/runs/run-cli-landing-001/artifacts/design-draft.md",
+    ".chromarelay/runs/run-cli-landing-001/decisions/DEC-001-selected-direction.json"
+  ],
+  "artifacts": [
+    {
+      "id": "design-draft",
+      "kind": "design-draft",
+      "path": ".chromarelay/runs/run-cli-landing-001/artifacts/design-draft.md",
+      "status": "proposed",
+      "producerRole": "system-architect",
+      "agentId": "system-architect-01",
+      "runId": "run-cli-landing-001",
+      "phase": "canonization",
+      "createdAt": "2026-08-24T18:40:00.000Z",
+      "sourceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/decisions/DEC-001-selected-direction.json",
+        ".chromarelay/runs/run-cli-landing-001/artifacts/product-brief.md"
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "DEC-002-token-contract",
+      "scope": "system",
+      "status": "proposed",
+      "choice": "Three-value palette (paper/ink/signal), one mono family with three sizes, five spacing steps, 640px measure. Hero size must be a clamp() and the hero number must not exceed four characters.",
+      "rationale": [
+        "Direction A's coherence depends on scarcity: adding a fourth colour or second family dissolves the thesis.",
+        "The clamp and four-character rule convert the tournament's responsiveness finding into an auditable contract term rather than an assumption."
+      ],
+      "alternatives": [
+        "Fixed 128px hero as originally described in Direction A — rejected because it fails at 375px.",
+        "Adding a sans family for prose — rejected as it contradicts the single-family thesis."
+      ],
+      "evidence": [
+        ".chromarelay/runs/run-cli-landing-001/artifacts/design-draft.md",
+        ".chromarelay/runs/run-cli-landing-001/artifacts/tournament-report.md"
+      ],
+      "risks": [
+        "The four-character rule is a design-time constraint with no mechanism to check it against real measured latency."
+      ],
+      "revisitWhen": [
+        "a second surface needs a colour outside the three-value palette"
+      ]
+    }
+  ],
+  "risks": [
+    "Gate contract-consistency has no executor; token/contract coherence is asserted by this role, not verified."
+  ],
+  "confidence": "medium",
+  "requestedTransition": "advance",
+  "unresolved": [
+    "gate contract-consistency has no executor"
+  ]
+}

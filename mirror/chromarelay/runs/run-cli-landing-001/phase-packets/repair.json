@@ -1,0 +1,50 @@
+{
+  "runId": "run-cli-landing-001",
+  "workflow": "CREATE",
+  "phase": "repair",
+  "role": "repairer",
+  "goal": "Apply one coherent batch of approved findings.",
+  "scope": [
+    "cli-landing-page"
+  ],
+  "inputs": [
+    "approved findings",
+    "implementation baseline"
+  ],
+  "locks": [],
+  "openDecisions": [
+    "creative direction",
+    "composition",
+    "typography",
+    "motion"
+  ],
+  "authority": [
+    "Apply only approved findings as one coherent bounded repair batch.",
+    "must not: expand scope",
+    "must not: reopen Direction",
+    "must not: patch structural defects locally"
+  ],
+  "skillKit": {
+    "primary": "chromarelay-repair",
+    "supporting": []
+  },
+  "outputSchema": "framework/schemas/handoff.schema.json",
+  "acceptance": [
+    "produce: repair patch",
+    "produce: before/after evidence",
+    "satisfy or report gate: build-health",
+    "satisfy or report gate: visual-quality"
+  ],
+  "exitPolicy": "repair confirmed or structural return triggered",
+  "nonGoals": [
+    "pricing page",
+    "documentation site",
+    "backend"
+  ],
+  "omittedContext": [
+    "unrelated project documents",
+    "unrelated Run history",
+    "Skills outside the active kit"
+  ],
+  "independenceControls": []
+}

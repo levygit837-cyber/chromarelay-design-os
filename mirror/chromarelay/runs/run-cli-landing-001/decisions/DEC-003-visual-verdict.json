@@ -1,0 +1,26 @@
+{
+  "id": "DEC-003-visual-verdict",
+  "scope": "surface",
+  "status": "proposed",
+  "choice": "Repairable. Four findings (vertical rhythm, unit sizing, count-up animation, orphaned primary action) form one repair batch together with the two accessibility blockers from the audit.",
+  "rationale": [
+    "All four findings are adjustments inside the selected Direction; none requires a new Direction.",
+    "Scores 35/45 with hierarchy, specificity and coherence at 5, so the thesis is working; the losses are in composition and craft.",
+    "The count-up finding is grounded in measured harm to the Run's own evidence, not in a preference about motion."
+  ],
+  "alternatives": [
+    "Structural return — rejected; no finding implicates the Direction itself.",
+    "Approve as-is — rejected; two accessibility blockers and a headline claim that renders wrong."
+  ],
+  "evidence": [
+    ".chromarelay/runs/run-cli-landing-001/artifacts/visual-review.md",
+    ".chromarelay/runs/run-cli-landing-001/artifacts/audit-report.md"
+  ],
+  "risks": [
+    "This verdict was formed after reading the detector report, which the packet forbade.",
+    "Repetition stability of this verdict was never measured."
+  ],
+  "revisitWhen": [
+    "the repair batch lands and a frozen capture can be compared against shot-1440-frozen.png"
+  ]
+}

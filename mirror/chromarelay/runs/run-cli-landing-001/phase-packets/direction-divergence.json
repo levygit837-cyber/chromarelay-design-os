@@ -1,0 +1,55 @@
+{
+  "runId": "run-cli-landing-001",
+  "workflow": "CREATE",
+  "phase": "direction-divergence",
+  "role": "art-director",
+  "goal": "Produce independent coherent Directions under different lenses.",
+  "scope": [
+    "cli-landing-page"
+  ],
+  "inputs": [
+    "Product Brief",
+    "Domain Map",
+    "Constraints"
+  ],
+  "locks": [],
+  "openDecisions": [
+    "creative direction",
+    "composition",
+    "typography",
+    "motion"
+  ],
+  "authority": [
+    "Produce a coherent Direction grounded in product domain, with real compositional divergence and system potential.",
+    "must not: see competing Directions during initial divergence",
+    "must not: judge its own work as final critic",
+    "must not: implement production code"
+  ],
+  "skillKit": {
+    "primary": "chromarelay-art-direction",
+    "supporting": [
+      "interface-design",
+      "ui-ux-pro-max"
+    ]
+  },
+  "outputSchema": "framework/schemas/handoff.schema.json",
+  "acceptance": [
+    "produce: Direction candidates"
+  ],
+  "exitPolicy": "each candidate diverges materially on at least three axes",
+  "nonGoals": [
+    "pricing page",
+    "documentation site",
+    "backend"
+  ],
+  "omittedContext": [
+    "unrelated project documents",
+    "unrelated Run history",
+    "Skills outside the active kit",
+    "peer Direction candidates"
+  ],
+  "independenceControls": [
+    "hide competing candidates",
+    "use distinct exploration lens per agent"
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "runId": "run-cli-landing-001",
+  "workflow": "CREATE",
+  "phase": "promotion",
+  "role": "memory-curator",
+  "goal": "Promote approved reusable contracts and record provenance.",
+  "scope": [
+    "cli-landing-page"
+  ],
+  "inputs": [
+    "approved Run Artifacts",
+    "Gate evidence"
+  ],
+  "locks": [],
+  "openDecisions": [
+    "creative direction",
+    "composition",
+    "typography",
+    "motion"
+  ],
+  "authority": [
+    "Promote reusable approved Decisions and Artifacts while preserving provenance and exceptions.",
+    "must not: promote experiments",
+    "must not: promote one-off accidents",
+    "must not: remove rejected history"
+  ],
+  "skillKit": {
+    "primary": "chromarelay-memory",
+    "supporting": [
+      "google-design-md"
+    ]
+  },
+  "outputSchema": "framework/schemas/handoff.schema.json",
+  "acceptance": [
+    "produce: canonical Artifacts",
+    "produce: Promotion Manifest",
+    "satisfy or report gate: promotion-readiness"
+  ],
+  "exitPolicy": "Run completes",
+  "nonGoals": [
+    "pricing page",
+    "documentation site",
+    "backend"
+  ],
+  "omittedContext": [
+    "unrelated project documents",
+    "unrelated Run history",
+    "Skills outside the active kit"
+  ],
+  "independenceControls": []
+}

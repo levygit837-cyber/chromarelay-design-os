@@ -1,0 +1,53 @@
+{
+  "runId": "run-cli-landing-001",
+  "workflow": "CREATE",
+  "phase": "lighthouse-build",
+  "role": "builder",
+  "goal": "Implement one representative Surface through an isolated worktree.",
+  "scope": [
+    "cli-landing-page"
+  ],
+  "inputs": [
+    "Surface Brief",
+    "DESIGN draft",
+    "tokens",
+    "Component Plan"
+  ],
+  "locks": [],
+  "openDecisions": [
+    "creative direction",
+    "composition",
+    "typography",
+    "motion"
+  ],
+  "authority": [
+    "Implement the selected Direction through canonical tokens and component contracts.",
+    "must not: create a new Direction silently",
+    "must not: modify canonical state",
+    "must not: invent undocumented component props"
+  ],
+  "skillKit": {
+    "primary": "chromarelay-build",
+    "supporting": []
+  },
+  "outputSchema": "framework/schemas/handoff.schema.json",
+  "acceptance": [
+    "produce: implementation patch",
+    "produce: renderable Surface",
+    "produce: implementation notes",
+    "satisfy or report gate: build-health"
+  ],
+  "exitPolicy": "Surface renders and basic health passes",
+  "nonGoals": [
+    "pricing page",
+    "documentation site",
+    "backend"
+  ],
+  "omittedContext": [
+    "unrelated project documents",
+    "unrelated Run history",
+    "Skills outside the active kit",
+    "rejected Directions"
+  ],
+  "independenceControls": []
+}

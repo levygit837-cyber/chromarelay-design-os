@@ -1,0 +1,58 @@
+{
+  "runId": "run-cli-landing-001",
+  "workflow": "CREATE",
+  "phase": "visual-critique",
+  "role": "visual-critic",
+  "goal": "Judge the rendered Surface blindly against product and design intent.",
+  "scope": [
+    "cli-landing-page"
+  ],
+  "inputs": [
+    "anonymous screenshots",
+    "Product Brief",
+    "DESIGN excerpt",
+    "Surface Brief"
+  ],
+  "locks": [],
+  "openDecisions": [
+    "creative direction",
+    "composition",
+    "typography",
+    "motion"
+  ],
+  "authority": [
+    "Judge product fit, hierarchy, specificity, composition, typography, coherence, responsiveness, and craft from blind evidence.",
+    "must not: read creator reasoning before first verdict",
+    "must not: edit code",
+    "must not: turn personal taste into a defect"
+  ],
+  "skillKit": {
+    "primary": "chromarelay-critique",
+    "supporting": [
+      "interface-design"
+    ]
+  },
+  "outputSchema": "framework/schemas/handoff.schema.json",
+  "acceptance": [
+    "produce: Visual Review",
+    "satisfy or report gate: visual-quality"
+  ],
+  "exitPolicy": "approved, repairable, or structural return identified",
+  "nonGoals": [
+    "pricing page",
+    "documentation site",
+    "backend"
+  ],
+  "omittedContext": [
+    "unrelated project documents",
+    "unrelated Run history",
+    "Skills outside the active kit",
+    "creator identity",
+    "creator reasoning",
+    "detector report before first verdict",
+    "which candidate is new"
+  ],
+  "independenceControls": [
+    "detector report withheld until first verdict"
+  ]
+}

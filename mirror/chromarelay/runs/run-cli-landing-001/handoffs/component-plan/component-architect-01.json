@@ -1,0 +1,54 @@
+{
+  "version": "1.0",
+  "runId": "run-cli-landing-001",
+  "phase": "component-plan",
+  "role": "component-architect",
+  "agentId": "component-architect-01",
+  "summary": "Four components with state contracts and accessibility terms. The declared input 'component inventory' has no referent on a greenfield surface, which makes the component-reuse gate vacuous rather than passed.",
+  "claims": [
+    {
+      "claim": "The declared input 'component inventory' has no referent and the packet gives no instruction for an absent input.",
+      "status": "observed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/phase-packets/component-plan.json"
+      ]
+    },
+    {
+      "claim": "All three critical component requirements have a stated resolution.",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/artifacts/component-plan.md"
+      ]
+    }
+  ],
+  "evidence": [
+    ".chromarelay/runs/run-cli-landing-001/artifacts/component-plan.md",
+    ".chromarelay/runs/run-cli-landing-001/artifacts/surface-brief.md"
+  ],
+  "artifacts": [
+    {
+      "id": "component-plan",
+      "kind": "component-plan",
+      "path": ".chromarelay/runs/run-cli-landing-001/artifacts/component-plan.md",
+      "status": "proposed",
+      "producerRole": "component-architect",
+      "agentId": "component-architect-01",
+      "runId": "run-cli-landing-001",
+      "phase": "component-plan",
+      "createdAt": "2026-08-24T18:44:00.000Z",
+      "sourceRefs": [
+        ".chromarelay/runs/run-cli-landing-001/artifacts/surface-brief.md",
+        ".chromarelay/runs/run-cli-landing-001/artifacts/design-draft.md"
+      ]
+    }
+  ],
+  "decisions": [],
+  "risks": [
+    "component-reuse is vacuous on greenfield work, so the gate would report pass on zero evidence if an executor existed."
+  ],
+  "confidence": "high",
+  "requestedTransition": "advance",
+  "unresolved": []
+}
