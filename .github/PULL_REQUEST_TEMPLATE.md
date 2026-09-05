@@ -1,18 +1,18 @@
-<!-- Modelo de Pull Request: preencha de forma breve. -->
-## Issue relacionada
+<!-- Pull Request template: fill in briefly. -->
+## Related issue
 
-<!-- Ex.: Closes #123 -->
+<!-- e.g. Closes #123 -->
 
-## O que mudou
+## What changed
 
-<!-- Resumo em 1-3 bullets -->
+<!-- 1-3 bullet summary -->
 
-## Como foi testado
+## How it was tested
 
 - [ ] `npm run check`
 - [ ] `npm run validate:framework`
-- [ ] Smoke test do overlay (quando aplicável)
+- [ ] Overlay smoke test (when applicable)
 
-## Risco de rollback
+## Rollback risk
 
-<!-- Baixo/Médio/Alto + como reverter, se necessário -->
+<!-- Low/Medium/High + how to revert if needed -->
