@@ -96,4 +96,4 @@ TypeScript is strict with `noUncheckedIndexedAccess` and `exactOptionalPropertyT
 
 Specs, tickets, and Wayfinder maps live in GitHub Issues, not in files; see `docs/agents/issue-tracker.md`. ADRs in `docs/adr/` are only for decisions that are costly to reverse, surprising without context, and a real trade-off.
 
-Documentation language splits by audience: `docs/humans/`, `README.md`, and `docs/architecture/` are Portuguese; agent contracts (`AGENTS.md`, `CONTEXT.md`, `docs/agents/`), code, and framework JSON are English. Match whichever file you are editing.
+Documentation language is EN-US everywhere: human docs (`docs/humans/`, `README.md`, `docs/architecture/`), agent contracts (`AGENTS.md`, `CONTEXT.md`, `docs/agents/`), code, and framework JSON are all English. Use EN-US spelling.

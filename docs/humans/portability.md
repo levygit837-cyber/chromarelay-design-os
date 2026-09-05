@@ -1,77 +1,77 @@
-# Portabilidade e Project Overlay
+# Portability and Project Overlay
 
-## Objetivo
+## Goal
 
-ChromaRelay deve entrar em um projeto existente sem assumir controle de sua arquitetura, dependências ou documentação.
+ChromaRelay must enter an existing project without taking over its architecture, dependencies, or documentation.
 
-## Conteúdo instalado
+## Installed contents
 
 ```text
-.chromarelay/system/       cópia versionada do framework
-.chromarelay/project/      documentos canônicos do projeto
-.chromarelay/runs/         execuções locais
-.agents/skills/          Skills portáveis
-.omp/                    adapter OMP opcional
-AGENTS.md                bloco delimitado, sem apagar conteúdo existente
+.chromarelay/system/       versioned framework copy
+.chromarelay/project/      canonical project documents
+.chromarelay/runs/         local runs
+.agents/skills/          portable Skills
+.omp/                    optional OMP adapter
+AGENTS.md                delimited block, without deleting existing content
 ```
 
-## Modos
+## Modes
 
-### Completo com OMP
+### Full with OMP
 
 ```bash
-node scripts/install.mjs --target ../produto --omp
+node scripts/install.mjs --target ../product --omp
 ```
 
-### Portátil sem harness
+### Portable without harness
 
 ```bash
-node scripts/install.mjs --target ../produto
+node scripts/install.mjs --target ../product
 ```
 
-Instala framework, Skills e contrato para agentes genéricos, mas não agentes/comandos/tools OMP.
+Installs the framework, Skills, and contract for generic agents, but no OMP agents/commands/tools.
 
-### Mínimo
+### Minimal
 
 ```bash
-node scripts/install.mjs --target ../produto --minimal
+node scripts/install.mjs --target ../product --minimal
 ```
 
-Instala apenas Coordinator Skill, schemas, Workflows e templates essenciais.
+Installs only the Coordinator Skill, schemas, Workflows, and essential templates.
 
-## Merge seguro
+## Safe merge
 
-O instalador:
+The installer:
 
-- nunca remove arquivos do projeto;
-- escreve somente paths ChromaRelay;
-- não sobrescreve por padrão;
-- atualiza o bloco `BEGIN CHROMARELAY`/`END CHROMARELAY` em `AGENTS.md`;
-- produz manifest com versão e hashes;
-- permite dry-run.
+- never removes project files;
+- writes only ChromaRelay paths;
+- doesn't overwrite by default;
+- updates the `BEGIN CHROMARELAY`/`END CHROMARELAY` block in `AGENTS.md`;
+- produces a manifest with version and hashes;
+- supports dry-run.
 
-## Atualização
+## Update
 
-Faça backup ou commit antes de atualizar. Execute:
+Back up or commit before updating. Run:
 
 ```bash
-node scripts/install.mjs --target ../produto --omp --dry-run
-node scripts/install.mjs --target ../produto --omp --force
+node scripts/install.mjs --target ../product --omp --dry-run
+node scripts/install.mjs --target ../product --omp --force
 ```
 
-Compare `install-manifest.json` e reveja mudanças em Skills, hook e schemas.
+Compare `install-manifest.json` and review changes to Skills, hook, and schemas.
 
-## Remoção
+## Removal
 
-Remover ChromaRelay significa apagar apenas:
+Removing ChromaRelay means deleting only:
 
 - `.chromarelay/`;
-- arquivos `chromarelay-*` em `.omp/`;
-- Skills `chromarelay-*` em `.agents/skills/`;
-- bloco delimitado em `AGENTS.md`.
+- `chromarelay-*` files in `.omp/`;
+- `chromarelay-*` Skills in `.agents/skills/`;
+- the delimited block in `AGENTS.md`.
 
-Nunca use uma rotina de remoção baseada em glob sem conferir o manifest.
+Never use a glob-based removal routine without checking the manifest.
 
-## Distribuição futura
+## Future distribution
 
-O núcleo poderá ser publicado como pacote npm e o adapter OMP como extensão. Até esse momento, o instalador do repositório é a fonte de distribuição.
+The core may be published as an npm package and the OMP adapter as an extension. Until then, the repository installer is the distribution source.

@@ -1,43 +1,43 @@
-# Contexto, autonomia e consistência
+# Context, autonomy, and consistency
 
-## Regra central
+## Central rule
 
-O Coordinator conhece o mapa. Cada especialista conhece apenas sua região atual.
+The Coordinator knows the map. Each specialist knows only its current region.
 
-Carregar toda a documentação e todas as Skills em todos os agentes reduz clareza, mistura autoridades e aumenta convergência para respostas medianas.
+Loading all documentation and all Skills into every agent reduces clarity, mixes authorities, and increases convergence toward mediocre answers.
 
-## O que fica permanente
+## What stays permanent
 
-No contexto do Coordinator:
+In the Coordinator context:
 
-- glossário;
-- índice dos Workflows;
-- registry de Roles, Skill Kits e Gates;
-- Run Contract ativo;
-- Locks e constraints relevantes;
-- ponteiros para Artifacts.
+- glossary;
+- Workflow index;
+- Role, Skill Kit, and Gate registry;
+- active Run Contract;
+- relevant Locks and constraints;
+- Artifact pointers.
 
-No contexto de um especialista:
+In a specialist context:
 
-- contrato da Role;
+- Role contract;
 - Phase Packet;
-- uma Skill primária;
-- até duas referências estreitas;
-- schemas de saída;
-- paths e non-goals explícitos.
+- one primary Skill;
+- up to two narrow references;
+- output schemas;
+- explicit paths and non-goals.
 
-## O que nunca deve ser injetado por padrão
+## What must never be injected by default
 
-- todos os transcripts;
-- todas as Skills de design;
-- todas as Directions concorrentes antes da divergência terminar;
-- reasoning de criadores no crítico cego;
-- relatórios antigos sem relação com a Phase;
-- arquivos canônicos inteiros quando apenas um trecho é necessário.
+- all transcripts;
+- all design Skills;
+- all competing Directions before divergence ends;
+- creator reasoning in the blind critic;
+- old reports unrelated to the Phase;
+- whole canonical files when only a snippet is needed.
 
 ## Phase Packet
 
-Todo Phase Packet contém:
+Every Phase Packet contains:
 
 ```text
 Goal
@@ -54,38 +54,38 @@ Exit policy
 Non-goals
 ```
 
-Ele não contém instruções contraditórias. O Context Compiler resolve precedência e registra conflitos antes do dispatch.
+It contains no contradictory instructions. The Context Compiler resolves precedence and records conflicts before dispatch.
 
 ## Sandboxes
 
-- Roles de leitura não recebem ferramentas de edição.
-- Builders e Repairers usam worktree isolada quando disponível.
-- Handoffs são persistidos antes de qualquer merge.
-- O Coordinator avalia patches e aplica apenas depois dos gates exigidos.
-- `.chromarelay/project` não é área de rascunho.
+- Read Roles get no editing tools.
+- Builders and Repairers use an isolated worktree when available.
+- Handoffs are persisted before any merge.
+- The Coordinator evaluates patches and applies them only after the required gates.
+- `.chromarelay/project` is not a scratch area.
 
 ## Locks
 
-Um Lock não elimina criatividade. Ele declara que uma decisão já foi tomada em determinado escopo. Um agente pode propor reabertura, mas não substituir silenciosamente.
+A Lock doesn't eliminate creativity. It declares that a decision has already been made at a given scope. An agent may propose reopening, but not silently replace it.
 
-Uma proposta de reabertura precisa informar:
+A reopening proposal must state:
 
-- Lock afetado;
-- motivo;
-- Evidence nova;
-- impacto;
-- alternativas;
-- custo de reversão.
+- affected Lock;
+- reason;
+- new Evidence;
+- impact;
+- alternatives;
+- reversal cost.
 
-## Escolhas reversíveis
+## Reversible choices
 
-Em modo `guarded`, o sistema decide automaticamente escolhas reversíveis quando:
+In `guarded` mode, the system automatically decides reversible choices when they:
 
-- respeitam Locks;
-- possuem Evidence suficiente;
-- não alteram identidade global;
-- não geram desacordo material entre críticos.
+- respect Locks;
+- have sufficient Evidence;
+- don't change global identity;
+- generate no material disagreement between critics.
 
-## Escalonamento humano
+## Human escalation
 
-O Coordinator pede uma decisão humana somente quando o valor da decisão supera o custo da interrupção. A pergunta deve apresentar no máximo três opções, diferenças materiais, Evidence e recomendação.
+The Coordinator asks for a human decision only when the decision's value outweighs the interruption cost. The question must present at most three options, material differences, Evidence, and a recommendation.

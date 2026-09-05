@@ -1,19 +1,19 @@
-# Integração com OMP / oh-my-pi
+# OMP / oh-my-pi integration
 
-ChromaRelay usa OMP como adapter principal de execução. O núcleo continua independente do harness.
+ChromaRelay uses OMP as its primary execution adapter. The core stays harness-independent.
 
-## Subagentes e `task.batch`
+## Subagents and `task.batch`
 
-O Coordinator deve usar um batch para trabalhos independentes, com contexto compartilhado mínimo e uma tarefa específica por agente.
+The Coordinator should use one batch for independent work, with minimal shared context and one specific task per agent.
 
 ```json
 {
-  "context": "# Goal\nGerar Directions independentes.\n# Constraints\nNão ver propostas concorrentes.\n# Contract\nRetornar o schema Direction.",
+  "context": "# Goal\nGenerate independent Directions.\n# Constraints\nDo not see competing proposals.\n# Contract\nReturn the Direction schema.",
   "tasks": [
     {
       "name": "instrument-direction",
       "agent": "chromarelay-art-director",
-      "task": "# Target\nDirection A\n# Change\nExplore o produto como instrumento de precisão.\n# Acceptance\nUma tese coerente, riscos e specimen.",
+      "task": "# Target\nDirection A\n# Change\nExplore the product as a precision instrument.\n# Acceptance\nOne coherent thesis, risks, and specimen.",
       "effort": "hi",
       "outputSchema": {},
       "schemaMode": "strict"
@@ -22,27 +22,27 @@ O Coordinator deve usar um batch para trabalhos independentes, com contexto comp
 }
 ```
 
-Sempre forneça `outputSchema` explícito para Handoffs importantes. Agentes começam sem histórico do pai; passe payloads grandes por arquivos ou URIs locais, não por uma mensagem gigantesca.
+Always provide an explicit `outputSchema` for important Handoffs. Agents start with no parent history; pass large payloads via files or local URIs, not one giant message.
 
-Use `isolated: true` para Builder e Repairer. Agentes isolados não são revividos depois que o workspace é encerrado, portanto o Handoff precisa ser completo.
+Use `isolated: true` for Builder and Repairer. Isolated agents aren't revived after the workspace closes, so the Handoff must be complete.
 
-## IRC e `hub`
+## IRC and `hub`
 
-Use `hub` para:
+Use `hub` to:
 
-- esclarecer uma constraint durante uma execução;
-- pedir Evidence ausente;
-- receber progresso sem injetar todo o transcript;
-- coordenar finalização de jobs;
-- reviver um agente não isolado quando uma continuação pequena for mais barata que novo dispatch.
+- clarify a constraint during a run;
+- ask for missing Evidence;
+- receive progress without injecting the whole transcript;
+- coordinate job completion;
+- revive a non-isolated agent when a small continuation is cheaper than a new dispatch.
 
-Não use IRC para criar consenso entre Art Directors durante divergência. Isso destruiria independência. O Coordinator recebe as propostas e controla a comparação.
+Don't use IRC to build consensus between Art Directors during divergence. That would destroy independence. The Coordinator receives the proposals and controls the comparison.
 
-`Alt+A` abre o Agent Hub para supervisão humana.
+`Alt+A` opens the Agent Hub for human supervision.
 
 ## Model roles
 
-Agentes referenciam aliases, não IDs concretos. Exemplo para `~/.omp/agent/config.yml`:
+Agents reference aliases, not concrete IDs. Example for `~/.omp/agent/config.yml`:
 
 ```yaml
 modelRoles:
@@ -63,59 +63,59 @@ task:
   enableEffort: true
 ```
 
-Mapeie criação e crítica para famílias de modelos diferentes quando a decisão for importante. Alterar `modelRoles` muda o roteamento sem editar agentes.
+Map creation and critique to different model families when the decision matters. Changing `modelRoles` changes routing without editing agents.
 
 ## Agents
 
-Os agentes de projeto ficam em `.omp/agents/*.md`. Project agents têm precedência sobre user e bundled agents de mesmo nome.
+Project agents live in `.omp/agents/*.md`. Project agents take precedence over user and bundled agents of the same name.
 
-- Coordinator pode spawnar especialistas.
-- Especialistas não recebem `task` e não spawnam outros agentes por padrão.
-- Tool lists restringem Roles de leitura.
-- `autoloadSkills` injeta apenas a Skill primária da Role.
+- The Coordinator may spawn specialists.
+- Specialists don't get `task` and don't spawn other agents by default.
+- Tool lists restrict Read Roles.
+- `autoloadSkills` injects only the Role's primary Skill.
 
 ## Skills
 
-As Skills ficam em `.agents/skills/<name>/SKILL.md`, que OMP descobre como capability. O system prompt recebe apenas metadata; o conteúdo é lido sob demanda via `skill://<name>`.
+Skills live in `.agents/skills/<name>/SKILL.md`, which OMP discovers as a capability. The system prompt gets only metadata; content is read on demand via `skill://<name>`.
 
-O Coordinator usa o registry para selecionar no máximo uma Skill primária e duas referências estreitas por Phase.
+The Coordinator uses the registry to select at most one primary Skill and two narrow references per Phase.
 
 ## Prompt templates
 
-Templates em `.omp/prompts/` servem para formatos repetitivos internos, como Direction proposal, audit handoff e blind critique. Eles aceitam argumentos e não devem substituir o Run Contract.
+Templates in `.omp/prompts/` cover repetitive internal formats such as Direction proposal, audit handoff, and blind critique. They take arguments and must not replace the Run Contract.
 
 ## Slash commands
 
-Comandos em `.omp/commands/` são entry points humanos:
+Commands in `.omp/commands/` are human entry points:
 
-- `/chromarelay` inicia e roteia;
-- `/chromarelay-resume` retoma o Run ativo;
-- `/chromarelay-status` resume estado sem alterar;
-- `/chromarelay-eval` cria um Eval Case.
+- `/chromarelay` starts and routes;
+- `/chromarelay-resume` resumes the active Run;
+- `/chromarelay-status` summarizes state without changing it;
+- `/chromarelay-eval` creates an Eval Case.
 
-Eles expandem para instruções do Coordinator; não duplicam a lógica da state machine.
+They expand into Coordinator instructions; they don't duplicate state-machine logic.
 
-## Hook de proteção
+## Protection hook
 
-O hook ChromaRelay bloqueia raw writes em:
+The ChromaRelay hook blocks raw writes to:
 
 - `.chromarelay/system/`;
 - `.chromarelay/project/`.
 
-Promotion normal usa o custom tool/CLI. O hook não bloqueia código do produto nem arquivos de Run.
+Normal Promotion uses the custom tool/CLI. The hook doesn't block product code or Run files.
 
-A variável `CHROMARELAY_UNSAFE_CANONICAL_WRITE=1` existe apenas para recuperação manual consciente.
+The `CHROMARELAY_UNSAFE_CANONICAL_WRITE=1` variable exists only for deliberate manual recovery.
 
 ## Custom tool
 
-O custom tool `chromarelay_state` oferece operações determinísticas de status, registro de eventos, validação de paths e Promotion. Ele não decide estética e não executa crítica.
+The `chromarelay_state` custom tool offers deterministic status, event recording, path validation, and Promotion operations. It doesn't judge aesthetics and doesn't run critique.
 
-Custom tools são apropriadas aqui porque o modelo precisa chamar código com schema e efeitos controlados. Skills continuam estáticas; hooks continuam interceptores.
+Custom tools fit here because the model needs to call code with a schema and controlled effects. Skills stay static; hooks stay interceptors.
 
 ## Advisor
 
-Habilite advisor no Coordinator para mudanças de sistema, redesign de alto risco e decisões que reabrem Locks. Não habilite por padrão em cada especialista: custo e opiniões correlacionadas podem aumentar sem melhorar a saída.
+Enable the advisor on the Coordinator for system changes, high-risk redesigns, and decisions that reopen Locks. Don't enable it by default on every specialist: cost and correlated opinions can grow without improving output.
 
-## Compaction e retomada
+## Compaction and resumption
 
-Preserve Run Contract, Decision index, Artifact pointers e Phase Packet atual. Não tente preservar todo reasoning. Artifacts são a memória operacional.
+Preserve the Run Contract, Decision index, Artifact pointers, and current Phase Packet. Don't try to preserve all reasoning. Artifacts are the operational memory.

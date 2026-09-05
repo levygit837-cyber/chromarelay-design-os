@@ -1,10 +1,10 @@
-# Workflows do ChromaRelay
+# ChromaRelay Workflows
 
-Cada Workflow é uma state machine reutilizável. O Coordinator pode pular fases somente quando a política da fase e o nível da decisão justificarem.
+Each Workflow is a reusable state machine. The Coordinator may skip phases only when the phase policy and the decision level justify it.
 
 ## CREATE
 
-Use quando existe uma ideia de produto, mas não existe direção visual canônica.
+Use when there is a product idea but no canonical visual direction.
 
 ```text
 intake
@@ -23,13 +23,13 @@ intake
 -> promotion
 ```
 
-Saída: produto documentado, Direction selecionada, `DESIGN.md`, tokens, contratos de Surface, implementação piloto e Evidence.
+Output: documented product, selected Direction, `DESIGN.md`, tokens, Surface contracts, pilot implementation, and Evidence.
 
-Não use CREATE para uma pequena alteração em projeto já consistente.
+Don't use CREATE for a small change in an already consistent project.
 
 ## DOCUMENT
 
-Use quando há design ou código existente, mas não existe representação operacional confiável.
+Use when there is an existing design or codebase but no reliable operational representation.
 
 ```text
 freeze baseline
@@ -42,13 +42,13 @@ freeze baseline
 -> route to maintenance, REFINE or REDESIGN
 ```
 
-A documentação distingue `observed`, `inferred`, `proposed`, `approved`, `locked` e `deprecated`. Frequência não vira intenção automaticamente.
+Documentation distinguishes `observed`, `inferred`, `proposed`, `approved`, `locked`, and `deprecated`. Frequency doesn't automatically become intent.
 
-Saída: `AS_IS_DESIGN`, inventários de tokens/componentes/estados, Drift Report e Opportunity Map.
+Output: `AS_IS_DESIGN`, token/component/state inventories, Drift Report, and Opportunity Map.
 
 ## REDESIGN
 
-Use quando o problema é sistêmico, composicional, estrutural ou identitário.
+Use when the problem is systemic, compositional, structural, or identity-level.
 
 ```text
 preserve product truths
@@ -63,11 +63,11 @@ preserve product truths
 -> promotion
 ```
 
-O sistema antigo permanece disponível até o piloto vencer a Baseline. Migração usa expand-contract quando uma troca ampla não pode permanecer verde em um único slice.
+The old system stays available until the pilot beats the Baseline. Migration uses expand-contract when a broad swap can't stay green in a single slice.
 
 ## EXPLORE
 
-Use quando a decisão principal ainda é criativa, não implementacional.
+Use when the main decision is still creative, not implementational.
 
 ```text
 frame the creative question
@@ -80,13 +80,13 @@ frame the creative question
 -> select or preserve finalists
 ```
 
-As Directions devem divergir em pelo menos três eixos materiais: composição, tipografia, navegação, densidade, superfícies, ritmo, motion ou assinatura.
+Directions must diverge on at least three material axes: composition, typography, navigation, density, surfaces, rhythm, motion, or signature.
 
-O mesmo agente não deve gerar todas as opções quando diversidade for crítica. Use contextos independentes e, de preferência, mais de um modelo.
+The same agent shouldn't generate every option when diversity is critical. Use independent contexts and, preferably, more than one model.
 
 ## REFINE
 
-Use quando existe uma base razoável e o alvo é localizado.
+Use when there is a reasonable base and the target is localized.
 
 ```text
 bound scope
@@ -100,23 +100,23 @@ bound scope
 -> promote or revert
 ```
 
-Cada mudança deve responder a uma hipótese observável. Se o diagnóstico exigir trocar identidade, shell e arquitetura de informação, o trabalho deve ser reclassificado como REDESIGN.
+Each change must answer an observable hypothesis. If the diagnosis requires swapping identity, shell, and information architecture, the work must be reclassified as REDESIGN.
 
-## Composição
+## Composition
 
-Workflows podem encadear:
+Workflows can chain:
 
 - `DOCUMENT -> REFINE`;
 - `DOCUMENT -> REDESIGN`;
 - `CREATE -> EXPLORE -> canonization`;
 - `REDESIGN -> EXPLORE -> pilot`;
-- `REFINE -> REDESIGN` quando a causa raiz for sistêmica.
+- `REFINE -> REDESIGN` when the root cause is systemic.
 
-## Processo proporcional
+## Proportional process
 
-| Nível | Exemplo | Processo mínimo |
+| Level | Example | Minimum process |
 | --- | --- | --- |
-| 0 | typo, label, alinhamento óbvio | corrigir e verificar |
-| 1 | componente ou seção | Baseline, hipótese, mudança, comparação |
-| 2 | página ou Surface central | brief, 2-3 Directions, seleção, auditoria |
-| 3 | sistema ou produto | Workflow completo, piloto e promoção controlada |
+| 0 | typo, label, obvious alignment | fix and verify |
+| 1 | component or section | Baseline, hypothesis, change, comparison |
+| 2 | page or central Surface | brief, 2-3 Directions, selection, audit |
+| 3 | system or product | full Workflow, pilot, and controlled promotion |

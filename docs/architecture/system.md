@@ -1,60 +1,60 @@
-# Arquitetura do ChromaRelay Design OS
+# ChromaRelay Design OS Architecture
 
-## Objetivo arquitetural
+## Architectural goal
 
-O sistema deve esconder orquestração, transições, autoridade, contexto e persistência atrás de uma interface pequena. O Coordinator trabalha com Runs, Phase Packets e Handoffs; ele não precisa conhecer detalhes de cada adapter de harness.
+The system must hide orchestration, transitions, authority, context, and persistence behind a small interface. The Coordinator works with Runs, Phase Packets, and Handoffs; it never needs to know the internals of each harness adapter.
 
-## Módulos profundos
+## Deep modules
 
 ### Design Manager
 
-Interface externa:
+External interface:
 
-- classificar um Design Work;
-- iniciar ou retomar um Run;
-- compilar o Phase Packet atual;
-- registrar um Handoff;
-- validar e executar uma transição;
-- promover decisões e Artifacts aprovados.
+- classify a Design Work;
+- start or resume a Run;
+- compile the current Phase Packet;
+- record a Handoff;
+- validate and execute a transition;
+- promote approved decisions and Artifacts.
 
-A implementação esconde routing, state machine, skill budgets, políticas de autoridade, schemas e persistência. Este é o principal módulo profundo.
+The implementation hides routing, state machine, skill budgets, authority policies, schemas, and persistence. This is the primary deep module.
 
 ### Workspace
 
-Interface externa:
+External interface:
 
-- ler e escrever texto de forma atômica;
-- verificar existência;
-- listar paths;
-- criar diretórios.
+- read and write text atomically;
+- check existence;
+- list paths;
+- create directories.
 
-Adapters iniciais:
+Initial adapters:
 
-- filesystem para uso real;
-- memória para testes.
+- filesystem for real use;
+- memory for tests.
 
-A existência de dois adapters torna o seam real. Testes do Design Manager usam o adapter em memória e observam comportamento pela mesma interface.
+Two adapters make the seam real. Design Manager tests use the in-memory adapter and observe behavior through the same interface.
 
 ### Harness Adapter
 
-Converte Phase Packets em execução de agentes e Handoffs. O adapter OMP usa `task`, model roles, isolamento, output schemas e `hub`.
+Converts Phase Packets into agent execution and Handoffs. The OMP adapter uses `task`, model roles, isolation, output schemas, and `hub`.
 
-O núcleo não importa OMP. O adapter pode ser substituído por Codex, Claude Code ou execução própria sem alterar o modelo do Run.
+The core never imports OMP. The adapter can be replaced with Codex, Claude Code, or custom execution without changing the Run model.
 
 ### Gate Runner
 
-Executa gates determinísticos ou prepara pacotes para críticos qualitativos. Um gate sempre produz Evidence; ele nunca promove decisões.
+Runs deterministic gates or prepares packets for qualitative critics. A gate always produces Evidence; it never promotes decisions.
 
 ### Eval Harness
 
-Consome os mesmos Run Contracts, Handoffs, Directions e rubrics do núcleo, mas possui seu próprio seam. O eval harness pode migrar para outro repositório sem alterar os Workflows.
+Consumes the same Run Contracts, Handoffs, Directions, and rubrics as the core, but has its own seam. The eval harness can move to another repository without changing the Workflows.
 
-## Estado
+## State
 
 ```text
 .chromarelay/
-├── system/                 framework instalado; somente setup/upgrade escreve
-├── project/                estado canônico; Coordinator promove
+├── system/                 installed framework; only setup/upgrade writes
+├── project/                canonical state; Coordinator promotes
 │   ├── PRODUCT.md
 │   ├── CONSTRAINTS.md
 │   ├── DESIGN.md
@@ -75,17 +75,17 @@ Consome os mesmos Run Contracts, Handoffs, Directions e rubrics do núcleo, mas 
 └── active-run.json
 ```
 
-## Proteção contra corrupção de contexto
+## Context-corruption protection
 
-1. Especialistas começam sem histórico de conversa.
-2. O Coordinator compila Phase Packets mínimos.
-3. Art Directors independentes não veem as propostas uns dos outros na divergência inicial.
-4. O crítico visual recebe screenshots e contratos, não reasoning do criador.
-5. Especialistas escrevem apenas no Run ou em worktree isolada.
-6. O estado canônico é alterado apenas por Promotion.
-7. Compaction e retomada usam artifacts, não memória informal de chat.
+1. Specialists start with no conversation history.
+2. The Coordinator compiles minimal Phase Packets.
+3. Independent Art Directors don't see each other's proposals during initial divergence.
+4. The visual critic receives screenshots and contracts, not creator reasoning.
+5. Specialists write only to the Run or an isolated worktree.
+6. Canonical state changes only through Promotion.
+7. Compaction and resumption use artifacts, not informal chat memory.
 
-## Fluxo de execução
+## Execution flow
 
 ```text
 Design Work
@@ -99,17 +99,17 @@ Design Work
   -> advance | branch | return | request human decision | stop
 ```
 
-## Liberdade e autoridade
+## Freedom and authority
 
-Fases de divergência possuem grande espaço criativo. Depois da seleção, a Direction vira Lock de escopo apropriado. O sistema não bloqueia escolhas incomuns; ele exige que mudanças em Locks sejam explícitas, justificadas e avaliadas.
+Divergence phases have wide creative latitude. After selection, the Direction becomes a Lock of appropriate scope. The system doesn't block unusual choices; it requires that changes to Locks be explicit, justified, and evaluated.
 
-## Granularidade proporcional
+## Proportional granularity
 
-O Router classifica o nível da decisão:
+The Router classifies the decision level:
 
-- `0`: correção trivial;
-- `1`: refinamento localizado;
-- `2`: direção de Surface;
-- `3`: mudança sistêmica.
+- `0`: trivial fix;
+- `1`: localized refinement;
+- `2`: Surface direction;
+- `3`: systemic change.
 
-Níveis baixos pulam fases sem valor. Níveis altos exigem comparação e Evidence antes de compromisso.
+Low levels skip phases with no value. High levels require comparison and Evidence before commitment.
