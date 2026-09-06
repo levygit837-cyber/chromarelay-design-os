@@ -1,0 +1,116 @@
+{
+  "$meta": {
+    "layer": "semantic",
+    "runId": "create-20260906-issue20-chat",
+    "status": "proposed",
+    "doc": "purpose tokens — the only vocabulary components may consume; every value references a primitive"
+  },
+  "text": {
+    "primary": { "$value": "{color.ink}", "$type": "color", "$description": "body, titles, numerals" },
+    "secondary": { "$value": "{color.ink-2}", "$type": "color" },
+    "muted": { "$value": "{color.muted}", "$type": "color" },
+    "faint": { "$value": "{color.muted}", "$type": "color", "$description": "disabled/hint floor; never below AA for essential text" },
+    "inverse": { "$value": "{color.paper}", "$type": "color", "$description": "text on ink slabs (carriage, primary button, strip note)" },
+    "accent": { "$value": "{color.accent}", "$type": "color" }
+  },
+  "action": {
+    "primary-bg": { "$value": "{color.ink}", "$type": "color" },
+    "primary-text": { "$value": "{color.paper}", "$type": "color" },
+    "primary-border": { "$value": "{color.ink}", "$type": "color" },
+    "secondary-bg": { "$value": "{color.card}", "$type": "color" },
+    "accent": { "$value": "{color.accent}", "$type": "color" },
+    "accent-edge": { "$value": "{color.accent}", "$type": "color", "$description": "single selection edge, never tint" }
+  },
+  "surface": {
+    "base": { "$value": "{color.paper}", "$type": "color" },
+    "wing": { "$value": "{color.paper-deep}", "$type": "color" },
+    "ticket": { "$value": "{color.card}", "$type": "color" },
+    "well": { "$value": "{color.well}", "$type": "color" },
+    "elevated": { "$value": "{color.card}", "$type": "color", "$description": "active ticket ground; lift comes from lift.active, never a second ground" },
+    "strip": { "$value": "{color.ink}", "$type": "color", "$description": "375px strip-note + carriage slab" },
+    "cmdout-bg": { "$value": "{color.cmdout-bg}", "$type": "color" },
+    "cmdout-text": { "$value": "{color.cmdout-text}", "$type": "color" },
+    "scrim": { "$value": "{color.scrim}", "$type": "color" }
+  },
+  "border": {
+    "rule": { "$value": "{color.line}", "$type": "color" },
+    "hair": { "$value": "{color.hair}", "$type": "color" },
+    "strong": { "$value": "{color.graphite}", "$type": "color" }
+  },
+  "status": {
+    "ok-edge": { "$value": "{color.ok}", "$type": "color" },
+    "ok-ink": { "$value": "{color.ok-ink}", "$type": "color" },
+    "ok-bg": { "$value": "{color.ok-bg}", "$type": "color" },
+    "ok-border": { "$value": "{color.ok}", "$type": "color" },
+    "warn-edge": { "$value": "{color.warn}", "$type": "color" },
+    "warn-ink": { "$value": "{color.warn-ink}", "$type": "color" },
+    "warn-bg": { "$value": "{color.warn-bg}", "$type": "color" },
+    "warn-border": { "$value": "{color.warn}", "$type": "color" },
+    "bad-edge": { "$value": "{color.bad}", "$type": "color" },
+    "bad-ink": { "$value": "{color.bad-ink}", "$type": "color" },
+    "bad-bg": { "$value": "{color.bad-bg}", "$type": "color" },
+    "bad-border": { "$value": "{color.bad}", "$type": "color" },
+    "idle-ink": { "$value": "{color.muted}", "$type": "color" }
+  },
+  "diff": {
+    "add-bg": { "$value": "{color.diff-add-bg}", "$type": "color" },
+    "add-ink": { "$value": "{color.diff-add-ink}", "$type": "color" },
+    "del-bg": { "$value": "{color.diff-del-bg}", "$type": "color" },
+    "del-ink": { "$value": "{color.diff-del-ink}", "$type": "color" },
+    "ctx-ink": { "$value": "{color.muted}", "$type": "color" }
+  },
+  "spine": {
+    "rail": { "$value": "{color.graphite}", "$type": "color" },
+    "carriage-bg": { "$value": "{color.ink}", "$type": "color" },
+    "carriage-text": { "$value": "{color.paper}", "$type": "color" }
+  },
+  "focus": {
+    "ring": { "$value": "{color.accent}", "$type": "color", "$description": "3px outline + 2px offset everywhere (C-A1)" }
+  },
+  "gap": {
+    "inline": { "$value": "{space.4}", "$type": "dimension", "$description": "ROLE inline: glyph-to-label inside pills, status rows, checks" },
+    "stack": { "$value": "{space.14}", "$type": "dimension", "$description": "ROLE stack: ticket head to prose to tool list to well (12-16 range, 14 default)" },
+    "cluster": { "$value": "{space.10}", "$type": "dimension", "$description": "ROLE cluster: kind chip to target to status within a tool row (8-10 range)" },
+    "control-padding-x": { "$value": "{space.16}", "$type": "dimension", "$description": "ROLE control padding X: buttons, tabs, toggles, follow-ups" },
+    "control-padding-y": { "$value": "{space.12}", "$type": "dimension", "$description": "ROLE control padding Y around the 44px target floor" },
+    "card-padding": { "$value": "{space.16}", "$type": "dimension", "$description": "ROLE card padding: tickets, wells, panels, sheets (14-16 range)" },
+    "section-gap": { "$value": "{space.20}", "$type": "dimension", "$description": "ROLE section gap: ticket to ticket, wing section to section (18-24 range)" },
+    "page-gutter": { "$value": "{space.26}", "$type": "dimension", "$description": "ROLE page gutter: 26 desktop, 12 strip (responsive range)" },
+    "content-measure": { "$value": "70ch", "$type": "dimension", "$description": "ROLE content measure: prose and stamp wrap width" },
+    "sticky-composer": { "$value": "sticky bottom 0 below 820px, in-flow above", "$type": "other", "$description": "ROLE composer docking behavior (D-04)" }
+  },
+  "target": {
+    "min": { "$value": "{size.control-min}", "$type": "dimension", "$description": "44px universal floor" },
+    "row": { "$value": "{size.control-min}", "$type": "dimension", "$description": "tool rows, tabs, session items" },
+    "node": { "$value": "{size.node}", "$type": "dimension" },
+    "node-strip": { "$value": "{size.node-strip}", "$type": "dimension" }
+  },
+  "type": {
+    "numeral": { "$value": "800 52px/0.9 {font.numeral}, tracking -0.01em, stretch condensed", "$type": "typography", "$description": "turn ordering device, desktop" },
+    "numeral-strip": { "$value": "800 38px/0.9 {font.numeral}, tracking -0.01em, stretch condensed", "$type": "typography" },
+    "header": { "$value": "700 16px/1.35 {font.sans}", "$type": "typography", "$description": "ticket titles, panel titles" },
+    "body": { "$value": "400 15px/1.55 {font.sans}", "$type": "typography", "$description": "prose, composer input" },
+    "meta": { "$value": "600 11.5px/1.4 {font.sans}, uppercase +0.08em", "$type": "typography", "$description": "sublines, staged honesty labels" },
+    "micro": { "$value": "800 10.5px/1.3 {font.sans}, uppercase +0.1em", "$type": "typography", "$description": "spine labels, carriage" },
+    "eyebrow": { "$value": "800 11px/1.4 {font.sans}, uppercase +0.14em, muted", "$type": "typography", "$description": "wing headings, cite kickers, composer header" },
+    "label": { "$value": "800 11px/1.4 {font.sans}, uppercase +0.14em", "$type": "typography", "$description": "drawer tether labels" },
+    "mono": { "$value": "700 12px/1.6 {font.mono}", "$type": "typography", "$description": "targets, commands, citations — evidence only" },
+    "duration": { "$value": "400 11.5px/1.4 {font.mono}, secondary", "$type": "typography" },
+    "control": { "$value": "700 13px/1.4 {font.sans}", "$type": "typography", "$description": "buttons, modes, follow-ups" },
+    "hint": { "$value": "400 12px/1.4 {font.sans}, muted", "$type": "typography" }
+  },
+  "lift": {
+    "none": { "$value": "{elevation.none}", "$type": "shadow" },
+    "active": { "$value": "{elevation.active}", "$type": "shadow", "$description": "sole elevation in the system (L-02)" }
+  },
+  "feel": {
+    "enter": { "$value": "{motion.base} {motion.easing}", "$type": "other", "$description": "queued ticket enters at spine base" },
+    "settle": { "$value": "{motion.slow} {motion.easing}", "$type": "other", "$description": "single settle to terminal state, no flash loop" },
+    "snap": { "$value": "{motion.instant}", "$type": "duration", "$description": "scrub cross-highlight is immediate" },
+    "base": { "$value": "{motion.base}", "$type": "duration" },
+    "fast": { "$value": "{motion.fast}", "$type": "duration" },
+    "echo": { "$value": "{motion.echo}", "$type": "duration", "$description": "composer echo-to-dock ceiling 300ms" },
+    "pulse": { "$value": "{motion.pulse}", "$type": "other" },
+    "reduce": { "$value": "no animation; opacity steps become icon steps, progress becomes step text, echo docks instantly", "$type": "other", "$description": "reduced-motion fallback (C-A4)" }
+  }
+}

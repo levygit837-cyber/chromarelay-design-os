@@ -1,0 +1,27 @@
+{
+  "id": "decision-work-order-scope",
+  "scope": "run",
+  "status": "proposed",
+  "choice": "Propose direction-work-order as the T4 Work-Order Rail candidate for blind critique: spine-and-tickets composition, ticket-stack surfaces with active-only elevation, spine navigator signature, progress-as-motion.",
+  "rationale": [
+    "Territory 4 requires structural cards to make agentic time spatial; a rules-only trace would collapse back to T1.",
+    "Spine navigator answers resumption (where-was-I) without a separate minimap, directly from brief resumption truth.",
+    "Active-only elevation is the only way cards survive critique without card-soup regression."
+  ],
+  "alternatives": [
+    "Ledger-ruled trace without structural cards",
+    "Status-board grid without time spine"
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/creative-opportunities.md"
+  ],
+  "risks": [
+    "Spine competes with content for attention",
+    "Ticket cards regress into card soup if elevation rules slip"
+  ],
+  "revisitWhen": [
+    "Blind critic rejects ticket-stack surface logic",
+    "Coordinator finds divergence collapse against sibling candidates"
+  ]
+}

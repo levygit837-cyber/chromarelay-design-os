@@ -1,0 +1,343 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://chromarelay.dev/schemas/task-handoff.schema.json",
+ "title": "Task Handoff plus file payload",
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "version",
+  "runId",
+  "phase",
+  "role",
+  "agentId",
+  "summary",
+  "claims",
+  "evidence",
+  "artifacts",
+  "decisions",
+  "risks",
+  "confidence",
+  "requestedTransition",
+  "unresolved",
+  "files"
+ ],
+ "properties": {
+  "version": {
+   "const": "1.0"
+  },
+  "runId": {
+   "type": "string"
+  },
+  "phase": {
+   "type": "string"
+  },
+  "role": {
+   "type": "string"
+  },
+  "agentId": {
+   "type": "string"
+  },
+  "summary": {
+   "type": "string",
+   "minLength": 1
+  },
+  "claims": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "claim",
+     "status",
+     "confidence",
+     "evidenceRefs"
+    ],
+    "properties": {
+     "claim": {
+      "type": "string"
+     },
+     "status": {
+      "enum": [
+       "observed",
+       "inferred",
+       "proposed"
+      ]
+     },
+     "confidence": {
+      "enum": [
+       "low",
+       "medium",
+       "high"
+      ]
+     },
+     "evidenceRefs": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     }
+    }
+   }
+  },
+  "evidence": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  },
+  "artifacts": {
+   "type": "array",
+   "items": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://chromarelay.dev/schemas/artifact.schema.json",
+    "title": "ChromaRelay Artifact Reference",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "id",
+     "kind",
+     "path",
+     "status",
+     "producerRole",
+     "runId",
+     "phase",
+     "createdAt",
+     "sourceRefs"
+    ],
+    "properties": {
+     "id": {
+      "type": "string",
+      "minLength": 1
+     },
+     "kind": {
+      "type": "string",
+      "minLength": 1
+     },
+     "path": {
+      "type": "string",
+      "minLength": 1
+     },
+     "status": {
+      "enum": [
+       "observed",
+       "inferred",
+       "proposed",
+       "approved",
+       "locked",
+       "deprecated",
+       "rejected"
+      ]
+     },
+     "producerRole": {
+      "type": "string"
+     },
+     "agentId": {
+      "type": "string"
+     },
+     "runId": {
+      "type": "string"
+     },
+     "phase": {
+      "type": "string"
+     },
+     "createdAt": {
+      "type": "string",
+      "format": "date-time"
+     },
+     "contentHash": {
+      "type": "string"
+     },
+     "sourceRefs": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "evidenceRefs": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      },
+      "default": []
+     },
+     "canonicalDestination": {
+      "type": "string"
+     }
+    }
+   }
+  },
+  "decisions": {
+   "type": "array",
+   "items": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://chromarelay.dev/schemas/decision.schema.json",
+    "title": "ChromaRelay Decision",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "id",
+     "scope",
+     "status",
+     "choice",
+     "rationale",
+     "alternatives",
+     "evidence",
+     "risks",
+     "revisitWhen"
+    ],
+    "properties": {
+     "id": {
+      "type": "string",
+      "minLength": 1
+     },
+     "scope": {
+      "enum": [
+       "project",
+       "system",
+       "surface",
+       "component",
+       "run"
+      ]
+     },
+     "status": {
+      "enum": [
+       "inferred",
+       "proposed",
+       "approved",
+       "locked",
+       "deprecated",
+       "rejected"
+      ]
+     },
+     "choice": {
+      "type": "string",
+      "minLength": 1
+     },
+     "rationale": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      },
+      "minItems": 1
+     },
+     "alternatives": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "evidence": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "risks": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "revisitWhen": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "supersedes": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "approvedBy": {
+      "type": "string"
+     },
+     "approvedAt": {
+      "type": "string",
+      "format": "date-time"
+     }
+    }
+   }
+  },
+  "risks": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  },
+  "confidence": {
+   "enum": [
+    "low",
+    "medium",
+    "high"
+   ]
+  },
+  "requestedTransition": {
+   "enum": [
+    "advance",
+    "branch",
+    "return",
+    "escalate",
+    "stop"
+   ]
+  },
+  "requestedTarget": {
+   "type": "string"
+  },
+  "unresolved": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  },
+  "skill": {
+   "description": "Which Skills the specialist actually used, in the same shape the Phase Packet offers them, so offered and used are directly comparable. `supporting` honours the run's supporting-skill budget of 2.",
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "primary",
+    "supporting"
+   ],
+   "properties": {
+    "primary": {
+     "type": [
+      "string",
+      "null"
+     ],
+     "minLength": 1
+    },
+    "supporting": {
+     "type": "array",
+     "maxItems": 2,
+     "items": {
+      "type": "string",
+      "minLength": 1
+     }
+    }
+   }
+  },
+  "files": {
+   "description": "File payloads the coordinator persists as Artifacts before recording the Handoff.",
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "path",
+     "content"
+    ],
+    "properties": {
+     "path": {
+      "type": "string",
+      "minLength": 1
+     },
+     "content": {
+      "type": "string",
+      "minLength": 1
+     }
+    }
+   }
+  }
+ }
+}

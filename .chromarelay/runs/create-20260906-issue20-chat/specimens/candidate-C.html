@@ -1,0 +1,254 @@
+<!-- ANONYMOUS CANDIDATE C — blind tournament specimen. Judge hierarchy, signature, component language, system potential only. -->
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Control Room — Ops Board Specimen (reference-only)</title>
+<style>
+  :root{
+    --bench:#0b0e12; --well:#06080b; --well2:#0e141b; --rail:#0d1218;
+    --rule:#232e39; --rule-soft:#1a232d;
+    --ink:#e8eff5; --muted:#a9b6c2; --faint:#7d8b99;
+    --green:#5df08f; --green-dim:#12361f;
+    --amber:#ffd166; --amber-dim:#3d2f0e;
+    --red:#ffa3a3; --red-dim:#43161a;
+    --blue:#9cc8ff; --link:#9cc8ff;
+    --cap:#151d26; --cap-hi:#2b3a4a;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:var(--bench);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased}
+  a{color:var(--link)}
+  :focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:3px}
+  .specimen-banner{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--rule);padding:8px 16px;background:#080b0e}
+  .topbar{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--rule);background:var(--rail);position:sticky;top:0;z-index:5}
+  .mark{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.12em}
+  .mark small{color:var(--faint);font-weight:400;letter-spacing:.08em}
+  .cite{font-family:var(--mono);font-size:11.5px;color:var(--muted);background:var(--well);border:1px solid var(--rule);border-radius:4px;padding:4px 8px;font-variant-numeric:tabular-nums lining-nums}
+  .spacer{flex:1}
+  .mode{font-family:var(--mono);font-size:11px;color:var(--muted);border:1px solid var(--rule);border-radius:20px;padding:5px 6px;display:flex;gap:6px;align-items:center}
+  .mode b{color:var(--ink);background:#1d2937;border:1px solid var(--cap-hi);border-radius:12px;padding:2px 8px;font-size:11px}
+  .interrupt{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.06em;color:#0b0e12;background:var(--amber);border:0;border-top:2px solid #fff3cf;border-radius:6px;padding:10px 16px;min-height:44px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.55)}
+  .board{display:grid;grid-template-columns:248px minmax(0,1fr) 336px;gap:0;max-width:1440px;margin:0 auto;min-height:calc(100vh - 120px)}
+  aside.left{border-right:1px solid var(--rule);background:var(--rail);padding:14px 12px;font-family:var(--mono)}
+  section.center{padding:16px 20px 140px;min-width:0}
+  aside.right{border-left:1px solid var(--rule);background:var(--rail);padding:14px 12px;font-family:var(--mono)}
+  .rail-h{font-size:11px;letter-spacing:.14em;color:var(--faint);text-transform:uppercase;margin:2px 4px 10px;display:flex;justify-content:space-between;align-items:center}
+  .rail-h .count{color:var(--muted);border:1px solid var(--rule);border-radius:10px;padding:0 7px;font-size:11px}
+  .proj{font-size:11px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin:14px 4px 6px}
+  .sess{border:1px solid transparent;border-radius:6px;padding:8px 8px;margin-bottom:6px;background:transparent}
+  .sess.active{background:var(--well2);border-color:var(--rule)}
+  .sess .t{font-size:12.5px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .sess .m{font-size:11px;color:var(--faint);margin-top:3px;font-variant-numeric:tabular-nums lining-nums}
+  .badges{display:flex;gap:6px;margin-top:7px;flex-wrap:wrap}
+  .badge{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--rule);border-radius:4px;padding:3px 7px;color:var(--ink);background:#10161d}
+  .pip{width:8px;height:8px;border-radius:50%;flex:none}
+  .b-run{color:var(--amber);border-color:#5a4a1e}.b-run .pip{background:var(--amber)}
+  .b-fail{color:var(--red);border-color:#6b2b30}.b-fail .pip{background:var(--red)}
+  .b-ok{color:var(--green);border-color:#24573a}.b-ok .pip{background:var(--green)}
+  .b-unread{color:var(--blue);border-color:#2d4a6b}.b-unread .pip{background:var(--blue);border-radius:2px}
+  .pulse{animation:pulse 1.6s steps(2,jump-none) infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
+  .turn{border:1px solid var(--rule);border-radius:8px;overflow:hidden;margin-bottom:16px;background:#0d1319}
+  .turn-h{display:flex;gap:10px;align-items:center;padding:8px 12px;background:#080c10;border-bottom:1px solid var(--rule-soft);font-family:var(--mono);font-size:11px;color:var(--muted)}
+  .turn-h code{color:var(--faint)}
+  .userline{padding:12px 14px;border-bottom:1px solid var(--rule-soft);font-family:var(--mono);font-size:13px}
+  .userline .k{color:var(--blue);font-size:11px;letter-spacing:.12em;margin-right:8px}
+  .prose{font-family:var(--sans);font-size:14.5px;line-height:1.55;color:var(--ink);padding:12px 14px 6px;max-width:62ch}
+  .prose .caret{display:inline-block;width:8px;height:15px;background:var(--green);vertical-align:-2px;margin-left:4px}
+  .boardlabel{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--faint);text-transform:uppercase;padding:10px 14px 0;display:flex;justify-content:space-between}
+  .trace{margin:8px 12px 14px;border:1px solid var(--rule);border-radius:6px;overflow:hidden;background:var(--well);font-family:var(--mono)}
+  .cols,.row{display:grid;grid-template-columns:92px minmax(0,1fr) 190px 86px;gap:8px;align-items:center}
+  .cols{font-size:10.5px;letter-spacing:.14em;color:var(--faint);text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--rule);background:#090e13}
+  .row{padding:0;border-bottom:1px solid var(--rule-soft);font-size:12.5px}
+  .row:last-child{border-bottom:0}
+  .row > div{padding:9px 0}
+  .row > div:first-child{padding-left:12px}.row > div:last-child{padding-right:12px;text-align:right;font-variant-numeric:tabular-nums lining-nums;color:var(--muted)}
+  .kind{color:var(--muted);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+  .target{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+  .target code{color:var(--muted);font-size:11.5px}
+  .status{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;border:1px solid;border-radius:4px;padding:3px 7px;white-space:nowrap}
+  .st-ok{color:var(--green);border-color:#24573a;background:var(--green-dim)}
+  .st-run{color:var(--amber);border-color:#5a4a1e;background:var(--amber-dim)}
+  .st-fail{color:var(--red);border-color:#6b2b30;background:var(--red-dim);animation:failflash .16s ease-out 1}
+  @keyframes failflash{0%{background:#7a2126}100%{background:var(--red-dim)}}
+  .dur{font-variant-numeric:tabular-nums lining-nums}
+  .exit{color:var(--faint);font-size:11px}
+  details.rowdetail{border-bottom:1px solid var(--rule-soft);background:#05070a}
+  details.rowdetail summary{list-style:none;cursor:pointer}
+  details.rowdetail summary::-webkit-details-marker{display:none}
+  .well{margin:0 12px 12px;border:1px solid var(--rule);border-radius:6px;background:#05070a;box-shadow:inset 0 2px 8px rgba(0,0,0,.6);padding:10px 12px;font-size:12px}
+  .well .wh{font-size:10.5px;letter-spacing:.12em;color:var(--faint);text-transform:uppercase;margin-bottom:8px}
+  .well pre{margin:0;font-size:12px;line-height:1.5;overflow-x:auto;color:var(--ink)}
+  .well .del{color:var(--red)} .well .add{color:var(--green)}
+  .retry{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.05em;color:#0b0e12;background:var(--ink);border:0;border-top:2px solid #fff;border-radius:6px;padding:9px 14px;min-height:44px;cursor:pointer;margin-top:10px;box-shadow:0 3px 10px rgba(0,0,0,.5)}
+  .ghost{font-family:var(--mono);font-size:11.5px;color:var(--muted);border:1px solid var(--rule);border-radius:6px;padding:8px 12px;background:transparent;cursor:pointer;min-height:44px}
+  .skel{margin:8px 12px;border:1px solid var(--rule);border-radius:6px;background:#05070a;padding:10px 12px}
+  .skel .bar{height:11px;border-radius:3px;background:linear-gradient(90deg,#1a232d,#263342,#1a232d);margin:7px 0}
+  .skel .w40{width:40%}.skel .w70{width:70%}.skel .w90{width:90%}
+  .skel .lab{font-size:10.5px;letter-spacing:.14em;color:var(--faint);text-transform:uppercase}
+  .followups{display:flex;gap:8px;flex-wrap:wrap;padding:4px 14px 12px}
+  .chip{font-family:var(--mono);font-size:12px;color:var(--ink);border:1px solid var(--rule);background:#10161d;border-radius:16px;padding:8px 13px;cursor:pointer;min-height:44px}
+  .promo{border:1px solid #6b2b30;background:#160d0f;border-radius:8px;padding:10px 11px;margin-bottom:10px}
+  .promo .over{font-size:10.5px;letter-spacing:.14em;color:var(--red);text-transform:uppercase;display:flex;gap:7px;align-items:center;font-weight:700}
+  .promo .why{font-size:12px;color:var(--ink);margin-top:6px;line-height:1.45}
+  .promo .why code{color:var(--red)}
+  .promo .prior{font-size:11px;color:var(--muted);margin-top:6px}
+  .promo .prior button{font:inherit;color:var(--blue);background:none;border:1px solid #2d4a6b;border-radius:4px;padding:2px 7px;cursor:pointer}
+  .tabs{display:flex;gap:4px;border-bottom:1px solid var(--rule);margin-bottom:10px}
+  .tabs button{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:none;border:1px solid transparent;border-bottom:0;border-radius:6px 6px 0 0;padding:10px 10px;cursor:pointer;min-height:44px}
+  .tabs button[aria-selected="true"]{color:var(--ink);background:var(--well2);border-color:var(--rule)}
+  .eview{border:1px solid var(--rule);border-radius:6px;background:var(--well);overflow:hidden;margin-bottom:10px}
+  .eview .eh{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:8px 10px;border-bottom:1px solid var(--rule-soft);background:#090e13;font-variant-numeric:tabular-nums}
+  .eview .eb{padding:10px;font-size:12px}
+  .ftree{font-size:12px;line-height:1.7}
+  .ftree .f{color:var(--red)} .ftree .ok{color:var(--green)} .ftree .dim{color:var(--faint)}
+  .emptywell{border:1px dashed var(--rule);border-radius:6px;padding:12px;font-size:12px;color:var(--muted);background:transparent;margin-bottom:10px}
+  .composer{position:sticky;bottom:0;background:var(--cap);border:1px solid var(--cap-hi);border-top:2px solid #3d5268;border-radius:10px;box-shadow:0 -6px 24px rgba(0,0,0,.6);padding:10px;margin-top:14px}
+  .composer .modes{display:flex;gap:6px;margin-bottom:8px}
+  .composer textarea{width:100%;background:var(--well);border:1px solid var(--rule);border-radius:6px;color:var(--ink);font-family:var(--mono);font-size:13px;padding:10px;min-height:52px;resize:vertical}
+  .composer .row2{display:flex;gap:8px;margin-top:8px;align-items:center}
+  .send{font-family:var(--mono);font-weight:700;font-size:12px;color:#0b0e12;background:var(--green);border:0;border-top:2px solid #d2ffe0;border-radius:6px;padding:10px 18px;min-height:44px;cursor:pointer}
+  .note{border:1px solid var(--rule);border-radius:8px;background:#080c10;padding:12px 14px;margin-top:16px;font-family:var(--mono);font-size:12px;color:var(--muted);line-height:1.6}
+  .note h3{margin:0 0 6px;font-size:11px;letter-spacing:.14em;color:var(--ink);text-transform:uppercase}
+  .note table{width:100%;border-collapse:collapse;margin-top:8px;font-size:12px}
+  .note th,.note td{border-bottom:1px solid var(--rule-soft);padding:6px 8px;text-align:left}
+  .note th{color:var(--faint);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  @media (max-width:1020px){
+    .board{grid-template-columns:220px minmax(0,1fr)}
+    aside.right{grid-column:1/-1;border-left:0;border-top:1px solid var(--rule)}
+  }
+  @media (max-width:760px){
+    .board{grid-template-columns:minmax(0,1fr)}
+    aside.left{border-right:0;border-bottom:1px solid var(--rule)}
+    aside.left::before{content:"DRAWER — RESUMPTION (overlays at 375px)";display:block;font-size:10.5px;letter-spacing:.14em;color:var(--amber);margin:0 4px 10px}
+    aside.right{border-top:1px solid var(--rule)}
+    aside.right::before{content:"DRAWER — EVIDENCE (overlays at 375px)";display:block;font-size:10.5px;letter-spacing:.14em;color:var(--amber);margin:0 4px 10px}
+    .cols,.row{grid-template-columns:78px minmax(0,1fr) 150px}
+    .cols div:nth-child(4),.row > div:last-child{display:none}
+    .composer{position:sticky;bottom:8px}
+    .topbar{flex-wrap:wrap}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none !important;transition:none !important}
+    .pulse{opacity:1}
+  }
+</style>
+</head>
+<body>
+<div class="specimen-banner">Reference-only specimen · direction-control-room · 1440px ops board → single column at 375px · judge hierarchy / signature / component / states only</div>
+<header class="topbar">
+  <div class="mark">AGENT OPS <small>// NIGHT SHIFT</small></div>
+  <span class="cite" title="Active session">sess-042 · auth-hardening · turn T-14</span>
+  <div class="spacer"></div>
+  <div class="mode" role="group" aria-label="Mode"><span>MODE</span><b>ACT</b><span style="color:var(--faint)">PLAN</span></div>
+  <button class="interrupt" type="button" aria-label="Interrupt running tools">■ INTERRUPT</button>
+</header>
+<main class="board">
+  <aside class="left" aria-label="Sessions">
+    <div class="rail-h"><span>Resumption // Fleet</span><span class="count">7</span></div>
+    <div class="proj">atlas-web</div>
+    <div class="sess active"><div class="t">auth-hardening</div><div class="m">sess-042 · 2 min ago · T-14</div>
+      <div class="badges"><span class="badge b-fail"><span class="pip" aria-hidden="true"></span>✕ Failed · 2</span><span class="badge b-run"><span class="pip pulse" aria-hidden="true"></span>… Running · 2</span></div></div>
+    <div class="sess"><div class="t">oauth-refresh-rotation</div><div class="m">sess-041 · 1 h ago · T-09</div>
+      <div class="badges"><span class="badge b-ok"><span class="pip" aria-hidden="true"></span>✓ Clean</span><span class="badge b-unread"><span class="pip" aria-hidden="true"></span>3 unread</span></div></div>
+    <div class="sess"><div class="t">rate-limit-spike</div><div class="m">sess-039 · yesterday · T-22</div>
+      <div class="badges"><span class="badge b-ok"><span class="pip" aria-hidden="true"></span>✓ Clean</span></div></div>
+    <div class="proj">api-edge</div>
+    <div class="sess"><div class="t">lint-gate-flake</div><div class="m">sess-036 · 2 d ago · T-06</div>
+      <div class="badges"><span class="badge b-run"><span class="pip pulse" aria-hidden="true"></span>… Running · 1</span></div></div>
+    <div class="sess"><div class="t">empty-scratch</div><div class="m">sess-035 · 2 d ago · T-00</div>
+      <div class="badges"><span class="badge b-unread" style="color:var(--faint);border-color:var(--rule)"><span class="pip" style="background:var(--faint)" aria-hidden="true"></span>○ Empty</span></div></div>
+  </aside>
+  <section class="center" aria-label="Conversation">
+    <article class="turn" aria-label="Turn T-13 settled">
+      <div class="turn-h"><span>T-13 · ASSISTANT · 14:02:11</span><code>sess-042</code><span style="margin-left:auto">3/3 ✓ SUCCEEDED</span></div>
+      <p class="prose" style="margin:0">Rotated the refresh-token helper and added coverage for the expiry edge. No failures in this burst — the board below is the receipt.</p>
+      <div class="trace" role="table" aria-label="Tool trace T-13">
+        <div class="cols" role="row"><div>Kind</div><div>Target</div><div>Status</div><div>Duration</div></div>
+        <div class="row" role="row"><div class="kind">Read</div><div class="target">src/auth.ts <code>· 214 lines</code></div><div><span class="status st-ok"><span aria-hidden="true">✓</span> Succeeded</span></div><div class="dur">42 ms</div></div>
+        <div class="row" role="row"><div class="kind">Edit</div><div class="target">src/refresh.ts <code>· +18 −4</code></div><div><span class="status st-ok"><span aria-hidden="true">✓</span> Succeeded</span></div><div class="dur">310 ms</div></div>
+        <div class="row" role="row"><div class="kind">Bash</div><div class="target">npm test -- refresh <code>· exit 0</code></div><div><span class="status st-ok"><span aria-hidden="true">✓</span> Succeeded</span></div><div class="dur">1.82 s</div></div>
+      </div>
+    </article>
+    <article class="turn" aria-label="Turn T-14 anomalous">
+      <div class="turn-h"><span>T-14 · ASSISTANT · 14:06:44 · STREAMED</span><code>sess-042</code><span style="margin-left:auto;color:var(--red)">2 FAILED · 2 RUNNING</span></div>
+      <div class="userline"><span class="k">YOU 14:05</span>Harden auth: rotate refresh, gate weak passwords, prove it with tests.</div>
+      <p class="prose" style="margin:0">Two writes landed, but the gate edit and its test run failed — retry is pinned to the failing rows, not a toast. Two long tools are still running below.<span class="caret" aria-hidden="true"></span></p>
+      <div class="boardlabel"><span>Status board · summary-first, detail expands in place</span><span>5 rows</span></div>
+      <div class="trace" role="table" aria-label="Tool trace T-14 with failures">
+        <div class="cols" role="row"><div>Kind</div><div>Target</div><div>Status</div><div>Duration</div></div>
+        <div class="row" role="row"><div class="kind">Read</div><div class="target">src/auth.ts <code>· 214 lines</code></div><div><span class="status st-ok"><span aria-hidden="true">✓</span> Succeeded</span></div><div class="dur">38 ms</div></div>
+        <div class="row" role="row"><div class="kind">Write</div><div class="target">src/auth.test.ts <code>· +96 lines</code></div><div><span class="status st-ok"><span aria-hidden="true">✓</span> Succeeded</span></div><div class="dur">118 ms</div></div>
+        <details class="rowdetail" open>
+          <summary class="row" role="row" aria-label="Edit src auth failed, activate to collapse detail"><div class="kind">Edit</div><div class="target">src/auth.ts <code>· gate weak passwords</code></div><div><span class="status st-fail"><span aria-hidden="true">✕</span> Failed · exit 1</span></div><div class="dur">640 ms <span class="exit">· 1</span></div></div>
+          <div class="well"><div class="wh">Detail well · sess-042 · T-14 · Edit src/auth.ts · exit 1</div>
+<pre><span class="del">- if (pw.length &gt; 0) allow = true;</span>
+<span class="add">+ if (zxcvbn(pw).score &lt; 3) throw new WeakPassword("score &lt; 3");</span>
+<span style="color:var(--red)">error: WeakPassword not imported (E1101) — patch aborted, file unchanged.</span></pre>
+            <button class="retry" type="button">↻ RETRY EDIT — src/auth.ts</button>
+            <button class="ghost" type="button" style="margin-left:8px">Inspect diff</button>
+          </div>
+        </details>
+        <div class="row" role="row" style="background:#160d0f"><div class="kind">Bash</div><div class="target">npm test -- auth <code>· exit 1 · 2 failed</code></div><div><span class="status st-fail"><span aria-hidden="true">✕</span> Failed · exit 1</span></div><div class="dur">2.41 s <span class="exit">· 1</span></div></div>
+        <div class="row" role="row"><div class="kind" colspan="4" style="grid-column:1/-1;padding:0"><div style="display:flex;gap:8px;align-items:center;padding:9px 12px;flex-wrap:wrap"><span class="status st-fail"><span aria-hidden="true">✕</span> Failed · exit 1</span><span style="font-size:11.5px;color:var(--muted)">2 assertions failed · log kept in place · nothing auto-dismissed</span><button class="retry" type="button" style="margin:0 0 0 auto">↻ RETRY TESTS</button></div></div></div>
+        <div class="row" role="row"><div class="kind">Bash</div><div class="target">npm run lint <code>· streaming…</code></div><div><span class="status st-run"><span class="pip pulse" style="width:7px;height:7px;border-radius:50%;background:var(--amber)" aria-hidden="true"></span>… Running</span></div><div class="dur">4.2 s…</div></div>
+        <div class="row" role="row"><div class="kind">WebSearch</div><div class="target">oauth refresh rotation best practice <code>· 3 hits…</code></div><div><span class="status st-run"><span aria-hidden="true">…</span> Running</span></div><div class="dur">1.1 s…</div></div>
+      </div>
+      <div class="skel" aria-label="Loading: staged skeleton for running tools"><div class="lab">Live well · staged reveal — skeletons resolve into rows in place</div><div class="bar w90"></div><div class="bar w70"></div><div class="bar w40"></div></div>
+      <div class="followups" aria-label="Follow-ups"><button class="chip" type="button">↻ Retry failed pair</button><button class="chip" type="button">▸ Show failing assertions</button><button class="chip" type="button">◉ Interrupt lint</button></div>
+    </article>
+    <div class="composer" aria-label="Composer (raised cap)">
+      <div class="modes"><span class="badge b-ok"><span class="pip" aria-hidden="true"></span>ACT · active</span><span class="badge"><span class="pip" style="background:var(--faint)" aria-hidden="true"></span>PLAN</span><span class="badge"><span class="pip" style="background:var(--faint)" aria-hidden="true"></span>VERIFY</span></div>
+      <label class="sr" for="box">Message the crew</label>
+      <textarea id="box" placeholder="Steer the crew — e.g. fix the import, re-run auth tests…"></textarea>
+      <div class="row2"><button class="send" type="button">▲ SEND</button><span style="font-family:var(--mono);font-size:11px;color:var(--faint)">↵ send · ⇧↵ newline · ~300 ms optimistic echo</span></div>
+    </div>
+    <div class="note" aria-label="Responsive and system note">
+      <h3>Responsive · 1440 → 375 (live media query in this file)</h3>
+      At 1440px all three panes dock. Mid widths overlay the evidence wing. At ≤760px (375px target) this file collapses to a single column: both wings stack as labeled drawers, duration column hides to protect the reading measure, composer stays <b style="color:var(--ink)">sticky-pinned</b> at the bottom. No page h-scroll: rows ellipsis, code scrolls inside its well only.
+      <table aria-label="AA pairings"><tr><th>Pair</th><th>Use</th><th>Rule</th></tr>
+      <tr><td>#E8EFF5 on #0B0E12</td><td>body / prose</td><td>≈15:1 · AA pass</td></tr>
+      <tr><td>#5DF08F + ✓ label on #12361F</td><td>success — never dot-only</td><td>pip + text + icon</td></tr>
+      <tr><td>#FFD166 + … label on #3D2F0E</td><td>running — pulses in place</td><td>pip + text + duration</td></tr>
+      <tr><td>#FFA3A3 + ✕ label on #43161A</td><td>failed — flashes once, persists</td><td>pip + text + exit code</td></tr></table>
+      <div style="margin-top:8px">Type: mono-forward trace + rails (tabular-nums, caps columns); proportional face quarantined to summaries above. Surfaces: matte bench → inset live wells → flat ledger → exactly two raised caps (composer, interrupt/retry). Reduced-motion: pulse + flash disabled, cuts stay cuts.</div>
+    </div>
+  </section>
+  <aside class="right" aria-label="Evidence">
+    <div class="promo" role="status" aria-live="polite">
+      <div class="over"><span aria-hidden="true">◉</span> Showing: Files · anomaly promotion</div>
+      <div class="why">Newest failure — <code>Edit src/auth.ts · exit 1</code>. Wing auto-promoted from Browser; reason label mandatory.</div>
+      <div class="prior">Prior tab: <button type="button" id="backTab">Browser — one keypress away</button> · no focus stolen · ≤1 promotion/turn</div>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Evidence views">
+      <button role="tab" aria-selected="false" data-tab="browser" type="button">Browser</button>
+      <button role="tab" aria-selected="true" data-tab="files" type="button">Files ●</button>
+      <button role="tab" aria-selected="false" data-tab="github" type="button">GitHub</button>
+    </div>
+    <div class="eview" id="panel-files" role="tabpanel" aria-label="Files view">
+      <div class="eh">sess-042 · T-14 · FILES · stamped</div>
+      <div class="eb ftree"><div><span class="dim">src/</span></div><div><span class="f">✕ auth.ts — patch aborted (E1101)</span></div><div><span class="ok">✓ auth.test.ts — +96 lines staged</span></div><div><span class="dim">◌ refresh.ts — awaiting re-run</span></div>
+      <div class="emptywell" style="margin:10px 0 0">Diff excerpt pinned to the failing row — full hunks expand in the center well, not here.</div></div>
+    </div>
+    <div class="eview" id="panel-browser" role="tabpanel" aria-label="Browser view" hidden>
+      <div class="eh">sess-042 · T-14 · BROWSER · retained tab</div>
+      <div class="eb"><div style="font-size:12.5px;color:var(--ink)">oauth — refresh rotation checklist</div><div style="font-size:11.5px;color:var(--muted)">static mock excerpt · no fetch · nominative label only</div></div>
+    </div>
+    <div class="eview" id="panel-github" role="tabpanel" aria-label="GitHub view" hidden>
+      <div class="eh">sess-042 · T-14 · GITHUB</div>
+      <div class="emptywell" style="margin:10px">No checks attached to this turn — ruled placeholder, same grid, safe next action: run tests first.</div>
+    </div>
+    <div class="emptywell">Queue well · nothing dismissed: 2 failed stay pinned above until retried or superseded.</div>
+  </aside>
+</main>
+<div class="sr" aria-live="polite">Anomaly promotion announced once: Files promoted for newest failure Edit src/auth.ts exit 1.</div>
+<script>
+(function(){var bs=document.querySelectorAll('.tabs [role=tab]');function sel(n){bs.forEach(function(b){var on=b.getAttribute('data-tab')===n;b.setAttribute('aria-selected',on?'true':'false');var p=document.getElementById('panel-'+b.getAttribute('data-tab'));if(p){p.hidden=!on;}});}bs.forEach(function(b){b.addEventListener('click',function(){sel(b.getAttribute('data-tab'));});});var back=document.getElementById('backTab');if(back){back.addEventListener('click',function(){sel('browser');});}})();
+</script>
+</body>
+</html>

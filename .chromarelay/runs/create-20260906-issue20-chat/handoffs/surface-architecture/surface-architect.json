@@ -1,0 +1,354 @@
+{
+  "version": "1.0",
+  "runId": "create-20260906-issue20-chat",
+  "phase": "surface-architecture",
+  "role": "product-strategist",
+  "agentId": "surface-architect",
+  "summary": "Surface architecture for the selected work-order-rail chat Surface: focal outcome is the current assistant answer with its tool trace; T1/T2/T3 tiers, one-well-per-ticket disclosure with cite-back, four-breakpoint responsive model with keep-status/hide-duration and sticky composer, full keyboard/live-region/44px contracts, and an exhaustive state matrix covering conversation, trace, spine, composer, wings, drawers, reduced motion, and offline stub behavior.",
+  "claims": [
+    {
+      "claim": "Focal outcome is the current assistant answer with its attached tool trace, not the composer or the wings",
+      "status": "observed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/design-draft.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md"
+      ]
+    },
+    {
+      "claim": "Primary actions are send, follow-up pick, mode toggle, session switch; secondary actions are project switch, wing-view switch, tool expand, retry/dismiss",
+      "status": "observed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md"
+      ]
+    },
+    {
+      "claim": "Information tiers are T1 conversation+composer, T2 session switcher+tool summaries, T3 tool detail+wing content",
+      "status": "observed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/design-draft.md"
+      ]
+    },
+    {
+      "claim": "Hierarchy is spine -> ticket head -> prose -> tool rows -> well -> composer, with left resume wing and right evidence wing as session-scoped attachments",
+      "status": "inferred",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/design-draft.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md"
+      ]
+    },
+    {
+      "claim": "Disclosure rule: at most one well open per ticket, tool summary always visible, detail only on expansion, cite-back stamp in every well and wing header",
+      "status": "observed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/design-draft.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/tokens.component.json",
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md"
+      ]
+    },
+    {
+      "claim": "Responsive behavior is 1440 docked workbench; <=1180 evidence drawer; <=820 left drawer plus sticky composer plus footnote translation; <=480 strip-spine plus stacked drawers",
+      "status": "observed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/design-draft.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md"
+      ]
+    },
+    {
+      "claim": "Keep-status/hide-duration rule applies at <=480px: status glyph plus word persist, durations hide first in ticket heads, tool rows, and spine labels",
+      "status": "observed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/design-draft.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/tokens.component.json"
+      ]
+    },
+    {
+      "claim": "Spine compresses at 20+ turns (completed runs to counts, failures and current job stay addressable) with jump-to-failure; strip-spine carriage hidden at <=480px",
+      "status": "inferred",
+      "confidence": "medium",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/design-draft.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md"
+      ]
+    },
+    {
+      "claim": "Keyboard contract: landmarks for three panes, tab semantics for wing views, focus trap in drawers, Esc closes topmost sheet, 44px minimum targets, visible 3px focus ring",
+      "status": "inferred",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/tokens.component.json",
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md"
+      ]
+    },
+    {
+      "claim": "Live-region contract: polite region for streaming progress and session scope, assertive region for failures, no auto-scroll yank, no toasts or auto-dismiss",
+      "status": "inferred",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md"
+      ]
+    },
+    {
+      "claim": "Every assistant turn claiming work carries ruled tool rows or an explicit empty-trace box; failures persist in place with attempt-keeping retry and dismiss-with-reason",
+      "status": "observed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/design-draft.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md"
+      ]
+    },
+    {
+      "claim": "No horizontal page scroll at any width 375-1440px; sidebars become drawers rather than squeezing the reading column; composer stays reachable at every breakpoint",
+      "status": "observed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/design-draft.md"
+      ]
+    }
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/context/design-draft.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/context/tokens.component.json"
+  ],
+  "artifacts": [
+    {
+      "id": "surface-brief",
+      "kind": "Surface Brief",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/context/surface-brief.md",
+      "status": "proposed",
+      "producerRole": "product-strategist",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "surface-architecture",
+      "createdAt": "2026-09-06T18:00:00Z",
+      "sourceRefs": [
+        "selected-direction",
+        "design-draft"
+      ]
+    },
+    {
+      "id": "information-architecture",
+      "kind": "Information Architecture",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/context/information-architecture.md",
+      "status": "proposed",
+      "producerRole": "product-strategist",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "surface-architecture",
+      "createdAt": "2026-09-06T18:00:00Z",
+      "sourceRefs": [
+        "selected-direction",
+        "design-draft"
+      ]
+    },
+    {
+      "id": "responsive-model",
+      "kind": "Responsive Model",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/context/responsive-model.md",
+      "status": "proposed",
+      "producerRole": "product-strategist",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "surface-architecture",
+      "createdAt": "2026-09-06T18:00:00Z",
+      "sourceRefs": [
+        "selected-direction",
+        "design-draft"
+      ]
+    },
+    {
+      "id": "state-matrix",
+      "kind": "State Matrix",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/context/state-matrix.md",
+      "status": "proposed",
+      "producerRole": "product-strategist",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "surface-architecture",
+      "createdAt": "2026-09-06T18:00:00Z",
+      "sourceRefs": [
+        "selected-direction",
+        "design-draft"
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "D-SA01",
+      "scope": "run",
+      "status": "proposed",
+      "choice": "Exactly one spine per active session; exactly one node per assistant turn in chronological order; user turns render as slim ticks, never nodes; scrub cross-highlights ticket, node, and wing header together.",
+      "rationale": [
+        "Resumption starts with where-was-I instead of scrolling (direction thesis).",
+        "Single index prevents competing navigators; ticks keep user turns visible without inflating the node count.",
+        "Cross-highlight keeps spine, ticket, and cited evidence synchronized."
+      ],
+      "alternatives": [
+        "Two-level index with separate timeline plus session list",
+        "No spine; infinite scroll with jump-to-top only"
+      ],
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/design-draft.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md"
+      ],
+      "risks": [
+        "Spine scrollspy is the highest build complexity in the winning direction; must degrade to plain anchor jumps if intersection observation fails."
+      ],
+      "revisitWhen": [
+        "If usability evidence shows users navigate by search rather than by turn order."
+      ]
+    },
+    {
+      "id": "D-SA02",
+      "scope": "run",
+      "status": "proposed",
+      "choice": "At most one well open per work order; expansion is an inset well inside the same ticket; tool rows are hairline-ruled rows, never cards; every well and wing header carries a cite-back stamp Turn NN / Kind target.",
+      "rationale": [
+        "Enforces CARD-SOUP GUARD: depth means job state, exactly one elevated ticket per viewport.",
+        "Cite-back keeps evidence attached to the turn that produced it (per-session scoping differentiator)."
+      ],
+      "alternatives": [
+        "Multiple wells open per ticket",
+        "Detail in a separate modal disconnected from the ticket"
+      ],
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/design-draft.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/tokens.component.json"
+      ],
+      "risks": [
+        "Builders may be tempted to card tool rows for emphasis; audit must reject any second elevation."
+      ],
+      "revisitWhen": [
+        "If a tool genuinely needs side-by-side comparison of two expansions (no evidence for this today)."
+      ]
+    },
+    {
+      "id": "D-SA03",
+      "scope": "run",
+      "status": "proposed",
+      "choice": "Keep-status/hide-duration: at <=480px every status persists as color plus glyph plus word; durations hide first in ticket heads, tool rows, and spine labels; ticket heads roll up to a status rollup line.",
+      "rationale": [
+        "Repairs the known A-375px defect where tool-row status labels were hidden.",
+        "Status is product meaning (accountable delegation); duration is secondary metadata.",
+        "Preserves AA grayscale-safe signaling at every width."
+      ],
+      "alternatives": [
+        "Hide status labels at narrow widths and keep durations",
+        "Truncate both status and duration to icons only"
+      ],
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/design-draft.md"
+      ],
+      "risks": [
+        "Narrow ticket heads may wrap to two lines; rollup line must be concise (pill plus count)."
+      ],
+      "revisitWhen": [
+        "If strip-width testing proves the rollup line overflows at 375px with longest fixture strings."
+      ]
+    },
+    {
+      "id": "D-SA04",
+      "scope": "run",
+      "status": "proposed",
+      "choice": "1440 docked workbench; <=1180 evidence wing becomes tethered drawer sheet; <=820 left wing becomes drawer, composer sticky-bottom, wing meta translates to footnotes; <=480 spine becomes sticky top strip, drawers stack, prose stays at body size with 12px gutters.",
+      "rationale": [
+        "Satisfies 375-1440px hard floor with no page h-scroll while keeping the composer persistently reachable.",
+        "Tethered drawers preserve cite-back context that a generic tab bar would lose.",
+        "Footnote translation keeps verification metadata reachable without a docked wing."
+      ],
+      "alternatives": [
+        "Squeeze all three panes at every width",
+        "Tab-bar app with no drawers"
+      ],
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/design-draft.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md"
+      ],
+      "risks": [
+        "Drawer stacking order and sticky offsets interact; z-order and sticky rules are specified to remove invention."
+      ],
+      "revisitWhen": [
+        "If real-device testing shows sticky composer plus strip-spine consume too much vertical space at 375px."
+      ]
+    },
+    {
+      "id": "D-SA05",
+      "scope": "run",
+      "status": "proposed",
+      "choice": "At 20+ turns compress completed runs to counted groups; failures and the current job always stay individually addressable; a jump-to-failure control appears whenever any failure exists; full expansion available via the collapse note.",
+      "rationale": [
+        "Uneven agentic time needs spatial compression (burst-pause-verify rhythm).",
+        "Failures must persist in place and stay reachable; completed runs compress safely."
+      ],
+      "alternatives": [
+        "Render all 30+ nodes at full size (long rail)",
+        "Paginate the ticket stack"
+      ],
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/design-draft.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md"
+      ],
+      "risks": [
+        "Compression threshold interaction with strip-spine at <=480px needs explicit build coverage."
+      ],
+      "revisitWhen": [
+        "If fixture sessions never reach 20 turns and the builder cannot prove the rule; then prove with a synthetic 30-turn fixture."
+      ]
+    },
+    {
+      "id": "D-SA06",
+      "scope": "run",
+      "status": "proposed",
+      "choice": "Every drawer sheet carries a tether label naming its source (ATTACHMENT SHEET tethered to Turn NN; SESSIONS drawer; DISMISS WITH REASON for Turn NN) with the cite-back line Turn NN / Kind target; z-order is strip < drawers < composer; Esc closes the topmost sheet and returns focus.",
+      "rationale": [
+        "Carry-in from D (cite-back stamping) plus B (tether/translation pattern).",
+        "Tether labels preserve session scope when the wing undocks."
+      ],
+      "alternatives": [
+        "Floating untethered panels",
+        "Drawers with generic titles such as Details"
+      ],
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/tokens.component.json"
+      ],
+      "risks": [
+        "Long cite lines may wrap in 375px sheets; mono cite line must wrap without h-scroll."
+      ],
+      "revisitWhen": [
+        "If screen-reader testing shows the tether label plus cite line is redundantly announced; then merge into one labelledby chain."
+      ]
+    }
+  ],
+  "risks": [
+    "Spine scrollspy plus carriage sync is the highest build risk; degrade to anchor jumps with selection set on click if intersection observation is unavailable.",
+    "Drawer focus traps plus sticky composer offsets interact; trap must cover the composer while a sheet is open or keyboard users escape the trap.",
+    "Strip-spine at 375px plus sticky composer consume vertical space; prose must not shrink to compensate — gutters absorb it.",
+    "Staged determinate-feeling progress risks fake determinism; the honest stub label is load-bearing, not decorative.",
+    "Compression at 20+ turns is unproven in specimens; a synthetic 30-turn fixture with failures is required to prove it."
+  ],
+  "confidence": "high",
+  "requestedTransition": "advance",
+  "unresolved": [],
+  "skill": {
+    "primary": "chromarelay-grounding",
+    "supporting": []
+  }
+}

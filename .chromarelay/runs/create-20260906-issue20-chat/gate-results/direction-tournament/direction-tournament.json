@@ -1,0 +1,15 @@
+{
+  "version": "1.0",
+  "runId": "create-20260906-issue20-chat",
+  "phase": "direction-tournament",
+  "gate": "direction-tournament",
+  "status": "pass",
+  "summary": "Two independent blind critics both select anonymous candidate A (direction-work-order) with verdict repairable/medium; no material disagreement; winner recorded with carry-ins and repairable defects.",
+  "recordedBy": "coordinator",
+  "recordedAt": "2026-09-06T16:00:00Z",
+  "evidenceRefs": [
+    ".chromarelay/runs/create-20260906-issue20-chat/audit/tournament-report-critic-one.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/audit/tournament-report-critic-two.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md"
+  ]
+}

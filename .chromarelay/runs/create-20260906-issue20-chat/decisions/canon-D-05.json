@@ -1,0 +1,22 @@
+{
+  "id": "canon-D-05",
+  "scope": "run",
+  "status": "proposed",
+  "choice": "Every well and the evidence wing header carry a cite-back stamp: Turn NN / Kind target + status + duration; wing header mirrors the selected ticket and re-stamps on selection change [applies to: wells, evidence wing header]",
+  "rationale": [
+    "Carry-in from D: evidence never detaches from the turn that cites it; implements per-session scoping as a visible contract."
+  ],
+  "alternatives": [
+    "Generic attachment titles (Browser / Files); citation only in ticket wells"
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-work-order.html"
+  ],
+  "risks": [
+    "Long targets overflow the stamp; mitigated by anywhere-wrap plus two-line clamp."
+  ],
+  "revisitWhen": [
+    "A further surface reuses the wing for cross-session content; then the stamp gains a session token, never drops the turn token."
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "runId": "create-20260906-issue20-chat",
+  "workflow": "CREATE",
+  "phase": "intake",
+  "role": "coordinator",
+  "goal": "Classify Surface, decision level, autonomy, scope, constraints, and existing state.",
+  "scope": [
+    "agentic-model-chat"
+  ],
+  "inputs": [
+    {
+      "name": "Design Work request",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/request.json",
+      "status": "run"
+    }
+  ],
+  "unresolvedInputs": [],
+  "locks": [],
+  "openDecisions": [
+    "creative direction",
+    "composition",
+    "typography",
+    "motion",
+    "further surfaces"
+  ],
+  "rubric": "rubrics/operate.json",
+  "authority": [
+    "Own Run state, compile context, dispatch specialists, resolve transitions, and promote approved work.",
+    "must not: author the final visual verdict",
+    "must not: silently reopen Locks",
+    "must not: dump all Skills into a Phase Packet"
+  ],
+  "skillKit": {
+    "primary": null,
+    "supporting": []
+  },
+  "outputSchema": "framework/schemas/handoff.schema.json",
+  "acceptance": [
+    "produce: Run Contract"
+  ],
+  "exitPolicy": "Run Contract validates",
+  "nonGoals": [
+    "backend orchestration",
+    "real model traffic (stubbed)",
+    "billing",
+    "canonical promotion (Run-local manifest only)",
+    "pull request or merge"
+  ],
+  "omittedContext": [
+    "unrelated project documents",
+    "unrelated Run history",
+    "Skills outside the active kit"
+  ],
+  "independenceControls": []
+}

@@ -1,0 +1,24 @@
+{
+  "id": "comp-D4",
+  "scope": "run",
+  "status": "proposed",
+  "choice": "Shared EmptyFrame contract for all nine empty/error slots rendering in place with recovery action",
+  "rationale": [
+    "Nine copies drift in border, wording, and recovery wiring; one contract keeps dashed in-place discipline",
+    "Overlays are forbidden (T3 never overlays T1); EmptyFrame renders in place by contract"
+  ],
+  "alternatives": [
+    "Nine bespoke empty/error divs",
+    "Empty placeholders as overlay toasts"
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/context/state-matrix.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/context/surface-brief.md"
+  ],
+  "risks": [
+    "Over-general props (title/body/action free text) could dilute cite-back wording — constrain via state contracts"
+  ],
+  "revisitWhen": [
+    "If any slot needs behavior beyond message + one recovery action"
+  ]
+}

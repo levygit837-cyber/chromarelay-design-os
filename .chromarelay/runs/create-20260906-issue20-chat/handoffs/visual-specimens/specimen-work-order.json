@@ -1,0 +1,163 @@
+{
+  "version": "1.0",
+  "runId": "create-20260906-issue20-chat",
+  "phase": "visual-specimens",
+  "role": "art-director",
+  "agentId": "specimen-work-order",
+  "summary": "Complete self-contained work-order specimen: three-pane workbench with stubbed sessions, spine navigator with marked failure node and scrub anchors, six numbered tickets covering all five tool kinds with one expanded well, failed/running/empty-trace states, grotesk-plus-numeral density, and a proven 375px strip-spine with visible responsive contract. Single elevation on Turn 04; all statuses pair color with icon plus text.",
+  "claims": [
+    {
+      "claim": "Three-pane workbench present: left project/session sidebar with stubbed sessions, center conversation with composer, right per-session browser/files/GitHub panel",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-work-order.html"
+      ],
+      "status": "observed"
+    },
+    {
+      "claim": "Spine-navigator signature rendered as a vertical time/progress rail with one node per assistant turn, failure node marked, scrub anchors jumping to turns",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-work-order.html"
+      ],
+      "status": "observed"
+    },
+    {
+      "claim": "Work-order ticket component shows header numeral plus status, prose, tool rows in all five kinds (Write/Read/Edit/Bash/WebSearch), and one expanded detail well with diff",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-work-order.html"
+      ],
+      "status": "observed"
+    },
+    {
+      "claim": "Non-happy states present: failed ticket with inline retry, running ticket with staged stub progress, explicit empty-trace note, empty attachment view",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-work-order.html"
+      ],
+      "status": "observed"
+    },
+    {
+      "claim": "Workmanlike grotesk hierarchy with large condensed turn numerals at working density; responsive rule compresses spine to a top strip at 375px with a visible responsive note",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-work-order.html"
+      ],
+      "status": "observed"
+    },
+    {
+      "claim": "Card-soup guard honored: exactly one elevated ticket (Turn 04); every status pairs color with icon plus text label",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-work-order.html"
+      ],
+      "status": "observed"
+    }
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-work-order.html",
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md"
+  ],
+  "artifacts": [
+    {
+      "id": "specimen-work-order",
+      "kind": "visual specimens",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-work-order.html",
+      "status": "proposed",
+      "producerRole": "art-director",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "visual-specimens",
+      "createdAt": "2026-09-06T14:00:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md"
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "specimen-work-order-d-density",
+      "scope": "run",
+      "status": "proposed",
+      "choice": "Compact 44px-minimum ruled tool rows with mono targets wrapping to two lines, one expanded inset well per work order",
+      "rationale": [
+        "Direction fixes medium rhythmic density with 44px compact rows and exactly one well open",
+        "Brief demands five tool kinds stay scannable without leaving the turn that cites them"
+      ],
+      "alternatives": [
+        "Two-line clamped rows that truncate mono targets with ellipsis",
+        "Spacious 64px rows with generous whitespace"
+      ],
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md"
+      ],
+      "risks": [
+        "Dense rows may feel cramped on small laptop widths before the drawer breakpoint"
+      ],
+      "revisitWhen": [
+        "If usability evidence shows targets misread at 44px density"
+      ]
+    },
+    {
+      "id": "specimen-work-order-d-elevation",
+      "scope": "run",
+      "status": "proposed",
+      "choice": "Elevate exactly one ticket (Turn 04, active/selected); all other tickets flat with 1px rules; tool rows never carded",
+      "rationale": [
+        "Direction card-soup guard is absolute: depth means job state, emphasis comes from numerals and labels",
+        "Failed state already carries red node, pill, icon, and inline error so it needs no shadow"
+      ],
+      "alternatives": [
+        "Elevate every ticket with soft shadows for visual richness",
+        "Elevate failed tickets additionally to draw the eye"
+      ],
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md"
+      ],
+      "risks": [
+        "Reviewers may read flat tickets as unfinished"
+      ],
+      "revisitWhen": [
+        "If selection and failure must be visible simultaneously in the same viewport"
+      ]
+    },
+    {
+      "id": "specimen-work-order-d-responsive",
+      "scope": "run",
+      "status": "proposed",
+      "choice": "Below 480px the spine becomes a horizontal top progress strip, wings stack as labelled drawer sections, composer stays docked, plus a visible responsive note stating the contract",
+      "rationale": [
+        "Hard floor C-T6 and C-P3 forbid page h-scroll and require drawer/tab collapse with a reachable composer",
+        "Direction requires the 375px strip-spine fallback to be proven, not sketched"
+      ],
+      "alternatives": [
+        "Hide sidebars below 700px behind icon buttons with no explanation",
+        "Allow horizontal page scroll on narrow screens"
+      ],
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md"
+      ],
+      "risks": [
+        "Stacked drawers lengthen the page on phones"
+      ],
+      "revisitWhen": [
+        "If surface architecture later picks tabs over stacked drawers"
+      ]
+    }
+  ],
+  "risks": [
+    "Staged stub-duration progress can read as fake determinism; labels stay honest by calling out synthetic stub steps",
+    "The spine plus two sidebars can crowd mid widths; the 1100px breakpoint stacks the right wing before legibility suffers"
+  ],
+  "confidence": "high",
+  "requestedTransition": "advance",
+  "unresolved": [],
+  "skill": {
+    "primary": "chromarelay-art-direction",
+    "supporting": []
+  }
+}

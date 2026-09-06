@@ -1,0 +1,67 @@
+{
+  "runId": "create-20260906-issue20-chat",
+  "workflow": "CREATE",
+  "phase": "surface-architecture",
+  "role": "product-strategist",
+  "goal": "Define information hierarchy, focal point, actions, responsive transformations, and state matrix.",
+  "scope": [
+    "agentic-model-chat"
+  ],
+  "inputs": [
+    {
+      "name": "Product Brief",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md",
+      "status": "resolved"
+    },
+    {
+      "name": "Selected Direction",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+      "status": "resolved"
+    },
+    {
+      "name": "DESIGN draft",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/context/design-draft.md",
+      "status": "resolved"
+    }
+  ],
+  "unresolvedInputs": [],
+  "locks": [],
+  "openDecisions": [
+    "creative direction",
+    "composition",
+    "typography",
+    "motion",
+    "further surfaces"
+  ],
+  "rubric": "rubrics/operate.json",
+  "authority": [
+    "Clarify user, task, product truth, constraints, desired perception, and information architecture.",
+    "must not: pick visual details before product intent",
+    "must not: invent product facts"
+  ],
+  "skillKit": {
+    "primary": "chromarelay-grounding",
+    "supporting": []
+  },
+  "outputSchema": "framework/schemas/handoff.schema.json",
+  "acceptance": [
+    "produce: Surface Brief",
+    "produce: Information Architecture",
+    "produce: Responsive Model",
+    "produce: State Matrix"
+  ],
+  "exitPolicy": "Surface contracts are implementation-ready",
+  "nonGoals": [
+    "backend orchestration",
+    "real model traffic (stubbed)",
+    "billing",
+    "canonical promotion (Run-local manifest only)",
+    "pull request or merge"
+  ],
+  "omittedContext": [
+    "unrelated project documents",
+    "unrelated Run history",
+    "Skills outside the active kit"
+  ],
+  "independenceControls": []
+}

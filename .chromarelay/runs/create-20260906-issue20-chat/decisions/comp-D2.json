@@ -1,0 +1,24 @@
+{
+  "id": "comp-D2",
+  "scope": "run",
+  "status": "proposed",
+  "choice": "Single DrawerSheet contract wrapping native dialog for all three sheets with tether, stacking, one-layer Esc, opener return",
+  "rationale": [
+    "Three hand-wired dialogs repeat trap/tether/stacking/announce logic and drift",
+    "Native dialog supplies modality + top-layer + return; wrapper adds tether/stacking/scrim/reduced-motion consistently"
+  ],
+  "alternatives": [
+    "Bare native dialog per call site",
+    "No shared sheet (three bespoke drawers)"
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/context/state-matrix.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/context/responsive-model.md"
+  ],
+  "risks": [
+    "Hand-rolled stacking + trap without installed primitive needs audit focus"
+  ],
+  "revisitWhen": [
+    "If an accessible primitive is installed later, re-resolve rung 5"
+  ]
+}

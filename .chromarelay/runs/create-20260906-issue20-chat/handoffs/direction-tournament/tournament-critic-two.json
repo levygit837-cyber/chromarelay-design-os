@@ -1,0 +1,46 @@
+{
+  "version": "1.0",
+  "runId": "create-20260906-issue20-chat",
+  "phase": "direction-tournament",
+  "role": "visual-critic",
+  "agentId": "tournament-critic-two",
+  "summary": "Supplementary attestation: records the Selected Direction artifact (direction-work-order) from the blind tournament verdict for downstream input resolution.",
+  "claims": [
+    {
+      "claim": "Blind tournament selected direction-work-order (anonymous candidate A) with repairable verdict and no material critic disagreement.",
+      "status": "observed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/audit/tournament-report-critic-two.md"
+      ]
+    }
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md"
+  ],
+  "artifacts": [
+    {
+      "id": "selected-direction",
+      "kind": "Selected Direction or escalation",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+      "status": "proposed",
+      "producerRole": "visual-critic",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "direction-tournament",
+      "createdAt": "2026-09-06T16:00:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md"
+      ]
+    }
+  ],
+  "decisions": [],
+  "risks": [],
+  "confidence": "high",
+  "requestedTransition": "advance",
+  "unresolved": [],
+  "skill": {
+    "primary": "chromarelay-critique",
+    "supporting": []
+  }
+}

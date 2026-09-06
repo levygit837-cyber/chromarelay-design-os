@@ -1,0 +1,24 @@
+{
+  "id": "specimen-work-order-d-density",
+  "scope": "run",
+  "status": "proposed",
+  "choice": "Compact 44px-minimum ruled tool rows with mono targets wrapping to two lines, one expanded inset well per work order",
+  "rationale": [
+    "Direction fixes medium rhythmic density with 44px compact rows and exactly one well open",
+    "Brief demands five tool kinds stay scannable without leaving the turn that cites them"
+  ],
+  "alternatives": [
+    "Two-line clamped rows that truncate mono targets with ellipsis",
+    "Spacious 64px rows with generous whitespace"
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md"
+  ],
+  "risks": [
+    "Dense rows may feel cramped on small laptop widths before the drawer breakpoint"
+  ],
+  "revisitWhen": [
+    "If usability evidence shows targets misread at 44px density"
+  ]
+}

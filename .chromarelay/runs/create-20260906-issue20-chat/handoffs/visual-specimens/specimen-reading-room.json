@@ -1,0 +1,123 @@
+{
+  "version": "1.0",
+  "runId": "create-20260906-issue20-chat",
+  "phase": "visual-specimens",
+  "role": "art-director",
+  "agentId": "specimen-reading-room",
+  "summary": "Reading Room specimen: one self-contained HTML file staging the essay-and-margin thesis — editorial column with numerals 1-4, ruled gutter notes with in-place expansion, summoned Files sheet citing Notes 2-3, quiet in-place failure with retry, empty-session colophon, streaming caret, and full-bleed sheet behavior at 375px.",
+  "claims": [
+    {
+      "claim": "First view resolves the hierarchy: measure-constrained editorial article column with marginal evidence numerals in the gutter, slim withdrawn session rail (left) and evidence rail (right), and a calm composer with ordered follow-ups.",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-reading-room.html"
+      ]
+    },
+    {
+      "claim": "Marginal-numeral signature is in place and in use: superscript numerals 1-4 inside assistant prose match ruled gutter notes 1-4, and the summoned verification sheet header cites the same range (Notes 2-3, Files view).",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-reading-room.html"
+      ]
+    },
+    {
+      "claim": "Central component works: marginal note 2 expands in place from summary to evidence detail (paths, command, duration, status label) without cards or navigation.",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-reading-room.html"
+      ]
+    },
+    {
+      "claim": "Non-happy states render at full calm in place: tool failure row with persistent label plus retry (never a toast), an empty-session colophon with one next action, and a streaming caret line.",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-reading-room.html"
+      ]
+    },
+    {
+      "claim": "Editorial typography and warm-paper-plus-glass surfaces hold at reading density: serif essay at true text size, small sans chrome, mono quarantined to code and evidence, hairline rules, dark code wells, one sheet level above the page.",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-reading-room.html"
+      ]
+    },
+    {
+      "claim": "Responsive behavior is specified in a working media query: gutters collapse to footnote rows, rails become drawers, and summoned sheets go full-bleed at 375px with no horizontal scroll and a persistently reachable composer.",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-reading-room.html"
+      ]
+    },
+    {
+      "claim": "Eligibility: specimen is reference-only (required comment is the first bytes), fully self-contained (inline CSS only, zero external assets, tiny disclosure script that works from file://), and covers all six required elements (a)-(f) with stubbed sessions, tool trace, both rails, and the non-happy state present.",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-reading-room.html"
+      ]
+    }
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-reading-room.html"
+  ],
+  "artifacts": [
+    {
+      "id": "specimen-reading-room",
+      "kind": "visual specimens",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-reading-room.html",
+      "status": "proposed",
+      "producerRole": "art-director",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "visual-specimens",
+      "createdAt": "2026-09-06T14:00:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-reading-room.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md"
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "specimen-reading-room-scope",
+      "scope": "run",
+      "status": "proposed",
+      "choice": "Render one combined self-contained specimen file that stages all six evidence-plan beats in reading order: first view, signature with summoned sheet, expanded marginal note, in-place failure plus empty plus streaming states, density passage, and responsive rules.",
+      "rationale": [
+        "One file keeps the citation thread (numerals 1-4 across prose, margin, and sheet header) judgeable in a single viewport.",
+        "The assignment requires ONE self-contained HTML specimen covering (a)-(f)."
+      ],
+      "alternatives": [
+        "Six separate files, one per evidence-plan beat"
+      ],
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-reading-room.html"
+      ],
+      "risks": [
+        "A single long file can read as a page rather than a system; rails, sheet, and footnote collapse carry the system reading."
+      ],
+      "revisitWhen": [
+        "The coordinator splits specimens per evidence-plan beat"
+      ]
+    }
+  ],
+  "risks": [
+    "Static stub limitation: the summoned sheet is staged open for judgment; in the product it appears only when called from a numeral and dismisses back to the unbroken page.",
+    "Static stub limitation: retry, streaming caret, and drawer toggles are illustrative client-only stubs with synthetic data; no real latency, tool execution, or session switching occurs.",
+    "Footnote rows duplicate gutter-note content so narrow-viewport behavior is judgeable without resizing; a build would render one source through two presentations, not two copies.",
+    "Numeral fatigue ceiling: turns with many consequential calls must cap inline numerals and collapse to a labeled range (e.g. notes 3-7); this specimen shows four notes and does not prove the collapsed-range presentation.",
+    "Quiet-failure risk: breath motion and warm grounds can soften urgency; the persistent label-plus-retry row must carry the weight that pulse and toast normally carry."
+  ],
+  "confidence": "high",
+  "requestedTransition": "advance",
+  "unresolved": [],
+  "skill": {
+    "primary": "chromarelay-art-direction",
+    "supporting": []
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "canon-D-08",
+  "scope": "run",
+  "status": "proposed",
+  "choice": "Margin-to-footnote translation: at <=820px right-wing meta (density proof, static-mock disclaimers, capture notes) re-renders as labelled footnotes below the ticket stack, never dropped [applies to: evidence wing meta, <=820px]",
+  "rationale": [
+    "Carry-in from B: narrow widths translate chrome, they do not delete it; audit context survives the strip."
+  ],
+  "alternatives": [
+    "Drop wing meta at narrow widths; truncate density proof"
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md"
+  ],
+  "risks": [
+    "Page length growth at 375px; bounded by single-disclosure fallback."
+  ],
+  "revisitWhen": [
+    "Footnote volume exceeds ticket volume on short sessions; then collapse footnotes behind one disclosure, never delete."
+  ]
+}

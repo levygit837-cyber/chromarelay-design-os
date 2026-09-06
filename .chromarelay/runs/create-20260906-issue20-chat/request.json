@@ -1,0 +1,43 @@
+{
+  "request": {
+    "autonomy": "full",
+    "changeMagnitude": "systemic",
+    "explicitWorkflow": "CREATE",
+    "hardConstraints": [
+      "kit-only Skill loading; global skills disabled",
+      "HTML specimens are reference-only visual Artifacts; do-not-port-specimen-markup in the build",
+      "frontend only",
+      "real loading/empty/error states",
+      "responsive 375px to 1440px"
+    ],
+    "hasExistingDesign": false,
+    "needsCreativeExploration": true,
+    "nonGoals": [
+      "backend orchestration",
+      "real model traffic (stubbed)",
+      "billing",
+      "canonical promotion (Run-local manifest only)",
+      "pull request or merge"
+    ],
+    "objective": "Create an agentic model chat Surface with stubbed model traffic: left project/session sidebar, central customizable input bar with follow-ups and mode toggles, right per-session sidebar with integrated browser, file navigation and GitHub views, and visible agent tool calls (Write, Read, Edit, Bash, WebSearch). Deliver HTML Direction specimens as visual reference only, a blind Direction selection, and a bootable React plus TypeScript prototype in the Run folder.",
+    "openDecisions": [
+      "creative direction",
+      "composition",
+      "typography",
+      "motion",
+      "further surfaces"
+    ],
+    "scopeKind": "project",
+    "surfaceClass": "OPERATE",
+    "targets": [
+      "agentic-model-chat"
+    ]
+  },
+  "route": {
+    "workflow": "CREATE",
+    "decisionLevel": 3,
+    "rationale": [
+      "explicit compatible workflow requested"
+    ]
+  }
+}

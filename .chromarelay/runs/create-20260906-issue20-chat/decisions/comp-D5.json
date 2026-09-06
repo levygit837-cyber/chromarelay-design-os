@@ -1,0 +1,24 @@
+{
+  "id": "comp-D5",
+  "scope": "run",
+  "status": "proposed",
+  "choice": "ToolTraceRow + ExpandedWell as button-controlled disclosure (aria-expanded/controls); details/summary refused with recorded reason",
+  "rationale": [
+    "details/summary cannot enforce one-open-per-ticket, cite stamping, or variant bodies without JS that defeats its honesty",
+    "Div-click handlers are forbidden (IA keyboard contract: native buttons/tabs/links only)"
+  ],
+  "alternatives": [
+    "details/summary for tool disclosure",
+    "div-click rows"
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/context/information-architecture.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/context/state-matrix.md"
+  ],
+  "risks": [
+    "None beyond audit load; button disclosure is standard"
+  ],
+  "revisitWhen": [
+    "If one-open rule is dropped (not expected)"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "id": "canon-D-07",
+  "scope": "run",
+  "status": "proposed",
+  "choice": "44px minimum touch target for every interactive control: tool rows, chevrons, tabs, mode toggles, follow-ups, buttons including small variants, spine nodes (26px visual + 44px hit area in strip mode) [applies to: all interactive controls, all widths]",
+  "rationale": [
+    "Carry-in from B plus C-A4: density is rhythmic compression of information, never compression of targets."
+  ],
+  "alternatives": [
+    "Keep specimen 40px chevrons and small buttons; 36px dense rows"
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md"
+  ],
+  "risks": [
+    "Vertical density cost (~4px per small control); accepted, recorded in EX-04."
+  ],
+  "revisitWhen": [
+    "Platform guidance changes the floor; then move all targets together via target.min, never per-component."
+  ]
+}

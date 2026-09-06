@@ -1,0 +1,103 @@
+{
+  "version": "1.0",
+  "runId": "create-20260906-issue20-chat",
+  "phase": "direction-divergence",
+  "role": "art-director",
+  "agentId": "direction-lens-control-room",
+  "summary": "Control Room Direction: the agentic chat as a night-shift mission-control board with ops-board composition, high density everywhere, status-board trace, dark instrument wells with raised composer/interrupt caps, console-tabular voice, motion-as-signal, and the regulated anomaly-first wing as signature.",
+  "claims": [
+    {
+      "claim": "Control Room Direction carries one thesis through composition, density, typography, color, surfaces, and motion without palette-only divergence",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-control-room.md"
+      ]
+    },
+    {
+      "claim": "Operations-board composition with status-board trace and anomaly-first wing answers the brief's capable-like-a-control-room perception without breaking session scope or tier disclosure",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-control-room.md"
+      ]
+    },
+    {
+      "claim": "AA-contrast pairing and reduced-motion fallbacks are load-bearing in the Direction, not appended",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-control-room.md"
+      ]
+    },
+    {
+      "claim": "Signature anomaly-first wing is regulated so recurrence reads as system rather than tic",
+      "status": "proposed",
+      "confidence": "medium",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-control-room.md"
+      ]
+    }
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-control-room.md"
+  ],
+  "artifacts": [
+    {
+      "id": "direction-control-room",
+      "kind": "Direction candidates",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-control-room.md",
+      "status": "proposed",
+      "producerRole": "art-director",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "direction-divergence",
+      "createdAt": "2026-09-06T13:00:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/domain-map.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/creative-opportunities.md"
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "decision-control-room-thesis",
+      "scope": "run",
+      "status": "proposed",
+      "choice": "Commit the full Run slate to the Control Room lens for this candidate: ops-board composition, high density everywhere, motion-as-signal, dark instrument wells with raised action caps, console-tabular voice, and the anomaly-first wing as signature",
+      "rationale": [
+        "Territory 2 is the only territory that proves density can be capability rather than clutter, which the brief explicitly demands as capable like a control room",
+        "Status-board trace with kind/target/status/duration columns makes the tool-call audit scannable at a glance instead of buried under prose",
+        "Anomaly-first wing directly serves trust-but-verify anxiety and vigilance fatigue by spending the operator's attention where it is newest-needed"
+      ],
+      "alternatives": [
+        "Fall back to a calm reading-column Direction with withdrawn rails",
+        "Adopt a ticket-spine model where time is spatial rather than tabular"
+      ],
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-control-room.md"
+      ],
+      "risks": [
+        "High density overwhelms sustained reading",
+        "Dark-ground status color misses AA without disciplined tuning"
+      ],
+      "revisitWhen": [
+        "Blind critique finds Tier 1 reading drowned by Tier 2 density",
+        "AA audit fails on any dark-ground status combination"
+      ]
+    }
+  ],
+  "risks": [
+    "Tier 1 reading drowns under high-everywhere density unless prose stays capped and the board stays subordinate",
+    "Dark-ground amber/red status text fails AA without explicit contrast tuning plus mandatory text-plus-icon pairing",
+    "Unregulated pulse and ticking durations reintroduce the vigilance fatigue the board claims to cure",
+    "375px drawer semantics and focus management bury evidence if collapse rules are left vague"
+  ],
+  "confidence": "high",
+  "requestedTransition": "advance",
+  "unresolved": [],
+  "skill": {
+    "primary": "chromarelay-art-direction",
+    "supporting": []
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "canon-D-11",
+  "scope": "run",
+  "status": "proposed",
+  "choice": "Turn-header status rollup: ticket head always shows numeral + role + status pill + duration; pill glyph + word mirror the worst tool-row state (failed > running > succeeded > no-tools) [applies to: ticket head, all widths]",
+  "rationale": [
+    "Carry-in from C: glanceability without opening the ticket; the rollup is what makes keep-status/hide-duration coherent at 375px."
+  ],
+  "alternatives": [
+    "Status lives only in tool rows; ticket head shows numeral + duration only"
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md"
+  ],
+  "risks": [
+    "None material; pill space reserved in head grid at all widths."
+  ],
+  "revisitWhen": [
+    "Mixed-state tickets (partial failure) need finer rollup; then add counts to the pill label, never remove the pill."
+  ]
+}

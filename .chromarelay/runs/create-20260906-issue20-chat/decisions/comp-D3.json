@@ -1,0 +1,23 @@
+{
+  "id": "comp-D3",
+  "scope": "run",
+  "status": "proposed",
+  "choice": "StripSpine as extend-variant of SpineNavigator sharing props, state, selection, and announcements",
+  "rationale": [
+    "Second component for one requirement duplicates compression/selection logic and invites divergent announcements",
+    "Responsive Model defines strip as presentation change (visuals, carriage hidden, chip), not new behavior"
+  ],
+  "alternatives": [
+    "Separate StripSpine component",
+    "Hide spine at strip widths"
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/context/responsive-model.md"
+  ],
+  "risks": [
+    "Builder implements strip as fork — gate reads extend record to prevent it"
+  ],
+  "revisitWhen": [
+    "Never within this Run; strip stays a variant"
+  ]
+}

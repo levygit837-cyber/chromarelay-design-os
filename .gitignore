@@ -4,8 +4,9 @@ dist/
 *.log
 coverage/
 
-# Runtime state in this source repository
-.chromarelay/runs/
+# Evaluation Run records are tracked (see RUN-SUMMARY.md per run); only the
+# active-run pointer stays ignored. Generated output inside runs (node_modules,
+# dist, sim-out, logs) remains ignored by the rules above.
 .chromarelay/active-run.json
 
 # Eval outputs can be large; manifests and cases remain tracked

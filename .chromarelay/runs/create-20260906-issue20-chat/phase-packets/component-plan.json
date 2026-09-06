@@ -1,0 +1,70 @@
+{
+  "runId": "create-20260906-issue20-chat",
+  "workflow": "CREATE",
+  "phase": "component-plan",
+  "role": "component-architect",
+  "goal": "Resolve each component requirement by reuse, composition, extension, or justified creation.",
+  "scope": [
+    "agentic-model-chat"
+  ],
+  "inputs": [
+    {
+      "name": "Surface Brief",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/context/surface-brief.md",
+      "status": "resolved"
+    },
+    {
+      "name": "component inventory",
+      "path": ".chromarelay/project/DESIGN.md",
+      "status": "absent-canonical"
+    },
+    {
+      "name": "DESIGN draft",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/context/design-draft.md",
+      "status": "resolved"
+    }
+  ],
+  "unresolvedInputs": [
+    "component inventory"
+  ],
+  "locks": [],
+  "openDecisions": [
+    "creative direction",
+    "composition",
+    "typography",
+    "motion",
+    "further surfaces"
+  ],
+  "rubric": "rubrics/operate.json",
+  "authority": [
+    "Inventory, reuse, compose, extend, or propose components and state contracts.",
+    "must not: invent components before querying the existing registry",
+    "must not: hand-roll accessible primitives without reason"
+  ],
+  "skillKit": {
+    "primary": "chromarelay-components",
+    "supporting": [
+      "storybook"
+    ]
+  },
+  "outputSchema": "framework/schemas/handoff.schema.json",
+  "acceptance": [
+    "produce: Component Plan",
+    "produce: component state contracts",
+    "satisfy or report gate: component-reuse"
+  ],
+  "exitPolicy": "all critical component requirements have a resolution",
+  "nonGoals": [
+    "backend orchestration",
+    "real model traffic (stubbed)",
+    "billing",
+    "canonical promotion (Run-local manifest only)",
+    "pull request or merge"
+  ],
+  "omittedContext": [
+    "unrelated project documents",
+    "unrelated Run history",
+    "Skills outside the active kit"
+  ],
+  "independenceControls": []
+}

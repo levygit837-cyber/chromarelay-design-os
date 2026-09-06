@@ -1,0 +1,25 @@
+{
+  "id": "D-SA01",
+  "scope": "run",
+  "status": "proposed",
+  "choice": "Exactly one spine per active session; exactly one node per assistant turn in chronological order; user turns render as slim ticks, never nodes; scrub cross-highlights ticket, node, and wing header together.",
+  "rationale": [
+    "Resumption starts with where-was-I instead of scrolling (direction thesis).",
+    "Single index prevents competing navigators; ticks keep user turns visible without inflating the node count.",
+    "Cross-highlight keeps spine, ticket, and cited evidence synchronized."
+  ],
+  "alternatives": [
+    "Two-level index with separate timeline plus session list",
+    "No spine; infinite scroll with jump-to-top only"
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/context/design-draft.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md"
+  ],
+  "risks": [
+    "Spine scrollspy is the highest build complexity in the winning direction; must degrade to plain anchor jumps if intersection observation fails."
+  ],
+  "revisitWhen": [
+    "If usability evidence shows users navigate by search rather than by turn order."
+  ]
+}

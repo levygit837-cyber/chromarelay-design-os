@@ -1,0 +1,117 @@
+{
+  "version": "1.0",
+  "runId": "create-20260906-issue20-chat",
+  "phase": "visual-specimens",
+  "role": "art-director",
+  "agentId": "specimen-control-room",
+  "summary": "Reference-only control-room ops-board specimen: three-pane dark bench with anomaly-first wing, tabular status board, in-place failure with retry, skeletons, and 375px collapse.",
+  "claims": [
+    {
+      "claim": "First view resolves the three-pane ops-board hierarchy with center reading column flanked by resumption and evidence rails at working density",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-control-room.html"
+      ]
+    },
+    {
+      "claim": "Anomaly-first signature is in place: right wing promotes the newest-failure view with a mandatory labeled reason chip",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-control-room.html"
+      ]
+    },
+    {
+      "claim": "Central status-board component renders kind/target/status/duration columns with tabular numerals, exit codes, and in-place expansion",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-control-room.html"
+      ]
+    },
+    {
+      "claim": "Non-happy state persists in place: failed Bash row with inline retry plus staged skeletons for running tools, status never color-only",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-control-room.html"
+      ]
+    },
+    {
+      "claim": "Console-tabular typography holds at working density: mono-forward trace and rails with proportional prose quarantined to summaries",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-control-room.html"
+      ]
+    },
+    {
+      "claim": "Responsive rule collapses to a single column with drawer wings and pinned composer at 375px via media query, with reduced-motion fallbacks",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-control-room.html"
+      ]
+    },
+    {
+      "claim": "Eligibility: specimen is reference-only, self-contained inline-CSS HTML judging hierarchy, signature, component language, and system potential only, derived solely from direction-control-room plus shared brief and constraints",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-control-room.html"
+      ]
+    }
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-control-room.html"
+  ],
+  "artifacts": [
+    {
+      "id": "specimen-control-room",
+      "kind": "visual specimens",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-control-room.html",
+      "status": "proposed",
+      "producerRole": "art-director",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "visual-specimens",
+      "createdAt": "2026-09-06T14:00:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-control-room.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md"
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "specimen-control-room-1",
+      "scope": "run",
+      "status": "proposed",
+      "choice": "Specimen scope is proposed as run-local reference-only evidence for direction-control-room; no build, promotion, or canonical change is decided here.",
+      "rationale": [
+        "Reference-only specimen; no build or promotion decided here."
+      ],
+      "alternatives": [],
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-control-room.html"
+      ],
+      "risks": [],
+      "revisitWhen": [
+        "Tournament verdict."
+      ]
+    }
+  ],
+  "risks": [
+    "Specimen density may read as clutter on small renders; column discipline and capped prose are what keep it legible.",
+    "Amber and red status stops are lightened for AA on near-black but still need measured contrast audit in the build.",
+    "Pulse and single-flash motion are illustrative; the build must confine pulse to genuinely running rows with static reduced-motion twins.",
+    "Limitation: static reference-only artifact; drawer focus order, live-region announcements, and staged skeleton timing are represented as notes, not functional behavior."
+  ],
+  "confidence": "high",
+  "requestedTransition": "advance",
+  "unresolved": [],
+  "skill": {
+    "primary": "chromarelay-art-direction",
+    "supporting": []
+  }
+}

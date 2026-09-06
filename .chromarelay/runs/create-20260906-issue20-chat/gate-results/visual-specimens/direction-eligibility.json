@@ -1,0 +1,17 @@
+{
+  "version": "1.0",
+  "runId": "create-20260906-issue20-chat",
+  "phase": "visual-specimens",
+  "gate": "direction-eligibility",
+  "status": "pass",
+  "summary": "All four Direction candidates eligible: each holds product truths T1-T10, honors hard constraints, proves states and 375-1440px responsiveness with comparable specimen evidence; no blocker remains.",
+  "recordedBy": "coordinator",
+  "recordedAt": "2026-09-06T15:00:00Z",
+  "evidenceRefs": [
+    ".chromarelay/runs/create-20260906-issue20-chat/audit/eligibility-report.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-flight-recorder.html",
+    ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-control-room.html",
+    ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-reading-room.html",
+    ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-work-order.html"
+  ]
+}

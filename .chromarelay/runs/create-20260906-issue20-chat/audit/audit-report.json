@@ -1,0 +1,116 @@
+{
+ "blockers": [],
+ "checks": [
+  {
+   "evidenceRefs": [
+    "audit/build-log.md",
+    "prototype/chat-prototype/package.json",
+    "prototype/chat-prototype/check.mjs",
+    "prototype/chat-prototype/dist/assets/index-DhEUt5WJ.js",
+    "prototype/chat-prototype/dist/assets/index-8Wx6gRn_.css",
+    "http://127.0.0.1:4179/",
+    "http://127.0.0.1:4179/?state=default",
+    "http://127.0.0.1:4179/?state=empty",
+    "http://127.0.0.1:4179/?state=streaming",
+    "http://127.0.0.1:4179/?state=failed",
+    "http://127.0.0.1:4179/?state=long",
+    "http://127.0.0.1:4179/?state=narrow"
+   ],
+   "findings": [],
+   "gate": "build-health",
+   "status": "pass"
+  },
+  {
+   "evidenceRefs": [
+    "prototype/chat-prototype/src/styles.css",
+    "prototype/chat-prototype/src/tokens.ts",
+    "context/tokens.primitive.json",
+    "context/tokens.semantic.json",
+    "context/tokens.component.json"
+   ],
+   "findings": [
+    "Rule: gate-methods token-drift — a value with no canonical equivalent is a warning naming the missing token. | Location: src/styles.css:63 (z-index 60 skip-link), :338 (z-index 40 sheet-root), :366 (z-index 20 sticky composer), :374-375 (z-index 42/41 sheet stacking), :383/:406 (z-index 15 strip-spine); src/styles.css:341 (sheet width min(420px, calc(100vw - 24px))); src/styles.css:232 (chevron font-size 16px); src/styles.css:266 (.sk-line.short width 55%); src/styles.css:154/:171 (6px vertical padding on .spine-node and .carriage). | Observation: these literals have no counterpart in tokens.primitive.json / tokens.semantic.json / tokens.component.json; observed z-order (strip 15 < composer 20 < sheets 40/41/42 < skip-link 60) matches the contract z-order (strip < scrims < sheets, dismiss topmost within the single-sheet state; sheets cover composer). No literal contradicts an existing token. | Reproduction: grep -nE 'z-index|420px|font-size: 16px|width: 55%|padding: 6px' src/styles.css in the prototype dir; cross-check names against the three token files.",
+    "Rule: component token button.padding-y -> gap.control-padding-y (12px). | Location: src/styles.css:78 (.btn padding 10px 16px). | Observation: vertical padding is 10px (space.10) instead of the tokenized 12px; the 44px min-height floor is preserved on the same rule so the target contract is unbreached. | Reproduction: read src/styles.css:76-82 and compare against tokens.component.json button.padding-y."
+   ],
+   "gate": "token-drift",
+   "status": "warning"
+  },
+  {
+   "evidenceRefs": [
+    "prototype/chat-prototype/src/styles.css",
+    "http://127.0.0.1:4179/?state=narrow",
+    "context/responsive-model.md"
+   ],
+   "findings": [],
+   "gate": "responsive-geometry",
+   "status": "pass"
+  },
+  {
+   "evidenceRefs": [
+    "prototype/chat-prototype/src/components/EvidenceWing.tsx",
+    "prototype/chat-prototype/src/components/Ticket.tsx",
+    "prototype/chat-prototype/src/App.tsx",
+    "prototype/chat-prototype/src/components/shared.tsx",
+    "prototype/chat-prototype/src/components/DrawerSheet.tsx",
+    "prototype/chat-prototype/src/components/SpineNavigator.tsx",
+    "prototype/chat-prototype/src/components/Composer.tsx"
+   ],
+   "findings": [
+    "Rule: unique element IDs backing tab wiring (aria-controls / aria-labelledby must resolve to exactly one node; axe duplicate-id). | Location: src/components/EvidenceWing.tsx:261 (`wing-tab-${t.id}`) and :276 (`wing-panel-${view}`), rendered twice simultaneously via src/App.tsx:622 (docked wing-right aside) and the attachment-sheet slot (DrawerSheet children) whenever the attachment sheet is open. | Observation: with the attachment sheet open, #wing-tab-browser / #wing-panel-browser (and files/github twins) exist twice in the DOM, so aria-controls/aria-labelledby are ambiguous (automated-from-source; no browser was available to execute axe). | Reproduction: open the attachment sheet at narrow width (ticket select with ?state=narrow, or Cite in wing), then evaluate document.querySelectorAll('#wing-tab-browser').length === 2.",
+    "Rule: HTML list content model (ul permits only li, script, template children). | Location: src/components/Ticket.tsx — ul.tool-list renders <div className=\"tool-slot\"> wrappers around the ToolRow <li> elements. | Observation: div elements are direct children of ul.tool-list, breaking list semantics for assistive technology even though visual rendering is unchanged (automated-from-source via code read). | Reproduction: read src/components/Ticket.tsx ToolRow call-site wrapper (class tool-slot, styled display:contents at styles.css:233)."
+   ],
+   "gate": "accessibility",
+   "status": "warning"
+  },
+  {
+   "evidenceRefs": [
+    "prototype/chat-prototype/src/fixtures.ts",
+    "prototype/chat-prototype/src/App.tsx",
+    "prototype/chat-prototype/src/components/Ticket.tsx",
+    "http://127.0.0.1:4179/?state=long",
+    "http://127.0.0.1:4179/?state=nosessions",
+    "context/state-matrix.md"
+   ],
+   "findings": [
+    "Rule: State Matrix row B2 (Running tool row: trigger step-started, status word Running). | Location: src/fixtures.ts (all tool fixtures) + src/App.tsx startRun/retry/interrupt tool constructors + src/components/Ticket.tsx toolStatusWord. | Observation: no fixture or stub constructor emits tool status 'running'; every in-flight step renders 'staged' (word Staged), so the Running tool-row word never renders distinctly from B3 and B2 has no fixture trigger at tool-row granularity (turn-level running A3/C2 is covered). | Reproduction: grep -rn \"status: 'running'\" src/fixtures.ts src/App.tsx in the prototype dir — zero tool-level hits; compare toolStatusWord('running') vs rendered staged rows.",
+    "Rule: State Matrix row D6 (follow-ups offered by the latest turn only). | Location: src/App.tsx sessionFollowUps (selectedTurn?.followUps ?? active.suggestions). | Observation: the composer offers the SELECTED turn's follow-ups, not the latest turn's; the long session boots with selected=27 (failed turn with follow-ups ['Retry the migration', 'Show the lock holder']) while latest=30, so ?state=long offers a non-latest turn's suggestions on load; used labels are still filtered per D7. | Reproduction: load http://127.0.0.1:4179/?state=long and read the Suggestions group under the composer; read App.tsx sessionFollowUps useMemo. inclusion of corresponding tests. PELUCHE."
+   ],
+   "gate": "state-coverage",
+   "status": "warning"
+  }
+ ],
+ "createdAt": "2026-09-06T21:00:00Z",
+ "environment": {
+  "browser": "none — HTTP assertions via curl only; no browser driver available",
+  "buildCommand": "npm run build (tsc -p tsconfig.json && vite build)",
+  "bundle": "dist/assets/index-DhEUt5WJ.js (186339 B served) + dist/assets/index-8Wx6gRn_.css (19950 B served); 40 modules transformed",
+  "checkCommand": "node ./check.mjs",
+  "commit": "7890496a2503f47ca475e9f7e80c6ee949d09516",
+  "data": "stub fixtures only — sessions s-checkout (4 turns), s-long (30 turns), s-empty (0 turns); projects p-atlas / p-sidecar (empty); zero network after install",
+  "deviceScale": "not-run — no rendered capture taken",
+  "dirty": "clean — git status --porcelain empty in both repo root and prototype dir",
+  "fonts": "system stacks only (Helvetica Neue/Arial/system-ui; ui-monospace/Menlo/Consolas; Arial Narrow condensed chain; Impact excluded); no webfonts to resolve",
+  "locale": "EN-US (index.html lang en-US; served bundle en-US strings)",
+  "lockfile": "package-lock.json present (59 KB)",
+  "node": "v24.19.0 / npm 12.0.2",
+  "perGate": {
+   "accessibility": "automated-from-source (code reads + computed contrast); manual checklist manual-not-run (no browser)",
+   "build-health": "commands re-run by auditor in prototype dir at pinned commit; routes probed on hub-managed preview-4179",
+   "responsive-geometry": "asserted from CSS rules + served HTML (?state=narrow 200); live viewport measurement not-run (no browser)",
+   "state-coverage": "routes probed via curl (all 200); triggers verified in fixtures/App.tsx source; in-app interaction triggers recorded without live execution",
+   "token-drift": "grep over src/*.tsx src/*.css resolved literal-by-literal against the three token files"
+  },
+  "reducedMotion": "CSS @media (prefers-reduced-motion: reduce) block present in styles.css; live reduced-motion value not-run (no browser)",
+  "server": "hub-managed process preview-4179 serving the synced prototype dist at http://127.0.0.1:4179 (auditor started no server)",
+  "theme": "light workbench (paper grounds) + single dark cmdout block per EX-06; named theme not parameterized",
+  "viewport": "not-run — no rendered capture taken; breakpoints asserted statically (1440 default grid / 1180 / 820 / 480)"
+ },
+ "evidenceRefs": [
+  "audit/audit-report.md",
+  "audit/audit-report.json"
+ ],
+ "phase": "deterministic-audit",
+ "runId": "create-20260906-issue20-chat",
+ "summary": "Gates: 2 pass (build-health, responsive-geometry), 3 warning (token-drift, accessibility, state-coverage), 0 fail, 0 not-run. No blockers. Visual-regression step not-run (no frozen Baseline in a CREATE run). Browser-dependent manual checks (console capture, rendered geometry, keyboard/SR, live reduced-motion, axe-core) recorded as unresolved, never as passes.",
+ "target": ".chromarelay/runs/create-20260906-issue20-chat/prototype/chat-prototype (read-only)"
+}

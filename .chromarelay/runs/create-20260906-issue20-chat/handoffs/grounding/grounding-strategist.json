@@ -1,0 +1,221 @@
+{
+  "agentId": "grounding-strategist",
+  "artifacts": [
+    {
+      "createdAt": "2026-09-06T12:00:00Z",
+      "id": "product-brief",
+      "kind": "Product Brief",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md",
+      "phase": "grounding",
+      "producerRole": "product-strategist",
+      "runId": "create-20260906-issue20-chat",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/issue-20-base-prompt.txt",
+        ".chromarelay/runs/create-20260906-issue20-chat/run.json",
+        ".chromarelay/runs/create-20260906-issue20-chat/request.json"
+      ],
+      "status": "proposed"
+    },
+    {
+      "createdAt": "2026-09-06T12:00:00Z",
+      "id": "constraint-draft",
+      "kind": "Constraint Draft",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md",
+      "phase": "grounding",
+      "producerRole": "product-strategist",
+      "runId": "create-20260906-issue20-chat",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/issue-20-base-prompt.txt",
+        ".chromarelay/runs/create-20260906-issue20-chat/run.json",
+        ".chromarelay/runs/create-20260906-issue20-chat/request.json"
+      ],
+      "status": "proposed"
+    }
+  ],
+  "claims": [
+    {
+      "claim": "Product brief defines the actual user and context of use for the agentic chat Surface",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md"
+      ],
+      "status": "proposed"
+    },
+    {
+      "claim": "Product brief defines the primary task (direct an agentic coding assistant and verify its work) plus secondary actions",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md"
+      ],
+      "status": "proposed"
+    },
+    {
+      "claim": "Product brief defines desired user outcomes and business (Run evaluation) outcomes",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md"
+      ],
+      "status": "proposed"
+    },
+    {
+      "claim": "Chat Surface ships stubbed model traffic, frontend only; no backend orchestration, real model traffic, billing, promotion, or PR/merge",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md"
+      ],
+      "status": "observed"
+    },
+    {
+      "claim": "Left project/session sidebar is a non-negotiable product truth of the Surface",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md"
+      ],
+      "status": "observed"
+    },
+    {
+      "claim": "Central customizable input bar with follow-ups and mode toggles is a non-negotiable product truth",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md"
+      ],
+      "status": "observed"
+    },
+    {
+      "claim": "Right per-session sidebar with integrated browser, file navigation, and GitHub views is a non-negotiable product truth",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md"
+      ],
+      "status": "observed"
+    },
+    {
+      "claim": "Visible agent tool calls (Write, Read, Edit, Bash, WebSearch) attached to assistant turns are a non-negotiable product truth",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md"
+      ],
+      "status": "observed"
+    },
+    {
+      "claim": "Product brief defines content/data contracts, constraints pointer, operational perception terms, differentiation, open creative space, and per-field confidence",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md"
+      ],
+      "status": "proposed"
+    },
+    {
+      "claim": "Constraint draft carries all Run hard constraints and adds technical, legal, accessibility, localization, and performance constraints, each with source and hard-floor vs assumption flag",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md"
+      ],
+      "status": "proposed"
+    },
+    {
+      "claim": "HTML specimens are reference-only visual artifacts under do-not-port-specimen-markup; the build proves real loading/empty/error states and responsive 375px to 1440px with a bootable React+TypeScript prototype",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md"
+      ],
+      "status": "observed"
+    }
+  ],
+  "confidence": "high",
+  "decisions": [
+    {
+      "alternatives": [
+        "Allow live model calls behind a flag",
+        "Allow minimal backend proxy for fixtures"
+      ],
+      "choice": "All model traffic is stubbed and deterministic in the frontend; no network model calls, no backend orchestration, no billing hooks in this Run.",
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/issue-20-base-prompt.txt",
+        ".chromarelay/runs/create-20260906-issue20-chat/run.json"
+      ],
+      "id": "stubbed-traffic-boundary",
+      "rationale": [
+        "Base prompt and Run contract require stubbed sessions and tool trace with frontend only; real traffic would violate non-goals and the evaluation repeatability.",
+        "Deterministic fixtures let later phases prove loading/empty/error states without flakiness."
+      ],
+      "risks": [
+        "Stub realism gap: later Roles may over-fit to fixtures and under-design streaming, latency, and failure nuance."
+      ],
+      "revisitWhen": [
+        "A future Run explicitly charters live model integration."
+      ],
+      "scope": "run",
+      "status": "proposed"
+    },
+    {
+      "alternatives": [
+        "Single global right panel shared across sessions",
+        "Right panel as modal overlay only"
+      ],
+      "choice": "Left sidebar is global (projects > sessions); right sidebar is per-session scoped (browser, files, GitHub tabs follow the active session); center column owns conversation plus customizable input bar with follow-ups and mode toggles.",
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/issue-20-base-prompt.txt"
+      ],
+      "id": "sidebar-contract",
+      "rationale": [
+        "Base prompt names left project/session sidebar and right per-session sidebar with the three views; scoping the right panel per session preserves context when switching sessions.",
+        "Fixing the contract now prevents Directions from collapsing the workbench into a single-column chatbot."
+      ],
+      "risks": [
+        "Three-pane density is hard at 375px; responsive strategy must collapse sidebars into drawers without losing scope semantics."
+      ],
+      "revisitWhen": [
+        "Usability evidence shows session-switching confusion attributable to scoping."
+      ],
+      "scope": "run",
+      "status": "proposed"
+    },
+    {
+      "alternatives": [
+        "Hide tool calls behind a debug toggle",
+        "Show only free-text assistant messages"
+      ],
+      "choice": "Agent tool calls (Write, Read, Edit, Bash, WebSearch) are first-class visible trace attached to assistant turns, with summary-first progressive disclosure to full detail; stub fixtures cover running, succeeded, failed, and empty states.",
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/issue-20-base-prompt.txt"
+      ],
+      "id": "tool-trace-transparency",
+      "rationale": [
+        "Base prompt explicitly requires visible tool calls; transparency is the differentiator over generic chatbots and the basis of user trust.",
+        "Summary-first disclosure keeps the reading instrument calm while preserving auditability."
+      ],
+      "risks": [
+        "Over-verbose traces could overwhelm the central column; information-tier discipline is required in surface architecture."
+      ],
+      "revisitWhen": [
+        "Streaming/error-state evidence demands a revised trace model."
+      ],
+      "scope": "run",
+      "status": "proposed"
+    }
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md"
+  ],
+  "phase": "grounding",
+  "requestedTransition": "advance",
+  "risks": [
+    "Stub realism gap: deterministic fixtures may under-represent streaming latency, partial failures, and long traces, leading Directions to under-design those states.",
+    "Three-pane density versus 375px single column: collapsing two sidebars into drawers without losing per-session scope semantics is the highest interaction risk.",
+    "Mode taxonomy is invented downstream: inconsistent mode semantics across Directions could confuse steering; surface architecture must bound it.",
+    "Mock GitHub/browser views may read as live integrations; clear static-mock framing is needed to avoid false affordances."
+  ],
+  "role": "product-strategist",
+  "runId": "create-20260906-issue20-chat",
+  "skill": {
+    "primary": "chromarelay-grounding",
+    "supporting": []
+  },
+  "summary": "Grounded the agentic model chat Surface: builder user directing and verifying stubbed agent work via three-pane workbench (left sessions, central composer with follow-ups/modes, per-session browser/files/GitHub panel, visible Write/Read/Edit/Bash/WebSearch trace). Product Brief and Constraint Draft produced with cited hard floors, operational perception terms, data contracts, and open creative space; no blockers; requesting advance.",
+  "unresolved": [],
+  "version": "1.0"
+}

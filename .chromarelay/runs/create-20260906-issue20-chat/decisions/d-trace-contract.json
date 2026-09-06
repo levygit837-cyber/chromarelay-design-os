@@ -1,0 +1,22 @@
+{
+  "id": "d-trace-contract",
+  "scope": "run",
+  "status": "proposed",
+  "choice": "Treat summary-first trace rows with Tier-3 detail as the working contract for later candidates.",
+  "rationale": [
+    "Brief T5/T7 plus hard floors require visible trace and real states; structures the specimen plan."
+  ],
+  "alternatives": [
+    "Leave trace structure open for each Direction"
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md"
+  ],
+  "risks": [
+    "Inconsistent trace models across candidates"
+  ],
+  "revisitWhen": [
+    "visual-specimens eligibility evidence"
+  ]
+}

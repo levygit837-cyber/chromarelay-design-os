@@ -1,0 +1,312 @@
+<!-- REFERENCE-ONLY SPECIMEN for direction-reading-room — do not port this markup into the React build. Judge hierarchy, signature, component language, system potential only. -->
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reading Room — Specimen · Agentic Chat Surface</title>
+<style>
+  :root{
+    --paper:#faf5ec; --paper-2:#f3ecdd; --well:#efe6d3;
+    --ink:#221d14; --ink-soft:#4c4436; --faint:#8a8172;
+    --rule:#e0d5bf; --rule-strong:#c9bb9e;
+    --code:#24211b; --code-ink:#f2e9d8; --code-faint:#b7ab93;
+    --ok:#2f7d4f; --run:#a86a12; --fail:#b3372f; --ref:#2456c6;
+    --serif:Georgia,"Iowan Old Style","Times New Roman",serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:17px;line-height:1.65;}
+  a{color:var(--ref)}
+  :focus-visible{outline:2px solid var(--ref);outline-offset:2px;border-radius:2px}
+  .skip{position:absolute;left:-9999px;top:0;background:var(--ink);color:#fff;padding:.6rem 1rem;z-index:99;font-family:var(--sans);font-size:.85rem}
+  .skip:focus{left:.5rem;top:.5rem}
+  /* Masthead */
+  .masthead{border-bottom:1px solid var(--rule-strong);padding:.7rem 1.25rem;display:flex;gap:1rem;align-items:baseline;justify-content:space-between;flex-wrap:wrap;font-family:var(--sans)}
+  .masthead .brand{font-size:.72rem;letter-spacing:.14em;color:var(--ink-soft)}
+  .masthead .brand b{color:var(--ink)}
+  .masthead .live{font-size:.78rem;color:var(--ink-soft);display:flex;align-items:center;gap:.45rem}
+  .pip{width:.6em;height:.6em;border-radius:50%;display:inline-block;flex:none}
+  .pip.ok{background:var(--ok)} .pip.run{background:var(--run)} .pip.fail{background:var(--fail)}
+  /* Layout: slim rails + article + gutter */
+  .layout{display:grid;grid-template-columns:196px minmax(0,1fr) 248px 60px;gap:0;max-width:1360px;margin:0 auto;align-items:start}
+  .rail-left{border-right:1px solid var(--rule);padding:1rem .8rem;font-family:var(--sans);position:sticky;top:0;max-height:100vh;overflow:auto}
+  .rail-label{font-size:.68rem;letter-spacing:.14em;color:var(--faint);margin:.4rem 0 .5rem}
+  .proj{font-size:.72rem;letter-spacing:.08em;color:var(--ink-soft);margin:1rem 0 .3rem;text-transform:uppercase}
+  .sess{display:block;width:100%;text-align:left;background:none;border:0;border-left:2px solid transparent;padding:.4rem .5rem;font:inherit;font-size:.82rem;color:var(--ink-soft);cursor:pointer;line-height:1.35;border-radius:0}
+  .sess small{display:block;color:var(--faint);font-size:.72rem}
+  .sess[aria-current="true"]{border-left-color:var(--ink);color:var(--ink);background:var(--paper-2)}
+  .sess:hover{background:var(--paper-2)}
+  .newbtn{margin-top:.9rem;width:100%;font:inherit;font-size:.8rem;padding:.5rem;border:1px solid var(--rule-strong);background:transparent;border-radius:3px;cursor:pointer;color:var(--ink)}
+  .article{padding:2.2rem clamp(1.2rem,4vw,3rem) 3rem;max-width:72ch;justify-self:center;width:100%}
+  .kicker{font-family:var(--sans);font-size:.7rem;letter-spacing:.16em;color:var(--faint);margin:0 0 .6rem}
+  h1{font-size:clamp(1.6rem,3.2vw,2.2rem);line-height:1.2;margin:.2rem 0 .8rem;font-weight:600;max-width:22ch}
+  .lede{font-size:1.08rem;color:var(--ink-soft);margin:0 0 1.6rem;max-width:60ch}
+  .turn{border-top:1px solid var(--rule);padding:1.4rem 0}
+  .who{font-family:var(--sans);font-size:.68rem;letter-spacing:.16em;color:var(--faint);margin:0 0 .7rem}
+  .rubric{font-size:1.02rem;margin:0}
+  .essay p{margin:0 0 1em}
+  sup.numeral a{text-decoration:none;font-family:var(--sans);font-size:.68em;font-weight:700;color:var(--ref);padding:0 .1em}
+  sup.numeral a:hover{text-decoration:underline}
+  .empty-trace{font-family:var(--sans);font-size:.8rem;color:var(--faint);border-top:1px dashed var(--rule-strong);margin-top:1rem;padding-top:.6rem}
+  /* Code well */
+  .well{background:var(--code);color:var(--code-ink);border-radius:4px;padding:1rem 1.1rem;font-family:var(--mono);font-size:.8rem;line-height:1.6;overflow:auto;margin:1.2rem 0}
+  .well .c{color:var(--code-faint)}
+  .well .add{color:#9fe0b4} .well .del{color:#f2a49c}
+  .wellcap{font-family:var(--sans);font-size:.72rem;color:var(--faint);margin:-.6rem 0 1rem}
+  /* Streaming + failure + empty */
+  .streaming{border-top:1px solid var(--rule);padding:1rem 0;font-family:var(--sans);font-size:.85rem;color:var(--ink-soft)}
+  .caret{display:inline-block;width:.55em;height:1.05em;background:var(--ink);vertical-align:-0.15em;margin-left:.15em;animation:breath 1.6s ease-in-out infinite}
+  @keyframes breath{0%,100%{opacity:1}50%{opacity:.25}}
+  .failrow{border-top:1px solid var(--rule-strong);border-bottom:1px solid var(--rule-strong);background:var(--paper-2);padding:.9rem 1rem;display:flex;gap:.9rem;align-items:center;flex-wrap:wrap;font-family:var(--sans);margin:1.2rem 0;opacity:1;transition:opacity .25s ease}
+  .failrow .msg{font-size:.86rem}
+  .failrow code{font-family:var(--mono);font-size:.78rem}
+  .btn{font-family:var(--sans);font-size:.82rem;padding:.55rem 1rem;min-height:44px;border-radius:3px;cursor:pointer;border:1px solid var(--ink);background:var(--ink);color:var(--paper)}
+  .btn.ghost{background:transparent;color:var(--ink);border-color:var(--rule-strong)}
+  .btn.ghost:hover{background:var(--paper-2)}
+  .colophon{border:1px dashed var(--rule-strong);border-radius:4px;padding:1.4rem;text-align:center;font-family:var(--sans);margin:1.6rem 0}
+  .colophon h2{font-family:var(--serif);font-size:1.15rem;margin:0 0 .4rem}
+  .colophon p{font-size:.85rem;color:var(--ink-soft);margin:0 0 1rem}
+  /* Follow-ups + composer */
+  .followups{margin:1.6rem 0 0;padding:0;list-style:none;counter-reset:f;font-family:var(--sans)}
+  .followups li{counter-increment:f;border-top:1px solid var(--rule);padding:.6rem 0 .6rem 2rem;position:relative;font-size:.88rem}
+  .followups li::before{content:counter(f);position:absolute;left:0;top:.62rem;font-size:.72rem;color:var(--ref);font-weight:700}
+  .followups button{background:none;border:0;padding:0;font:inherit;color:var(--ink);cursor:pointer;text-align:left}
+  .followups button:hover{color:var(--ref);text-decoration:underline}
+  .composer{margin-top:1.2rem;border:1px solid var(--rule-strong);border-radius:5px;background:#fffdf7;box-shadow:0 1px 0 rgba(34,29,20,.06)}
+  .composer textarea{width:100%;border:0;background:transparent;font-family:var(--serif);font-size:1rem;line-height:1.55;padding:.9rem 1rem;resize:vertical;min-height:3.2rem;color:var(--ink)}
+  .composer .bar{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;border-top:1px solid var(--rule);padding:.55rem .8rem;font-family:var(--sans)}
+  .mode{font-size:.76rem;border:1px solid var(--rule-strong);background:transparent;border-radius:20px;padding:.4rem .85rem;min-height:44px;cursor:pointer;color:var(--ink-soft)}
+  .mode[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .send{margin-left:auto}
+  /* Gutter marginal notes */
+  .gutter{border-left:1px solid var(--rule);padding:2.2rem 1rem 3rem .9rem;font-family:var(--sans)}
+  .note{border-top:1px solid var(--rule-strong);padding:.7rem 0 .9rem;transition:opacity .25s ease}
+  .note .n{font-size:.72rem;font-weight:700;color:var(--ref)}
+  .note .kind{font-size:.78rem;font-weight:700}
+  .note .status{font-size:.74rem;color:var(--ink-soft);display:flex;gap:.4rem;align-items:center;margin:.15rem 0 .35rem}
+  .note p.sum{font-size:.8rem;color:var(--ink-soft);margin:.2rem 0 .4rem;line-height:1.5}
+  .note details{font-size:.78rem}
+  .note summary{cursor:pointer;color:var(--ref);min-height:44px;display:flex;align-items:center}
+  .note .detail{font-family:var(--mono);font-size:.72rem;background:var(--well);border-radius:3px;padding:.6rem .7rem;margin:.4rem 0;overflow:auto;line-height:1.6}
+  .note .sheetlink{background:none;border:0;padding:0;font:inherit;font-size:.76rem;color:var(--ref);cursor:pointer;min-height:44px}
+  .note .sheetlink:hover{text-decoration:underline}
+  /* Evidence rail */
+  .rail-right{border-left:1px solid var(--rule);padding:1rem .5rem;display:flex;flex-direction:column;gap:.4rem;align-items:stretch;position:sticky;top:0;font-family:var(--sans)}
+  .rail-right .vtab{writing-mode:horizontal-tb;font-size:.68rem;letter-spacing:.1em;border:1px solid var(--rule);background:transparent;border-radius:3px;padding:.6rem .2rem;cursor:pointer;color:var(--ink-soft);min-height:44px}
+  .rail-right .vtab[aria-selected="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .rail-right .cap{font-size:.66rem;color:var(--faint);text-align:center;line-height:1.5}
+  /* Footnote rows: narrow-width rendering of the same notes */
+  .footnotes{display:none;border-top:1px solid var(--rule-strong);margin-top:1.5rem;padding-top:.4rem;font-family:var(--sans)}
+  .footnotes li{font-size:.82rem;color:var(--ink-soft);margin:.5rem 0;list-style:none;border-top:1px solid var(--rule);padding-top:.5rem}
+  .footnotes .fn{font-weight:700;color:var(--ref);margin-right:.4rem}
+  /* Summoned sheet */
+  .scrim{position:fixed;inset:0;background:rgba(34,29,20,.42);display:flex;align-items:center;justify-content:center;padding:1.2rem;z-index:50;opacity:1;transition:opacity .25s ease}
+  .scrim[hidden]{display:none}
+  .sheet{background:var(--paper);color:var(--ink);max-width:640px;width:100%;max-height:86vh;overflow:auto;border-radius:6px;box-shadow:0 24px 70px rgba(34,29,20,.35);border:1px solid var(--rule-strong)}
+  .sheet header{position:sticky;top:0;background:var(--paper);border-bottom:1px solid var(--rule-strong);padding:.9rem 1.2rem;display:flex;gap:.8rem;align-items:baseline}
+  .sheet header .t{font-family:var(--sans);font-size:.72rem;letter-spacing:.14em;color:var(--ink-soft)}
+  .sheet header h2{font-size:1.1rem;margin:.15rem 0 0}
+  .sheet header .x{margin-left:auto}
+  .sheet .body{padding:1rem 1.2rem 1.4rem}
+  .tree{font-family:var(--mono);font-size:.76rem;list-style:none;margin:0 0 1rem;padding:0;line-height:1.9;color:var(--ink-soft)}
+  .tree b{color:var(--ink)}
+  .sheet footer{border-top:1px solid var(--rule);padding:.7rem 1.2rem;font-family:var(--sans);font-size:.74rem;color:var(--faint)}
+  .respnote{max-width:1360px;margin:0 auto;border-top:1px solid var(--rule-strong);padding:1rem 1.25rem 2.5rem;font-family:var(--sans);font-size:.78rem;color:var(--ink-soft)}
+  /* Responsive: gutters collapse, rails become drawers, sheets full-bleed */
+  @media (max-width:1080px){
+    .layout{grid-template-columns:170px minmax(0,1fr) 56px}
+    .gutter{display:none}
+    .footnotes{display:block}
+  }
+  @media (max-width:700px){
+    .layout{grid-template-columns:minmax(0,1fr)}
+    .rail-left,.rail-right{position:static;max-height:none;border:0;border-bottom:1px solid var(--rule)}
+    .rail-right{flex-direction:row;align-items:center}
+    .article{padding-top:1.4rem}
+  }
+  @media (max-width:480px){
+    /* (f) responsive note: sheets become full-bleed at 375px */
+    .scrim{padding:0;align-items:stretch}
+    .sheet{max-width:100%;width:100%;max-height:100vh;max-height:100dvh;border-radius:0;border:0}
+    body{font-size:16px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none!important;transition:none!important}
+    .caret{animation:none;opacity:1}
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#article">Skip to the essay</a>
+<header class="masthead">
+  <div class="brand"><b>READING ROOM</b> · direction-reading-room · reference-only specimen</div>
+  <div class="live"><span class="pip run" aria-hidden="true"></span> Agent working · Session 12 · checkout-rewrite</div>
+</header>
+<div class="layout">
+  <!-- LEFT: slim withdrawn session rail -->
+  <nav class="rail-left" aria-label="Projects and sessions">
+    <div class="rail-label">SESSION RAIL</div>
+    <div class="proj">checkout-rewrite</div>
+    <button class="sess" aria-current="true">Auth middleware pass<small>12 turns · active · 09:41</small></button>
+    <button class="sess" aria-current="false">Rate-limit spike<small>empty session · 0 turns</small></button>
+    <button class="sess" aria-current="false">Webhook retries<small>3 turns · yesterday</small></button>
+    <div class="proj">storefront-docs</div>
+    <button class="sess" aria-current="false">Nav IA pass<small>6 turns · Tue</small></button>
+    <button class="sess" aria-current="false">Empty — onboarding<small>empty session · colophon below</small></button>
+    <button class="newbtn" type="button">+ New session (stub)</button>
+  </nav>
+  <!-- CENTER: editorial article column -->
+  <main class="article" id="article">
+    <p class="kicker">SESSION 12 · PROJECT CHECKOUT-REWRITE · UPDATED 09:41</p>
+    <h1>Harden the auth middleware without breaking guest checkout</h1>
+    <p class="lede">Short-lived tokens, explicit guest paths, and a test run you can check line by line — the argument is here, the proof is in the margin.</p>
+    <section class="turn" aria-label="User turn">
+      <p class="who">YOU · 09:32</p>
+      <p class="rubric">Keep guest checkout working, add short-lived access tokens, and prove it with the auth test suite before touching the webhook path.</p>
+    </section>
+    <section class="turn essay" aria-label="Assistant answer with numbered tool claims" id="first-view">
+      <p class="who">AGENT · 09:41 · 4 EVIDENCE NOTES</p>
+      <p>I read the current middleware and its session helper<sup class="numeral"><a href="#note-1" aria-label="Evidence note 1">1</a></sup> to map every branch guest checkout can take. The anonymous path was implicit — it fell through rather than being named — so I made it explicit and issued short-lived tokens at the edge<sup class="numeral"><a href="#note-2" aria-label="Evidence note 2">2</a></sup>.</p>
+      <p>The full auth suite passes in about eleven seconds<sup class="numeral"><a href="#note-3" aria-label="Evidence note 3">3</a></sup>, including the two guest-checkout cases that cover the fall-through I removed. The public docs mention a fifteen-minute token lifetime, so I checked the current guidance<sup class="numeral"><a href="#note-4" aria-label="Evidence note 4">4</a></sup> and set expiry to nine hundred seconds to match.</p>
+      <div class="well" role="img" aria-label="Diff excerpt: guest path made explicit, token expiry set to 900 seconds">
+<span class="c">src/auth/middleware.ts — excerpt</span>
+<span class="del">-  if (session) return next(); // implicit fall-through</span>
+<span class="add">+  if (session) return next();</span>
+<span class="add">+  if (isGuest(req)) return guestPass(req, { ttlSec: 900 }); // ²</span>
+      </div>
+      <p class="wellcap">Inset well · mono quarantined to code · note 2</p>
+      <div class="streaming" role="status" aria-live="polite">Streaming the webhook notes next <span class="caret" aria-hidden="true"></span></div>
+      <div class="failrow" id="non-happy">
+        <span class="pip fail" aria-hidden="true"></span>
+        <span class="msg"><strong>Note 5 · Write failed in place.</strong> <code>notes/session-12.md</code> was not written — stubbed disk error. Nothing was lost; the essay above is intact.</span>
+        <button class="btn ghost" type="button" id="retryBtn">Retry write</button>
+      </div>
+      <p class="empty-trace">This turn carries no further tool claims — every consequential call above is numbered; nothing executed off the record.</p>
+      <ol class="footnotes" aria-label="Footnote rendering of marginal notes at narrow widths">
+        <li><span class="fn">1</span><strong>Read · succeeded</strong> — middleware plus session helper, 2 files, 84 ms.</li>
+        <li><span class="fn">2</span><strong>Edit · succeeded</strong> — explicit guest path, token ttl 900 s. Detail expanded in the margin at wide widths.</li>
+        <li><span class="fn">3</span><strong>Bash · running</strong> — auth suite, staged reveal, about 11 s.</li>
+        <li><span class="fn">4</span><strong>WebSearch · succeeded</strong> — token-lifetime guidance, 2 sources.</li>
+      </ol>
+    </section>
+    <section class="colophon" aria-label="Empty session state">
+      <h2>Empty session — “Rate-limit spike”</h2>
+      <p>No messages yet. Sessions begin as colophons, not spinners: one line of intent, one clear next action.</p>
+      <button class="btn ghost" type="button">Draft the spike question (stub)</button>
+    </section>
+    <section aria-label="Follow-ups and composer">
+      <ol class="followups">
+        <li><button type="button">Explain why the guest fall-through was risky</button></li>
+        <li><button type="button">Show the full diff in a reading sheet</button></li>
+        <li><button type="button">Run the webhook suite next</button></li>
+      </ol>
+      <div class="composer">
+        <label class="who" for="box" style="padding:.8rem 1rem 0;display:block">COMPOSE · STEERING LIVES HERE</label>
+        <textarea id="box" rows="2">What should change about the webhook path…</textarea>
+        <div class="bar">
+          <button class="mode" type="button" aria-pressed="true">Plan</button>
+          <button class="mode" type="button" aria-pressed="false">Act</button>
+          <button class="btn send" type="button">Send</button>
+        </div>
+      </div>
+    </section>
+  </main>
+  <!-- GUTTER: ruled marginal notes (the signature) -->
+  <aside class="gutter" aria-label="Marginal evidence notes" id="signature">
+    <div class="rail-label">MARGIN · 4 NOTES</div>
+    <div class="note" id="note-1">
+      <span class="n">1</span> <span class="kind">Read</span>
+      <div class="status"><span class="pip ok" aria-hidden="true"></span> succeeded · 84 ms</div>
+      <p class="sum">Middleware plus session helper mapped; guest fall-through found implicit.</p>
+      <details>
+        <summary>Evidence detail</summary>
+        <div class="detail">src/auth/middleware.ts<br>src/auth/session.ts<br>2 files · 412 lines · 84 ms</div>
+      </details>
+    </div>
+    <div class="note" id="note-2">
+      <span class="n">2</span> <span class="kind">Edit</span>
+      <div class="status"><span class="pip ok" aria-hidden="true"></span> succeeded · 210 ms</div>
+      <p class="sum">Guest path made explicit; short-lived token issued at the edge, ttl 900 s.</p>
+      <details open>
+        <summary>Evidence detail (expanded in place)</summary>
+        <div class="detail">edit src/auth/middleware.ts<br>+ guestPass(req, { ttlSec: 900 })<br>1 hunk · 210 ms · status: applied</div>
+      </details>
+      <button class="sheetlink" type="button" data-open-sheet>Open in reading sheet →</button>
+    </div>
+    <div class="note" id="note-3">
+      <span class="n">3</span> <span class="kind">Bash</span>
+      <div class="status"><span class="pip run" aria-hidden="true"></span> running · npm run test:auth</div>
+      <p class="sum">Auth suite staged reveal — 18 of 22 cases green, about 11 s total.</p>
+      <details>
+        <summary>Evidence detail</summary>
+        <div class="detail">$ npm run test:auth<br>18/22 passing · guest-checkout ×2 green<br>label advances running → succeeded, no pulse</div>
+      </details>
+      <button class="sheetlink" type="button" data-open-sheet>Open in reading sheet →</button>
+    </div>
+    <div class="note" id="note-4">
+      <span class="n">4</span> <span class="kind">WebSearch</span>
+      <div class="status"><span class="pip ok" aria-hidden="true"></span> succeeded · 2 sources</div>
+      <p class="sum">Token-lifetime guidance confirms fifteen minutes; expiry set to match.</p>
+      <details>
+        <summary>Evidence detail</summary>
+        <div class="detail">“token lifetime best practice”<br>2 excerpts · static mock · no fetch</div>
+      </details>
+    </div>
+  </aside>
+  <!-- RIGHT: slim evidence rail -->
+  <nav class="rail-right" aria-label="Verification views">
+    <div class="rail-label" style="font-size:.62rem;letter-spacing:.12em;color:var(--faint)">SHEETS</div>
+    <button class="vtab" type="button" aria-selected="false" data-open-sheet>Browser</button>
+    <button class="vtab" type="button" aria-selected="true" data-open-sheet>Files</button>
+    <button class="vtab" type="button" aria-selected="false" data-open-sheet>GitHub</button>
+    <div class="cap">Sheets<br>cites<br>2–3</div>
+  </nav>
+</div>
+<!-- SUMMONED SHEET: header cites the same numeral range -->
+<div class="scrim" id="scrim">
+  <section class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <header>
+      <div><div class="t">READING SHEET · NOTES 2–3 · FILES VIEW</div><h2 id="sheetTitle">Guest path diff, summoned from numeral 2</h2></div>
+      <button class="btn ghost x" type="button" id="closeSheet">Close · Esc</button>
+    </header>
+    <div class="body">
+      <ul class="tree">
+        <li>▸ src/auth/ <b>middleware.ts</b> · edited ²</li>
+        <li>&nbsp;&nbsp;▸ src/auth/session.ts · read ¹</li>
+        <li>&nbsp;&nbsp;▸ test/auth/ <b>guest-checkout.spec.ts</b> · 2 cases green ³</li>
+      </ul>
+      <div class="well"><span class="c">diff — notes 2–3 · 1 file · +3/−1</span>
+<span class="del">-  if (session) return next(); // implicit fall-through</span>
+<span class="add">+  if (session) return next();</span>
+<span class="add">+  if (isGuest(req)) return guestPass(req, { ttlSec: 900 });</span>
+<span class="c">tests: 18/22 green · guest-checkout ×2 green · ~11 s</span></div>
+    </div>
+    <footer>Summoned from numeral 2 · header range 2–3 matches margin notes · dismiss returns to the unbroken page</footer>
+  </section>
+</div>
+<p class="respnote" id="responsive"><strong>Responsive note.</strong> At 1440 px the page shows slim rails, article measure, and gutter sidenotes. Below 1080 px the gutter collapses to the numbered footnote rows inside the article. Below 700 px the rails dock above the column as drawers. At 375 px the summoned sheet is full-bleed (see the 480 px media query), the composer stays reachable, and nothing scrolls horizontally.</p>
+<script>
+(function(){
+  var scrim=document.getElementById('scrim');
+  function open(){scrim.hidden=false;}
+  function close(){scrim.hidden=true;}
+  document.querySelectorAll('[data-open-sheet]').forEach(function(b){b.addEventListener('click',open);});
+  document.getElementById('closeSheet').addEventListener('click',close);
+  scrim.addEventListener('click',function(e){if(e.target===scrim)close();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+  var retry=document.getElementById('retryBtn');
+  retry.addEventListener('click',function(){
+    retry.disabled=true;retry.textContent='Retrying… (stub)';
+    setTimeout(function(){retry.disabled=false;retry.textContent='Retry write';},900);
+  });
+  document.querySelectorAll('.mode').forEach(function(m){m.addEventListener('click',function(){
+    document.querySelectorAll('.mode').forEach(function(x){x.setAttribute('aria-pressed','false');});
+    m.setAttribute('aria-pressed','true');
+  });});
+})();
+</script>
+</body>
+</html>

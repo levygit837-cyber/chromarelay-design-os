@@ -1,0 +1,63 @@
+{
+  "runId": "create-20260906-issue20-chat",
+  "workflow": "CREATE",
+  "phase": "grounding",
+  "role": "product-strategist",
+  "goal": "Establish user, task, product truth, desired perception, constraints, and open creative space.",
+  "scope": [
+    "agentic-model-chat"
+  ],
+  "inputs": [
+    {
+      "name": "Run Contract",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/run.json",
+      "status": "run"
+    },
+    {
+      "name": "existing product facts",
+      "path": ".chromarelay/project/PRODUCT.md",
+      "status": "absent-canonical"
+    }
+  ],
+  "unresolvedInputs": [
+    "existing product facts"
+  ],
+  "locks": [],
+  "openDecisions": [
+    "creative direction",
+    "composition",
+    "typography",
+    "motion",
+    "further surfaces"
+  ],
+  "rubric": "rubrics/operate.json",
+  "authority": [
+    "Clarify user, task, product truth, constraints, desired perception, and information architecture.",
+    "must not: pick visual details before product intent",
+    "must not: invent product facts"
+  ],
+  "skillKit": {
+    "primary": "chromarelay-grounding",
+    "supporting": []
+  },
+  "outputSchema": "framework/schemas/handoff.schema.json",
+  "acceptance": [
+    "produce: Product Brief",
+    "produce: Constraint Draft",
+    "satisfy or report gate: grounding-completeness"
+  ],
+  "exitPolicy": "material ambiguity resolved or explicitly accepted",
+  "nonGoals": [
+    "backend orchestration",
+    "real model traffic (stubbed)",
+    "billing",
+    "canonical promotion (Run-local manifest only)",
+    "pull request or merge"
+  ],
+  "omittedContext": [
+    "unrelated project documents",
+    "unrelated Run history",
+    "Skills outside the active kit"
+  ],
+  "independenceControls": []
+}

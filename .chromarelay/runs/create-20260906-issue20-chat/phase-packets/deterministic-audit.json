@@ -1,0 +1,69 @@
+{
+  "runId": "create-20260906-issue20-chat",
+  "workflow": "CREATE",
+  "phase": "deterministic-audit",
+  "role": "deterministic-auditor",
+  "goal": "Collect objective implementation Evidence.",
+  "scope": [
+    "agentic-model-chat"
+  ],
+  "inputs": [
+    {
+      "name": "implementation",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/prototype/chat-prototype/src/App.tsx",
+      "status": "resolved"
+    },
+    {
+      "name": "acceptance contracts",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/context/surface-brief.md",
+      "status": "resolved"
+    }
+  ],
+  "unresolvedInputs": [],
+  "locks": [],
+  "openDecisions": [
+    "creative direction",
+    "composition",
+    "typography",
+    "motion",
+    "further surfaces"
+  ],
+  "rubric": "rubrics/operate.json",
+  "authority": [
+    "Measure build, runtime, semantics, token, component, state, responsive, accessibility, and regression facts.",
+    "must not: approve aesthetics",
+    "must not: edit the implementation under audit"
+  ],
+  "skillKit": {
+    "primary": "chromarelay-audit",
+    "supporting": [
+      "vercel-web-interface-guidelines",
+      "axe-core"
+    ]
+  },
+  "outputSchema": "framework/schemas/handoff.schema.json",
+  "acceptance": [
+    "produce: Audit Report",
+    "produce: screenshots",
+    "produce: state captures",
+    "satisfy or report gate: build-health",
+    "satisfy or report gate: token-drift",
+    "satisfy or report gate: responsive-geometry",
+    "satisfy or report gate: accessibility",
+    "satisfy or report gate: state-coverage"
+  ],
+  "exitPolicy": "objective blockers resolved or recorded",
+  "nonGoals": [
+    "backend orchestration",
+    "real model traffic (stubbed)",
+    "billing",
+    "canonical promotion (Run-local manifest only)",
+    "pull request or merge"
+  ],
+  "omittedContext": [
+    "unrelated project documents",
+    "unrelated Run history",
+    "Skills outside the active kit"
+  ],
+  "independenceControls": []
+}

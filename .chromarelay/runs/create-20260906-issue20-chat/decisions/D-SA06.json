@@ -1,0 +1,24 @@
+{
+  "id": "D-SA06",
+  "scope": "run",
+  "status": "proposed",
+  "choice": "Every drawer sheet carries a tether label naming its source (ATTACHMENT SHEET tethered to Turn NN; SESSIONS drawer; DISMISS WITH REASON for Turn NN) with the cite-back line Turn NN / Kind target; z-order is strip < drawers < composer; Esc closes the topmost sheet and returns focus.",
+  "rationale": [
+    "Carry-in from D (cite-back stamping) plus B (tether/translation pattern).",
+    "Tether labels preserve session scope when the wing undocks."
+  ],
+  "alternatives": [
+    "Floating untethered panels",
+    "Drawers with generic titles such as Details"
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/context/tokens.component.json"
+  ],
+  "risks": [
+    "Long cite lines may wrap in 375px sheets; mono cite line must wrap without h-scroll."
+  ],
+  "revisitWhen": [
+    "If screen-reader testing shows the tether label plus cite line is redundantly announced; then merge into one labelledby chain."
+  ]
+}
