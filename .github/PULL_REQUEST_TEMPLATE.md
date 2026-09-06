@@ -1,4 +1,4 @@
-<!-- Pull Request template: fill in briefly. -->
+<!-- Pull Request template: fill in briefly, in EN-US. -->
 ## Related issue
 
 <!-- e.g. Closes #123 -->
