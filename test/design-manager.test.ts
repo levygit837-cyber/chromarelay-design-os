@@ -1061,3 +1061,40 @@ test("a failing event store still records a return entry and resolves the attest
   const log = await events(workspace, "timing-run-006");
   assert.ok(log.some(event => event["type"] === "phase.entered" && event["phase"] === "grounding"));
 });
+
+test("status and audit agree on timing, including a completed Run with all-known durations", async () => {
+  const workspace = new MemoryWorkspace();
+  const manager = new DesignManager(workspace, transitionRegistry());
+  await manager.start({ objective: "Create a console", hasExistingDesign: false }, { runId: "timing-run-007" });
+
+  const run = await manager.getRun("timing-run-007");
+  const completed: RunContract = {
+    ...run,
+    status: "completed",
+    currentPhase: "critique",
+    phaseHistory: [
+      { phase: "intake", enteredAt: "2026-08-24T10:00:00.000Z", exitedAt: "2026-08-24T10:00:05.000Z", outcome: "advanced" },
+      { phase: "grounding", enteredAt: "2026-08-24T10:00:05.000Z", exitedAt: "2026-08-24T10:00:08.000Z", outcome: "advanced" },
+      { phase: "direction", enteredAt: "2026-08-24T10:00:08.000Z", exitedAt: "2026-08-24T10:00:12.000Z", outcome: "advanced" },
+      { phase: "critique", enteredAt: "2026-08-24T10:00:12.000Z", exitedAt: "2026-08-24T10:00:14.000Z", outcome: "advanced" }
+    ]
+  };
+  await workspace.writeText(".chromarelay/runs/timing-run-007/run.json", JSON.stringify(completed, null, 2) + "\n");
+
+  // Both views derive from the same pure computation over the same persisted history.
+  const view = await manager.status("timing-run-007");
+  const audit = await manager.auditRun("timing-run-007");
+  assert.equal(view.status, "completed");
+  assert.deepEqual(view.timing, audit.timing);
+
+  const byPhase = Object.fromEntries(view.timing.phases.map(entry => [entry.phase, entry.elapsedMs]));
+  assert.equal(byPhase["intake"], 5000);
+  assert.equal(byPhase["grounding"], 3000);
+  assert.equal(byPhase["direction"], 4000);
+  assert.equal(byPhase["critique"], 2000, "a completed Run has no phase still in flight, so no nulls remain");
+  const byRole = Object.fromEntries(view.timing.roles.map(entry => [entry.role, entry.elapsedMs]));
+  assert.equal(byRole["coordinator"], 5000);
+  assert.equal(byRole["product-strategist"], 3000);
+  assert.equal(byRole["art-director"], 4000);
+  assert.equal(byRole["visual-critic"], 2000);
+});
