@@ -28,9 +28,9 @@ defaults, and where the Packet is silent the neighbouring Surface is the tiebrea
 
 | Artifact | Destination |
 |---|---|
-| Code | the isolated worktree — one branch, one writer |
+| Product code on an existing project | the isolated worktree — one branch, one writer — as a patch; never into the Run folder |
+| App files for a Run-generated app (CREATE with no existing project) | `.chromarelay/runs/<runId>/prototype/` (bootable: README plus install/dev) |
 | HTML Direction specimens | `.chromarelay/runs/<runId>/specimens/` (visual reference only) |
-| Prototype app files recorded as Artifacts | `.chromarelay/runs/<runId>/prototype/` (bootable: README plus install/dev) |
 | Direction records | `.chromarelay/runs/<runId>/directions/` |
 | Briefs, maps, drafts, plans, state contracts | `.chromarelay/runs/<runId>/context/` |
 | Evidence, notes, captures, state matrices, Gate reports | `.chromarelay/runs/<runId>/audit/` |
