@@ -1,6 +1,6 @@
 {
   "name": "chromarelay-design-os",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "private": true,
   "description": "Portable design-work management operating system for agent teams.",
   "type": "module",
