@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- Typed Run Artifact layout: `recordHandoff` requires every `ArtifactRef.path`
+  under `specimens/`, `prototype/`, `directions/`, `context/`, or `audit/`
+  with the referenced file present, and `migrate-artifacts` copies
+  pre-existing flat Artifacts into their kind-mapped folder without
+  rewriting content.
+
 ## [0.1.1] - 2026-09-06
 
 Docs-only release: the remote repository is now fully EN-US.

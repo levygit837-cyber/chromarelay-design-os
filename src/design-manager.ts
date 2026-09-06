@@ -191,7 +191,8 @@ export const ARTIFACT_KIND_TO_DIR: Record<string, ArtifactLayoutDir> = {
   "unmodeled findings": "audit",
   "scale or return recommendation": "audit",
   "comparison": "audit",
-  "detector report": "audit"
+  "detector report": "audit",
+  "system-potential notes": "audit"
 };
 /** One flat-to-typed move performed by migrateArtifactsToTypedLayout. Content at `to` is untouched. */
 export interface ArtifactMigration {
@@ -1190,47 +1191,79 @@ export class DesignManager {
   }
   /**
    * Whether an Artifact path sits inside this Run's typed layout: under the Run root (accepted both
-   * Run-relative, e.g. `context/PRODUCT.md`, and workspace-style,
+   * Run-relative, e.g. `context/PRODUCT.md`, and Run-rooted,
    * `.chromarelay/runs/<id>/context/PRODUCT.md`) with the first segment one of the five layout
    * folders. Guards mirror resolveEvidence containment: the path is normalized, `..` escaping the
    * layout is rejected, and every remaining segment survives safeSegment unchanged.
    */
   private isArtifactLayoutPath(runId: string, artifactPath: string): boolean {
-    const trimmed = artifactPath.trim();
-    const root = this.runRoot(runId);
-    const relative = trimmed.startsWith(root) ? trimmed.slice(root.length).replace(/^\/+/, "") : trimmed;
+    const relative = this.stripRunRoot(runId, artifactPath);
     const within = this.normalizeWithin(relative);
     if (within === undefined || within.length === 0) return false;
-    const [first, ...rest] = within.split("/");
-    if (!(ARTIFACT_LAYOUT_DIRS as readonly string[]).includes(first ?? "")) return false;
-    return rest.length > 0 && rest.every(segment => this.isSafePathSegment(segment));
+    const segments = within.split("/");
+    const first = segments[0] ?? "";
+    if (!(ARTIFACT_LAYOUT_DIRS as readonly string[]).includes(first)) return false;
+    const rest = segments.slice(1);
+    if (rest.length === 0) return false;
+    for (const segment of rest) {
+      if (!this.isSafePathSegment(segment)) return false;
+    }
+    return true;
+  }
+  /**
+   * Run-relative remainder of an Artifact path. Rooted refs name the Run root explicitly, so the
+   * strip only fires on an exact root or a root-plus-separator boundary — anything else is already
+   * Run-relative. The boundary check keeps a sibling directory whose name merely starts with the
+   * Run id from passing as this Run's own folder.
+   */
+  private stripRunRoot(runId: string, artifactPath: string): string {
+    const trimmed = artifactPath.trim();
+    const root = this.runRoot(runId);
+    if (trimmed === root) return "";
+    if (trimmed.startsWith(`${root}/`)) return trimmed.slice(root.length).replace(/^\/+/, "");
+    return trimmed;
   }
   /** An Artifact path expressed relative to the Run root, for resolveEvidence-style lookups. */
   private workspaceRelative(runId: string, artifactPath: string): string {
-    const root = this.runRoot(runId);
-    const trimmed = artifactPath.trim();
-    return trimmed.startsWith(root) ? trimmed.slice(root.length).replace(/^\/+/, "") : trimmed;
+    return this.stripRunRoot(runId, artifactPath);
   }
   /** An Artifact path expressed workspace-relative, for reads and writes. */
   private workspacePath(runId: string, artifactPath: string): string {
     const relative = this.workspaceRelative(runId, artifactPath);
     return relative.length === 0 ? this.runRoot(runId) : `${this.runRoot(runId)}/${relative}`;
   }
-  /** Workspace-style path under the Run root, so stored refs resolve however they were written. */
+  /** Run-rooted storage form of an Artifact path, so stored refs resolve however written. */
   private canonicalArtifactPath(runId: string, artifactPath: string): string {
     const relative = this.workspaceRelative(runId, artifactPath);
-    return `${this.runRoot(runId)}/${this.normalizeWithin(relative) ?? relative}`;
+    const normalized = this.normalizeWithin(relative);
+    if (normalized === undefined || normalized.length === 0) return `${this.runRoot(runId)}/${relative}`;
+    return `${this.runRoot(runId)}/${normalized}`;
   }
-  /** Normalized with `/` separators, or undefined when the value escapes its root. */
+  /**
+   * Run-confined normalization for Artifact path remainders. Both separators are unified first so
+   * Windows-style refs collapse before the segment walk; posix normalization then folds `.` and
+   * inner `..`. Absolute paths and any remainder that still climbs above the Run root are refused
+   * with undefined rather than clamped, so the caller rejects instead of resolving elsewhere.
+   */
   private normalizeWithin(value: string): string | undefined {
-    const normalized = path.posix.normalize(value.replaceAll("\\", "/"));
-    if (path.posix.isAbsolute(normalized) || normalized === ".." || normalized.startsWith("../")) return undefined;
-    return normalized === "." ? "" : normalized;
+    const unified = value.replaceAll("\\", "/");
+    const normalized = path.posix.normalize(unified);
+    if (path.posix.isAbsolute(normalized)) return undefined;
+    if (normalized === ".." || normalized.startsWith("../")) return undefined;
+    if (normalized === ".") return "";
+    return normalized;
   }
-  /** One segment safe to persist: non-empty, no traversal, safeSegment-unchanged. */
+  /**
+   * One path segment safe to persist under the layout. Empties would add phantom levels, dots
+   * would navigate, and anything safeSegment rewrites would land at a different name than the
+   * one the Handoff recorded — all three are refused so the stored path is the written path.
+   */
   private isSafePathSegment(segment: string): boolean {
-    if (segment.length === 0 || segment === "." || segment === "..") return false;
-    return this.safeSegment(segment) === segment;
+    if (segment.length === 0) return false;
+    if (segment === "." || segment === "..") return false;
+    const rewritten = this.safeSegment(segment);
+    if (rewritten !== segment) return false;
+    return true;
   }
 
   private async activeRunId(): Promise<string> {

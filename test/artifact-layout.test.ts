@@ -1,4 +1,6 @@
 import assert from "node:assert/strict";
+import { readdir, readFile } from "node:fs/promises";
+import path from "node:path";
 import test from "node:test";
 import { ARTIFACT_KIND_TO_DIR, ARTIFACT_LAYOUT_DIRS, DesignManager } from "../src/design-manager.js";
 import type { RegistryBundle, SpecialistHandoff, WorkflowDefinition, WorkflowId } from "../src/domain.js";
@@ -112,6 +114,35 @@ test("the kind registry covers every typed folder the layout promises", () => {
   assert.equal(ARTIFACT_KIND_TO_DIR["product brief"], "context");
   assert.equal(ARTIFACT_KIND_TO_DIR["audit report"], "audit");
 });
+test("the kind registry covers every output kind the framework workflows declare", async () => {
+  let directory = import.meta.dirname;
+  for (;;) {
+    try {
+      await readFile(path.join(directory, "package.json"), "utf8");
+      break;
+    } catch {
+      const parent = path.dirname(directory);
+      if (parent === directory) throw new Error("repository root not found");
+      directory = parent;
+    }
+  }
+  const kinds = new Set<string>();
+  for (const fileName of await readdir(path.join(directory, "framework", "workflows"))) {
+    if (!fileName.endsWith(".json")) continue;
+    const workflow = JSON.parse(await readFile(path.join(directory, "framework", "workflows", fileName), "utf8")) as {
+      phases: Array<{ inputs?: Array<{ kind?: string }>; outputs?: string[] }>;
+    };
+    for (const phase of workflow.phases) {
+      for (const output of phase.outputs ?? []) kinds.add(output.trim().toLowerCase());
+      for (const input of phase.inputs ?? []) {
+        if (input.kind) kinds.add(input.kind.trim().toLowerCase());
+      }
+    }
+  }
+  const missing = [...kinds].filter(kind => !(kind in ARTIFACT_KIND_TO_DIR)).sort();
+  assert.deepEqual(missing, [], `kinds without a layout folder: ${missing.join(", ")}`);
+});
+
 
 test("a Handoff path outside the typed layout is rejected", async () => {
   const { manager, workspace } = await runOnGrounding("layout-run-002");
@@ -130,6 +161,15 @@ test("a layout-conformant path with traversal escaping the Run is rejected", asy
     /outside the typed layout/
   );
 });
+test("a sibling directory sharing the Run id prefix is not this Run's layout", async () => {
+  const { manager, workspace } = await runOnGrounding("layout-run-009");
+  await workspace.writeText(".chromarelay/runs/layout-run-009-evil/audit/PRODUCT.md", "# Product Brief\n");
+  await assert.rejects(
+    () => manager.recordHandoff(briefHandoff("layout-run-009", ".chromarelay/runs/layout-run-009-evil/audit/PRODUCT.md")),
+    /outside the typed layout/
+  );
+});
+
 
 test("a layout-conformant path pointing at no file is rejected", async () => {
   const { manager } = await runOnGrounding("layout-run-004");
