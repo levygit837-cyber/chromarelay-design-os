@@ -1,20 +1,34 @@
 # Merge these entries into ~/.omp/agent/config.yml and map aliases to models available in your environment.
+#
+# Evaluation-Run harness pinning (issues #15-#22): every ChromaRelay Role
+# resolves to an explicit model — no OMP built-in role or modelType may
+# execute a Run Phase. Primary Roles run Muse Spark 1.3 at xhigh effort;
+# judge/critic Roles run GLM 5.3-Flash at max effort with automatic fallback
+# to Muse Spark 1.3 xhigh after 2-3 short-timeout retries (retry.modelFallback
+# covers the model hop; the retry count and timeout stay a Run-level rule).
 modelRoles:
-  chromarelay_coordinator: "@slow"
-  chromarelay_product: "@slow"
-  chromarelay_research: "@task"
-  chromarelay_art: "@designer"
-  chromarelay_system: "@slow"
-  chromarelay_builder: "@default"
-  chromarelay_auditor: "@task"
-  chromarelay_critic: "@slow"
-  chromarelay_repair: "@default"
-  chromarelay_advisor: "@slow"
+  chromarelay_coordinator: "api-gateway/muse-spark-1.3:xhigh"
+  chromarelay_product: "api-gateway/muse-spark-1.3:xhigh"
+  chromarelay_research: "api-gateway/muse-spark-1.3:xhigh"
+  chromarelay_art: "api-gateway/muse-spark-1.3:xhigh"
+  chromarelay_system: "api-gateway/muse-spark-1.3:xhigh"
+  chromarelay_builder: "api-gateway/muse-spark-1.3:xhigh"
+  chromarelay_auditor: "api-gateway/muse-spark-1.3:xhigh"
+  chromarelay_critic: "api-gateway/glm-5.3-flash:max"
+  chromarelay_repair: "api-gateway/muse-spark-1.3:xhigh"
+  chromarelay_advisor: "api-gateway/glm-5.3-flash:max"
 
 task:
   maxConcurrency: 6
   maxRecursionDepth: 2
   enableEffort: true
+  agentModelOverrides:
+    # Judge/critic fallback chain: GLM 5.3-Flash at max is the judge/critic
+    # model; on instability (2-3 short-timeout retries exhausted) the Run
+    # falls back to Muse Spark 1.3 xhigh for the same Role, never to a
+    # built-in role or modelType.
+    reviewer: "api-gateway/glm-5.3-flash:max"
+    security-reviewer: "api-gateway/glm-5.3-flash:max"
 
 # Recommended for agent batches and progress delivery.
 async:
