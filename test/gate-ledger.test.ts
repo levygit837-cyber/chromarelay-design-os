@@ -31,7 +31,7 @@ function registry(): RegistryBundle {
   };
 }
 
-const EVIDENCE = "reports/grounding-completeness.json";
+const EVIDENCE = "audit/grounding-completeness.json";
 
 /**
  * A Run parked on `grounding` — the one phase that declares a Gate — with the evidence file the

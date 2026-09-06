@@ -69,9 +69,13 @@ Consumes the same Run Contracts, Handoffs, Directions, and rubrics as the core, 
 │       ├── events.jsonl
 │       ├── phase-packets/
 │       ├── handoffs/
-│       ├── evidence/
-│       ├── candidates/
-│       └── reports/
+│       ├── specimens/      HTML Direction references (visual reference only)
+│       ├── prototype/      bootable React + TypeScript app (README plus install/dev)
+│       ├── directions/     generated creative theses and selection records
+│       ├── context/        briefs, maps, drafts, plans, state contracts
+│       ├── audit/          Gate Evidence, critic reports, captures, validation output
+│       ├── decisions/
+│       └── gate-results/
 └── active-run.json
 ```
 

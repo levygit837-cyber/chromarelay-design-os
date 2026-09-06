@@ -55,8 +55,8 @@ function honestHandoff(runId: string, overrides: Record<string, unknown> = {}): 
     role: "product-strategist",
     agentId: "strategist-a",
     summary: "Grounding complete",
-    claims: [{ claim: "The product truth is grounded in the request", status: "inferred", confidence: "medium", evidenceRefs: [`.chromarelay/runs/${runId}/artifacts/PRODUCT.md`] }],
-    evidence: [`.chromarelay/runs/${runId}/artifacts/PRODUCT.md`],
+    claims: [{ claim: "The product truth is grounded in the request", status: "inferred", confidence: "medium", evidenceRefs: [`.chromarelay/runs/${runId}/context/PRODUCT.md`] }],
+    evidence: [`.chromarelay/runs/${runId}/context/PRODUCT.md`],
     artifacts: [],
     decisions: [],
     risks: [],
@@ -161,7 +161,7 @@ test("Handoff schema rejects an artifact createdAt that is not a date-time", asy
   const artifact = {
     id: "product-brief",
     kind: "Product Brief",
-    path: ".chromarelay/runs/schema-run-006/artifacts/PRODUCT.md",
+    path: ".chromarelay/runs/schema-run-006/context/PRODUCT.md",
     status: "proposed",
     producerRole: "product-strategist",
     agentId: "strategist-a",
@@ -181,7 +181,7 @@ test("Handoff schema rejects an artifact missing sourceRefs", async () => {
   const artifact = {
     id: "product-brief",
     kind: "Product Brief",
-    path: ".chromarelay/runs/schema-run-007/artifacts/PRODUCT.md",
+    path: ".chromarelay/runs/schema-run-007/context/PRODUCT.md",
     status: "proposed",
     producerRole: "product-strategist",
     agentId: "strategist-a",

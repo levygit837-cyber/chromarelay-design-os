@@ -111,6 +111,7 @@ The rationalizations that show up here, and what to do instead:
 
 Write the report against `framework/schemas/audit-report.schema.json`, following
 `framework/templates/run/AUDIT_REPORT.md` for section order.
+Record the report and every captured file under `.chromarelay/runs/<runId>/audit/`; that is the typed Run layout folder Gate Evidence lives in.
 
 Required in every report:
 
