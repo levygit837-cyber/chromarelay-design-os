@@ -94,6 +94,6 @@ Authority order when sources conflict (record the conflict, follow the higher so
 
 TypeScript is strict with `noUncheckedIndexedAccess` and `exactOptionalPropertyTypes`. The latter is why the codebase spreads conditionals for optional fields (`...(request.surfaceClass ? { surfaceClass: request.surfaceClass } : {})`) instead of assigning `undefined`. Module resolution is `NodeNext`, so relative imports carry a `.js` extension even from `.ts` sources. `.omp/**/*.ts` is excluded from the build — it compiles against OMP's own types.
 
-Specs, tickets, and Wayfinder maps live in GitHub Issues, not in files; see `docs/agents/issue-tracker.md`. ADRs in `docs/adr/` are only for decisions that are costly to reverse, surprising without context, and a real trade-off.
+Specs, tickets, and Wayfinder maps live in GitHub Issues, not in files; see `docs/agents/issue-tracker.md`. Commits, pull requests, and issue text are EN-US. ADRs in `docs/adr/` are only for decisions that are costly to reverse, surprising without context, and a real trade-off.
 
-Documentation language is EN-US everywhere: human docs (`docs/humans/`, `README.md`, `docs/architecture/`), agent contracts (`AGENTS.md`, `CONTEXT.md`, `docs/agents/`), code, and framework JSON are all English. Use EN-US spelling.
+Documentation language is EN-US everywhere: human docs (`docs/humans/`, `README.md`, `docs/architecture/`), agent contracts (`AGENTS.md`, `CONTEXT.md`, `docs/agents/`), code, framework JSON, commits, pull requests, and issue text are all English. Use EN-US spelling.

@@ -11,6 +11,14 @@ Engineering agents also read:
 
 ## Agent skills
 
+### Contribution language
+
+Write all commits, pull requests, and issue text (titles, bodies, comments) in EN-US.
+This applies to humans and agents alike. Match the tone of recent history:
+short imperative commit subjects (e.g. `docs: ...`), brief PR bodies filled
+per the pull request template, and issue text in this repository's domain
+vocabulary from `CONTEXT.md`.
+
 ### Issue tracker
 
 Specs, implementation tickets, and Wayfinder maps live in GitHub Issues. See `docs/agents/issue-tracker.md`.

@@ -2,6 +2,14 @@
 
 Issues, implementation specs, Wayfinder maps, and tracer-bullet tickets for this repository live in GitHub Issues.
 
+There is no local file-based tracker: do not create ticket files under the
+working tree (no `.scratch/` or equivalent). Planning artifacts that are not
+GitHub issues are the idea inbox (`ideas/`, memory only) and per-run state
+under `.chromarelay/runs/`.
+
+Write all issue titles, bodies, and comments in EN-US, using ChromaRelay
+domain vocabulary from `CONTEXT.md`.
+
 ## Use by work shape
 
 - **Known implementation route:** use `to-tickets` to create vertical tracer-bullet issues with explicit blocking edges.
