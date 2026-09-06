@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import path from "node:path";
 import type {
   ArtifactRef,
   DecisionRecord,
@@ -67,6 +68,139 @@ export interface ApprovalResult {
   status: "approved" | "locked";
   decisions: string[];
   artifacts: string[];
+}
+
+/**
+ * Typed Run Artifact layout (issue #18). Every ArtifactRef.path a Handoff records lives under its
+ * Run root in one of these folders, so specimens, buildable code, Direction records, and audit
+ * Evidence stay browsable per Run and consistent across parallel evaluation Runs:
+ *
+ * - `specimens/`: HTML Direction references for judgment. Visual reference only, never the source
+ *   of truth for the final build;
+ * - `prototype/`: the bootable React + TypeScript app of the Run. The boot rule itself (README plus
+ *   install and the documented dev command, proven by builder smoke Evidence) is owned by the
+ *   evaluation orchestration contract; this layout only reserves the folder;
+ * - `directions/`: generated creative theses and their selection records;
+ * - `context/`: briefs, maps, drafts, plans, and state contracts a phase consumes;
+ * - `audit/`: Gate Evidence, critic reports, captures, and validation output.
+ *
+ * Authority order still holds: explicit user requirements, product and constraint contracts, and
+ * accepted Locks outrank this layout, which outranks Skill guidance (ADR-0005). Runs never write
+ * outside their Run folder; only the Coordinator promotes to canonical state (ADR-0003).
+ */
+export const ARTIFACT_LAYOUT_DIRS = ["specimens", "prototype", "directions", "context", "audit"] as const;
+export type ArtifactLayoutDir = (typeof ARTIFACT_LAYOUT_DIRS)[number];
+/**
+ * Kind-to-folder registry for the typed layout. Keys match after trim plus lowercase, so workflow
+ * spellings ("Product Brief", "AS_IS_PRODUCT") resolve verbatim. recordHandoff enforces only the
+ * layout prefix, not the kind match; this registry tells producers and the one migration where a
+ * kind belongs. Unlisted kinds fall back to `context/`, the generic input/document folder.
+ */
+export const ARTIFACT_KIND_TO_DIR: Record<string, ArtifactLayoutDir> = {
+  "visual specimens": "specimens",
+  "renderable surface": "prototype",
+  "implementation patch": "prototype",
+  "patch": "prototype",
+  "repair patch": "prototype",
+  "pilot patch": "prototype",
+  "expand-contract slices": "prototype",
+  "surface": "prototype",
+  "implementation notes": "prototype",
+  "direction candidates": "directions",
+  "direction archive": "directions",
+  "selected direction": "directions",
+  "selected direction or escalation": "directions",
+  "selected and reserve directions": "directions",
+  "selected direction record": "directions",
+  "eligible candidates": "directions",
+  "lens assignments": "directions",
+  "exploration axes": "directions",
+  "creative question": "directions",
+  "creative opportunities": "directions",
+  "anti-default ledger": "directions",
+  "focused options": "directions",
+  "refinement hypothesis": "directions",
+  "product brief": "context",
+  "constraint draft": "context",
+  "domain map": "context",
+  "design draft": "context",
+  "current design draft": "context",
+  "v2 design draft": "context",
+  "token drafts": "context",
+  "v2 tokens": "context",
+  "canonical token proposal": "context",
+  "surface brief": "context",
+  "component plan": "context",
+  "component state contracts": "context",
+  "information architecture": "context",
+  "responsive model": "context",
+  "state matrix": "context",
+  "product truths": "context",
+  "behavior contracts": "context",
+  "preserve/replace matrix": "context",
+  "redesign charter": "context",
+  "baseline manifest": "context",
+  "token inventory": "context",
+  "component inventory": "context",
+  "route map": "context",
+  "surface inventory": "context",
+  "state inventory": "context",
+  "as_is_product": "context",
+  "as_is_design": "context",
+  "opportunity map": "context",
+  "workflow recommendation": "context",
+  "migration plan": "context",
+  "migration manifest": "context",
+  "promotion manifest": "context",
+  "promotion or revert manifest": "context",
+  "dependency graph": "context",
+  "bounded target": "context",
+  "baseline": "context",
+  "context captures": "context",
+  "reference pack": "context",
+  "decision records": "context",
+  "exceptions": "context",
+  "canonical artifacts": "context",
+  "canonical current-state artifacts": "context",
+  "canonical v2": "context",
+  "v2 component principles": "context",
+  "run contract": "context",
+  "audit report": "audit",
+  "visual review": "audit",
+  "comparison report": "audit",
+  "baseline comparison": "audit",
+  "fidelity report": "audit",
+  "drift report": "audit",
+  "tournament report": "audit",
+  "eligibility report": "audit",
+  "diagnosis": "audit",
+  "screenshots": "audit",
+  "screenshot set": "audit",
+  "candidate renders": "audit",
+  "pilot renders": "audit",
+  "state captures": "audit",
+  "render evidence": "audit",
+  "source evidence": "audit",
+  "baseline evidence": "audit",
+  "before/after evidence": "audit",
+  "regression evidence": "audit",
+  "risk notes": "audit",
+  "confidence ledger": "audit",
+  "priority findings": "audit",
+  "problem evidence": "audit",
+  "unmodeled findings": "audit",
+  "scale or return recommendation": "audit",
+  "comparison": "audit",
+  "detector report": "audit",
+  "system-potential notes": "audit"
+};
+/** One flat-to-typed copy performed by migrateArtifactsToTypedLayout. Content at `to` is untouched. */
+export interface ArtifactMigration {
+  id: string;
+  kind: string;
+  from: string;
+  to: string;
+  dir: ArtifactLayoutDir;
 }
 
 export class DesignManager {
@@ -161,6 +295,7 @@ export class DesignManager {
 
     const runRoot = this.runRoot(runId);
     await this.workspace.ensureDir(runRoot);
+    for (const dir of ARTIFACT_LAYOUT_DIRS) await this.workspace.ensureDir(`${runRoot}/${dir}`);
     await this.workspace.ensureDir(".chromarelay/project");
     await this.workspace.writeText(`${runRoot}/run.json`, this.json(run));
     await this.workspace.writeText(`${runRoot}/request.json`, this.json({ request, route }));
@@ -314,6 +449,17 @@ export class DesignManager {
         throw new ContractError(`Decision ${decision.id} names approvedBy ${decision.approvedBy}, which has no persisted Handoff in Run ${run.runId}`);
       }
     }
+    // Typed layout (issue #18): every recorded Artifact path lives under this Run's root in one of
+    // the five layout folders, mirroring resolveEvidence's within-root check. Prefix here, file
+    // existence below: a layout-conformant path that points at nothing is still a dangling ref.
+    for (const artifact of handoff.artifacts) {
+      if (!this.isArtifactLayoutPath(run.runId, artifact.path)) {
+        throw new ContractError(
+          `Artifact ${artifact.id} path "${artifact.path}" is outside the typed layout of Run ${run.runId}; ` +
+          `record it under ${this.runRoot(run.runId)}/<${ARTIFACT_LAYOUT_DIRS.join("|")}>/...`
+        );
+      }
+    }
     // An approved Artifact status must already be recorded by approve(), not asserted in a Handoff.
     for (const artifact of handoff.artifacts) {
       if (artifact.status !== "approved" && artifact.status !== "locked") continue;
@@ -321,6 +467,19 @@ export class DesignManager {
       if (recorded?.status !== artifact.status) {
         throw new ContractError(`Artifact ${artifact.id} claims ${artifact.status} but Run ${run.runId} records ${recorded?.status ?? "no such Artifact"}`);
       }
+    }
+    // Every referenced path resolves to an existing file, exactly like Gate evidence: relative to
+    // the Run root first (where specialists write), then to the workspace root for absolute-style
+    // refs (`.chromarelay/runs/<id>/...`). Missing files are rejections, not warnings.
+    for (const artifact of handoff.artifacts) {
+      if (!(await this.resolveEvidence(run.runId, this.workspaceRelative(run.runId, artifact.path)))) {
+        throw new ContractError(`Artifact ${artifact.id} path "${artifact.path}" does not exist in Run ${run.runId}`);
+      }
+    }
+    // Stored canonical (workspace-style under the Run root) so resolveInput always emits an
+    // addressable path however the producer wrote it. Normalization only, never a content change.
+    for (const artifact of handoff.artifacts) {
+      artifact.path = this.canonicalArtifactPath(run.runId, artifact.path);
     }
 
     const handoffPath = `${this.runRoot(run.runId)}/handoffs/${handoff.phase}/${this.safeSegment(handoff.agentId)}.json`;
@@ -344,6 +503,59 @@ export class DesignManager {
     run.updatedAt = new Date().toISOString();
     await this.saveRun(run);
     await this.appendEvent(run.runId, { type: "handoff.recorded", runId: run.runId, phase: handoff.phase, role: handoff.role, agentId: handoff.agentId, transition: handoff.requestedTransition });
+  }
+  /**
+   * One migration placing pre-existing flat Artifacts into the matching typed folder. Copies raw
+   * bytes to the typed destination (never a text decode, so screenshots and renders survive) and
+   * rewrites run.json paths only. A flat path is any recorded Artifact path under the Run root
+   * outside the five layout folders (legacy `artifacts/PRODUCT.md`, `evidence/desktop.png`,
+   * `reports/grounding.json`). The pre-existing flat file stays in place as inert history; the
+   * Workspace seam has no delete primitive and run.json no longer references it. The destination
+   * folder comes from ARTIFACT_KIND_TO_DIR with the file name preserved. Persisted Handoff
+   * documents keep their original paths as history; resolveInput matches by kind against
+   * run.artifactRefs, so Packets resolve to the migrated path automatically.
+   *
+   * Resumable: a pre-flight pass rejects missing sources and colliding destinations before any
+   * byte moves, then each copied Artifact is persisted in run.json immediately, so a retry after
+   * a mid-loop failure skips entries that already landed instead of colliding with them.
+   */
+  async migrateArtifactsToTypedLayout(runId: string): Promise<ArtifactMigration[]> {
+    const run = await this.getRun(runId);
+    const planned = run.artifactRefs
+      .filter(artifact => !this.isArtifactLayoutPath(run.runId, artifact.path))
+      .map(artifact => {
+        const relative = this.workspaceRelative(run.runId, artifact.path);
+        const fileName = relative.split("/").pop() ?? artifact.id;
+        const dir = ARTIFACT_KIND_TO_DIR[artifact.kind.trim().toLowerCase()] ?? "context";
+        return { artifact, from: this.workspacePath(run.runId, relative), to: `${this.runRoot(run.runId)}/${dir}/${this.safeSegment(fileName)}`, dir };
+      });
+    for (const entry of planned) {
+      if (!(await this.workspace.exists(entry.from))) {
+        throw new ContractError(`Artifact ${entry.artifact.id} path "${entry.artifact.path}" does not exist in Run ${run.runId}`);
+      }
+    }
+    const copied: ArtifactMigration[] = [];
+    for (const entry of planned) {
+      if (await this.workspace.exists(entry.to)) {
+        if (await this.sameBytes(entry.from, entry.to)) {
+          entry.artifact.path = entry.to;
+          run.updatedAt = new Date().toISOString();
+          await this.saveRun(run);
+          copied.push({ id: entry.artifact.id, kind: entry.artifact.kind, from: entry.from, to: entry.to, dir: entry.dir });
+          continue;
+        }
+        throw new ContractError(`Artifact ${entry.artifact.id} cannot migrate to "${entry.to}": destination already exists`);
+      }
+      await this.workspace.writeBytes(entry.to, await this.workspace.readBytes(entry.from));
+      entry.artifact.path = entry.to;
+      run.updatedAt = new Date().toISOString();
+      await this.saveRun(run);
+      copied.push({ id: entry.artifact.id, kind: entry.artifact.kind, from: entry.from, to: entry.to, dir: entry.dir });
+    }
+    if (copied.length > 0) {
+      await this.appendEvent(run.runId, { type: "artifacts.migrated", migrations: copied.map(entry => ({ id: entry.id, from: entry.from, to: entry.to })) });
+    }
+    return copied;
   }
 
   /**
@@ -1021,6 +1233,94 @@ export class DesignManager {
     const safe = value.replaceAll(/[^a-zA-Z0-9._-]/g, "-");
     if (!safe || safe === "." || safe === "..") throw new ContractError(`Unsafe path segment: ${value}`);
     return safe;
+  }
+  /**
+   * Whether an Artifact path sits inside this Run's typed layout: under the Run root (accepted both
+   * Run-relative, e.g. `context/PRODUCT.md`, and Run-rooted,
+   * `.chromarelay/runs/<id>/context/PRODUCT.md`) with the first segment one of the five layout
+   * folders. Guards mirror resolveEvidence containment: the path is normalized, `..` escaping the
+   * layout is rejected, and every remaining segment survives safeSegment unchanged.
+   */
+  private isArtifactLayoutPath(runId: string, artifactPath: string): boolean {
+    const relative = this.stripRunRoot(runId, artifactPath);
+    const within = this.normalizeWithin(relative);
+    if (within === undefined || within.length === 0) return false;
+    const segments = within.split("/");
+    const first = segments[0] ?? "";
+    if (!(ARTIFACT_LAYOUT_DIRS as readonly string[]).includes(first)) return false;
+    const rest = segments.slice(1);
+    if (rest.length === 0) return false;
+    for (const segment of rest) {
+      if (!this.isSafePathSegment(segment)) return false;
+    }
+    return true;
+  }
+  /**
+   * Run-relative remainder of an Artifact path. Rooted refs name the Run root explicitly, so the
+   * strip only fires on an exact root or a root-plus-separator boundary — anything else is already
+   * Run-relative. The boundary check keeps a sibling directory whose name merely starts with the
+   * Run id from passing as this Run's own folder.
+   */
+  private stripRunRoot(runId: string, artifactPath: string): string {
+    const trimmed = artifactPath.trim();
+    const root = this.runRoot(runId);
+    if (trimmed === root) return "";
+    if (trimmed.startsWith(`${root}/`)) return trimmed.slice(root.length).replace(/^\/+/, "");
+    return trimmed;
+  }
+  /** An Artifact path expressed relative to the Run root, for resolveEvidence-style lookups. */
+  private workspaceRelative(runId: string, artifactPath: string): string {
+    return this.stripRunRoot(runId, artifactPath);
+  }
+  /** An Artifact path expressed workspace-relative, for reads and writes. */
+  private workspacePath(runId: string, artifactPath: string): string {
+    const relative = this.workspaceRelative(runId, artifactPath);
+    return relative.length === 0 ? this.runRoot(runId) : `${this.runRoot(runId)}/${relative}`;
+  }
+  /**
+   * Byte equality across two workspace paths. Lets a migration retry recognize a destination it
+   * already wrote on a previous attempt and treat it as done, instead of colliding with itself.
+   */
+  private async sameBytes(first: string, second: string): Promise<boolean> {
+    const [left, right] = await Promise.all([this.workspace.readBytes(first), this.workspace.readBytes(second)]);
+    if (left.length !== right.length) return false;
+    for (let index = 0; index < left.length; index += 1) {
+      if (left[index] !== right[index]) return false;
+    }
+    return true;
+  }
+  /** Run-rooted storage form of an Artifact path, so stored refs resolve however written. */
+  private canonicalArtifactPath(runId: string, artifactPath: string): string {
+    const relative = this.workspaceRelative(runId, artifactPath);
+    const normalized = this.normalizeWithin(relative);
+    if (normalized === undefined || normalized.length === 0) return `${this.runRoot(runId)}/${relative}`;
+    return `${this.runRoot(runId)}/${normalized}`;
+  }
+  /**
+   * Run-confined normalization for Artifact path remainders. Both separators are unified first so
+   * Windows-style refs collapse before the segment walk; posix normalization then folds `.` and
+   * inner `..`. Absolute paths and any remainder that still climbs above the Run root are refused
+   * with undefined rather than clamped, so the caller rejects instead of resolving elsewhere.
+   */
+  private normalizeWithin(value: string): string | undefined {
+    const unified = value.replaceAll("\\", "/");
+    const normalized = path.posix.normalize(unified);
+    if (path.posix.isAbsolute(normalized)) return undefined;
+    if (normalized === ".." || normalized.startsWith("../")) return undefined;
+    if (normalized === ".") return "";
+    return normalized;
+  }
+  /**
+   * One path segment safe to persist under the layout. Empties would add phantom levels, dots
+   * would navigate, and anything safeSegment rewrites would land at a different name than the
+   * one the Handoff recorded — all three are refused so the stored path is the written path.
+   */
+  private isSafePathSegment(segment: string): boolean {
+    if (segment.length === 0) return false;
+    if (segment === "." || segment === "..") return false;
+    const rewritten = this.safeSegment(segment);
+    if (rewritten !== segment) return false;
+    return true;
   }
 
   private async activeRunId(): Promise<string> {

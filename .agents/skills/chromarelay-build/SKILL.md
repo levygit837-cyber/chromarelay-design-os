@@ -28,8 +28,12 @@ defaults, and where the Packet is silent the neighbouring Surface is the tiebrea
 
 | Artifact | Destination |
 |---|---|
-| Code | the isolated worktree — one branch, one writer |
-| Evidence, notes, captures, state matrices | `.chromarelay/runs/<runId>/` |
+| Product code on an existing project | the isolated worktree — one branch, one writer — as a patch; never into the Run folder |
+| App files for a Run-generated app (CREATE with no existing project) | `.chromarelay/runs/<runId>/prototype/` (bootable: README plus install/dev; synced from the worktree at build-phase exit) |
+| HTML Direction specimens | `.chromarelay/runs/<runId>/specimens/` (visual reference only) |
+| Direction records | `.chromarelay/runs/<runId>/directions/` |
+| Briefs, maps, drafts, plans, state contracts | `.chromarelay/runs/<runId>/context/` |
+| Evidence, notes, captures, state matrices, Gate reports | `.chromarelay/runs/<runId>/audit/` |
 | Canonical `DESIGN.md`, tokens, component docs | left as they are; the Memory Curator promotes approved work |
 
 `.chromarelay/system` and `.chromarelay/project` are guarded, so a write there comes back

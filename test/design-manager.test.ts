@@ -39,7 +39,7 @@ function registry(): RegistryBundle {
  * `gate-ledger.test.ts`, and satisfying it here keeps each test asserting one thing.
  */
 async function passGroundingGate(manager: DesignManager, workspace: MemoryWorkspace, runId: string, phase = "grounding"): Promise<void> {
-  await workspace.writeText(`.chromarelay/runs/${runId}/reports/grounding.json`, "{}\n");
+  await workspace.writeText(`.chromarelay/runs/${runId}/audit/grounding.json`, "{}\n");
   await manager.recordGateResult({
     version: "1.0",
     runId,
@@ -49,7 +49,7 @@ async function passGroundingGate(manager: DesignManager, workspace: MemoryWorksp
     summary: "Every required Product Brief field is present",
     recordedBy: "strategist-a",
     recordedAt: "2026-08-24T10:00:00.000Z",
-    evidenceRefs: ["reports/grounding.json"]
+    evidenceRefs: ["audit/grounding.json"]
   });
 }
 
@@ -101,6 +101,7 @@ test("requires a specialist Handoff before advancing a specialist phase", async 
   await manager.start({ objective: "Create a console", hasExistingDesign: false }, { runId: "create-test-002" });
   await manager.advance("create-test-002", { force: true });
   await assert.rejects(() => manager.advance("create-test-002"), /requires at least one persisted Handoff/);
+  await workspace.writeText(".chromarelay/runs/create-test-002/context/PRODUCT.md", "# Product Brief\n");
 
   const handoff: SpecialistHandoff = {
     version: "1.0",
@@ -109,9 +110,9 @@ test("requires a specialist Handoff before advancing a specialist phase", async 
     role: "product-strategist",
     agentId: "strategist-a",
     summary: "Grounding complete",
-    claims: [{ claim: "Product truth is grounded", status: "inferred", confidence: "medium", evidenceRefs: [".chromarelay/runs/create-test-002/artifacts/PRODUCT.md"] }],
-    evidence: [".chromarelay/runs/create-test-002/artifacts/PRODUCT.md"],
-    artifacts: [{ id: "product-brief", kind: "Product Brief", path: ".chromarelay/runs/create-test-002/artifacts/PRODUCT.md", status: "proposed", producerRole: "product-strategist", agentId: "strategist-a", runId: "create-test-002", phase: "grounding", createdAt: new Date().toISOString(), sourceRefs: [] }],
+    claims: [{ claim: "Product truth is grounded", status: "inferred", confidence: "medium", evidenceRefs: [".chromarelay/runs/create-test-002/context/PRODUCT.md"] }],
+    evidence: [".chromarelay/runs/create-test-002/context/PRODUCT.md"],
+    artifacts: [{ id: "product-brief", kind: "Product Brief", path: ".chromarelay/runs/create-test-002/context/PRODUCT.md", status: "proposed", producerRole: "product-strategist", agentId: "strategist-a", runId: "create-test-002", phase: "grounding", createdAt: new Date().toISOString(), sourceRefs: [] }],
     decisions: [],
     risks: [],
     confidence: "high",
@@ -336,7 +337,7 @@ test("rejects a specialist Handoff that self-approves an Artifact", () => {
       artifacts: [{
         id: "surface",
         kind: "Surface",
-        path: ".chromarelay/runs/approval-run-001/artifacts/surface.html",
+        path: ".chromarelay/runs/approval-run-001/prototype/surface.html",
         status: "approved",
         producerRole: "builder",
         agentId: "builder-a",
@@ -364,8 +365,8 @@ const approvalPhases = {
   CREATE: [
     { id: "intake", role: "coordinator", kit: null, purpose: "route", inputs: [{ name: "request", source: "run", path: "request.json" }], outputs: ["Run Contract"], gates: [], parallelism: "none", exit: "valid" },
     { id: "grounding", role: "product-strategist", kit: "grounding", purpose: "ground", inputs: [{ name: "request", source: "run", path: "request.json" }], outputs: ["Product Brief"], gates: ["grounding-completeness"], parallelism: "single", exit: "complete" },
-    { id: "deterministic-audit", role: "deterministic-auditor", kit: null, purpose: "audit", inputs: [{ name: "Surface", source: "run", path: "artifacts/surface.html" }], outputs: ["Detector Report"], gates: [], parallelism: "single", exit: "reported" },
-    { id: "visual-critique", role: "visual-critic", kit: null, purpose: "critique", inputs: [{ name: "Surface", source: "run", path: "artifacts/surface.html" }], outputs: ["Visual Review"], gates: [], parallelism: "single", exit: "verdict" },
+    { id: "deterministic-audit", role: "deterministic-auditor", kit: null, purpose: "audit", inputs: [{ name: "Surface", source: "run", path: "prototype/surface.html" }], outputs: ["Detector Report"], gates: [], parallelism: "single", exit: "reported" },
+    { id: "visual-critique", role: "visual-critic", kit: null, purpose: "critique", inputs: [{ name: "Surface", source: "run", path: "prototype/surface.html" }], outputs: ["Visual Review"], gates: [], parallelism: "single", exit: "verdict" },
     { id: "promotion", role: "memory-curator", kit: null, purpose: "promote", inputs: [{ name: "Run Contract", source: "run", path: "run.json" }], outputs: ["Promotion"], gates: [], parallelism: "none", exit: "promoted" }
   ],
   DOCUMENT: [{ id: "intake", role: "coordinator", kit: null, purpose: "document", inputs: [{ name: "request", source: "run", path: "request.json" }], outputs: ["Run Contract"], gates: [], parallelism: "none", exit: "valid" }],
@@ -530,8 +531,10 @@ function registryWithCritique(): RegistryBundle {
   };
 }
 
-function screenshotHandoff(runId: string): SpecialistHandoff {
-  return {
+async function recordScreenshotHandoff(workspace: MemoryWorkspace, manager: DesignManager, runId: string): Promise<void> {
+  // Specialists write the file first; recordHandoff only records the path.
+  await workspace.writeText(`.chromarelay/runs/${runId}/audit/desktop.png`, "fake-png\n");
+  await manager.recordHandoff({
     version: "1.0",
     runId,
     phase: "lighthouse-build",
@@ -543,7 +546,7 @@ function screenshotHandoff(runId: string): SpecialistHandoff {
     artifacts: [{
       id: "surface-render",
       kind: "Screenshot Set",
-      path: `.chromarelay/runs/${runId}/evidence/desktop.png`,
+      path: `.chromarelay/runs/${runId}/audit/desktop.png`,
       status: "proposed",
       producerRole: "builder",
       agentId: "builder-a",
@@ -557,7 +560,7 @@ function screenshotHandoff(runId: string): SpecialistHandoff {
     confidence: "high",
     requestedTransition: "advance",
     unresolved: []
-  };
+  });
 }
 
 test("resolves a previous phase Artifact input to the path the producer recorded", async () => {
@@ -565,7 +568,7 @@ test("resolves a previous phase Artifact input to the path the producer recorded
   const manager = new DesignManager(workspace, registryWithCritique());
   await manager.start({ objective: "Improve the console", hasExistingDesign: false, surfaceClass: "OPERATE" }, { runId: "packet-run-001" });
   await manager.advance("packet-run-001", { force: true });
-  await manager.recordHandoff(screenshotHandoff("packet-run-001"));
+  await recordScreenshotHandoff(workspace, manager, "packet-run-001");
   await manager.advance("packet-run-001");
 
   const packet = await manager.phasePacket("packet-run-001");
@@ -573,7 +576,7 @@ test("resolves a previous phase Artifact input to the path the producer recorded
 
   const shots = packet.inputs.find(input => input.name === "anonymous screenshots");
   assert.equal(shots?.status, "resolved");
-  assert.equal(shots?.path, ".chromarelay/runs/packet-run-001/evidence/desktop.png");
+  assert.equal(shots?.path, ".chromarelay/runs/packet-run-001/audit/desktop.png");
 });
 
 test("resolves a canonical contract input under the project root", async () => {
@@ -581,7 +584,7 @@ test("resolves a canonical contract input under the project root", async () => {
   const manager = new DesignManager(workspace, registryWithCritique());
   await manager.start({ objective: "Improve the console", hasExistingDesign: false }, { runId: "packet-run-002" });
   await manager.advance("packet-run-002", { force: true });
-  await manager.recordHandoff(screenshotHandoff("packet-run-002"));
+  await recordScreenshotHandoff(workspace, manager, "packet-run-002");
   await manager.advance("packet-run-002");
 
   const packet = await manager.phasePacket("packet-run-002");
@@ -591,10 +594,11 @@ test("resolves a canonical contract input under the project root", async () => {
 });
 
 test("reports a canonical contract that does not exist yet as absent instead of claiming it", async () => {
-  const manager = new DesignManager(new MemoryWorkspace(), registryWithCritique());
+  const workspace = new MemoryWorkspace();
+  const manager = new DesignManager(workspace, registryWithCritique());
   await manager.start({ objective: "Improve the console", hasExistingDesign: false }, { runId: "packet-run-003" });
   await manager.advance("packet-run-003", { force: true });
-  await manager.recordHandoff(screenshotHandoff("packet-run-003"));
+  await recordScreenshotHandoff(workspace, manager, "packet-run-003");
   await manager.advance("packet-run-003");
 
   const packet = await manager.phasePacket("packet-run-003");
@@ -622,7 +626,7 @@ test("emits an optional Artifact input as absent instead of failing", async () =
   const manager = new DesignManager(workspace, registryWithCritique());
   await manager.start({ objective: "Improve the console", hasExistingDesign: false }, { runId: "packet-run-005" });
   await manager.advance("packet-run-005", { force: true });
-  await manager.recordHandoff(screenshotHandoff("packet-run-005"));
+  await recordScreenshotHandoff(workspace, manager, "packet-run-005");
   await manager.advance("packet-run-005");
 
   const packet = await manager.phasePacket("packet-run-005");
@@ -640,7 +644,7 @@ test("resolves framework and run inputs against their own roots", async () => {
   const manager = new DesignManager(workspace, registryWithCritique());
   await manager.start({ objective: "Improve the console", hasExistingDesign: false }, { runId: "packet-run-006" });
   await manager.advance("packet-run-006", { force: true });
-  await manager.recordHandoff(screenshotHandoff("packet-run-006"));
+  await recordScreenshotHandoff(workspace, manager, "packet-run-006");
   await manager.advance("packet-run-006");
 
   const packet = await manager.phasePacket("packet-run-006");
@@ -661,7 +665,7 @@ test("no Packet input is a concept name without an address", async () => {
   const manager = new DesignManager(workspace, registryWithCritique());
   await manager.start({ objective: "Improve the console", hasExistingDesign: false }, { runId: "packet-run-007" });
   await manager.advance("packet-run-007", { force: true });
-  await manager.recordHandoff(screenshotHandoff("packet-run-007"));
+  await recordScreenshotHandoff(workspace, manager, "packet-run-007");
   await manager.advance("packet-run-007");
 
   const packet = await manager.phasePacket("packet-run-007");

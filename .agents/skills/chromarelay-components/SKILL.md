@@ -63,6 +63,7 @@ Sequence waves so a wave's dependencies land in an earlier wave: foundations and
 ## Output and authority
 
 This Skill produces the Component Plan, the component state contracts, and in REDESIGN the Migration Plan and dependency graph. All of them are Run drafts: they are written under the Run directory and become project truth only when the Memory Curator promotes them.
+Record the plan, the state contracts, and any Migration Plan or dependency graph under `.chromarelay/runs/<runId>/context/`; that is the typed Run layout folder input documents live in.
 
 Two costs make that boundary worth holding:
 

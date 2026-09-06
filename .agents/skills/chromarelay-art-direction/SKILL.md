@@ -89,6 +89,8 @@ Render the smallest set that lets someone else judge the thesis. Each specimen s
 
 Specimens carry the load that mood boards cannot: they are the evidence a critic will read instead of your reasoning. Real content, real lengths, real states.
 
+Record specimens under `.chromarelay/runs/<runId>/specimens/` and the Direction record under `.chromarelay/runs/<runId>/directions/`; both are what the typed Run layout expects.
+
 ## System potential
 
 Show how the Direction extends to other Surfaces, longer and shorter content, every state, and each viewport. A strong hero with no component language is a poster, not a system yet.

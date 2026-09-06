@@ -53,6 +53,7 @@ Commands:
   status [run-id] [--root .] [--system framework]
   phase [run-id] [--root .] [--system framework]
   handoff <run-id> <handoff.json> [--root .] [--system framework]
+  migrate-artifacts <run-id> [--root .] [--system framework]
   gate <run-id> <gate-result.json> [--root .] [--system framework]
   approve [run-id] --attestation <phase>/<agentId> [--decisions id,id] [--artifacts id,id] [--lock] [--root .] [--system framework]
   advance [run-id] [--root .] [--system framework] [--force --reason "why"] [--skip] [--transition advance|branch|return|escalate|stop]
@@ -116,6 +117,13 @@ async function main(): Promise<void> {
       if (handoff.runId !== runId) throw new Error(`Handoff Run ${handoff.runId} does not match ${runId}`);
       await manager.recordHandoff(handoff);
       console.log(JSON.stringify({ recorded: true, runId, phase: handoff.phase, agentId: handoff.agentId }, null, 2));
+      return;
+    }
+    case "migrate-artifacts": {
+      const runId = args.positional[0];
+      if (!runId) usage();
+      const migrations = await manager.migrateArtifactsToTypedLayout(runId);
+      console.log(JSON.stringify({ migrated: migrations.length, runId, migrations }, null, 2));
       return;
     }
     case "gate": {
