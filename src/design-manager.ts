@@ -194,7 +194,7 @@ export const ARTIFACT_KIND_TO_DIR: Record<string, ArtifactLayoutDir> = {
   "detector report": "audit",
   "system-potential notes": "audit"
 };
-/** One flat-to-typed move performed by migrateArtifactsToTypedLayout. Content at `to` is untouched. */
+/** One flat-to-typed copy performed by migrateArtifactsToTypedLayout. Content at `to` is untouched. */
 export interface ArtifactMigration {
   id: string;
   kind: string;
@@ -501,42 +501,57 @@ export class DesignManager {
     await this.appendEvent(run.runId, { type: "handoff.recorded", phase: handoff.phase, role: handoff.role, agentId: handoff.agentId, transition: handoff.requestedTransition });
   }
   /**
-   * One migration placing pre-existing flat Artifacts into the matching typed folder. Copies file
-   * bytes to the typed destination and rewrites run.json paths only; content is never rewritten and
-   * the pre-existing flat file stays in place as inert history (the Workspace seam has no delete
-   * primitive; run.json no longer references it). A flat path is any recorded Artifact path under
-   * the Run root outside the five layout folders (legacy `artifacts/PRODUCT.md`,
-   * `evidence/desktop.png`, `reports/grounding.json`). The destination folder comes from
-   * ARTIFACT_KIND_TO_DIR; the file name is preserved. Persisted Handoff documents keep their
-   * original paths as history; resolveInput matches by kind against run.artifactRefs, so Packets
-   * resolve to the migrated path automatically.
+   * One migration placing pre-existing flat Artifacts into the matching typed folder. Copies raw
+   * bytes to the typed destination (never a text decode, so screenshots and renders survive) and
+   * rewrites run.json paths only. A flat path is any recorded Artifact path under the Run root
+   * outside the five layout folders (legacy `artifacts/PRODUCT.md`, `evidence/desktop.png`,
+   * `reports/grounding.json`). The pre-existing flat file stays in place as inert history; the
+   * Workspace seam has no delete primitive and run.json no longer references it. The destination
+   * folder comes from ARTIFACT_KIND_TO_DIR with the file name preserved. Persisted Handoff
+   * documents keep their original paths as history; resolveInput matches by kind against
+   * run.artifactRefs, so Packets resolve to the migrated path automatically.
+   *
+   * Resumable: a pre-flight pass rejects missing sources and colliding destinations before any
+   * byte moves, then each copied Artifact is persisted in run.json immediately, so a retry after
+   * a mid-loop failure skips entries that already landed instead of colliding with them.
    */
   async migrateArtifactsToTypedLayout(runId: string): Promise<ArtifactMigration[]> {
     const run = await this.getRun(runId);
-    const moved: ArtifactMigration[] = [];
-    for (const artifact of run.artifactRefs) {
-      const relative = this.workspaceRelative(run.runId, artifact.path);
-      if (this.isArtifactLayoutPath(run.runId, artifact.path)) continue;
-      const fileName = relative.split("/").pop() ?? artifact.id;
-      const dir = ARTIFACT_KIND_TO_DIR[artifact.kind.trim().toLowerCase()] ?? "context";
-      const to = `${this.runRoot(run.runId)}/${dir}/${this.safeSegment(fileName)}`;
-      const from = this.workspacePath(run.runId, relative);
-      if (!(await this.workspace.exists(from))) {
-        throw new ContractError(`Artifact ${artifact.id} path "${artifact.path}" does not exist in Run ${run.runId}`);
+    const planned = run.artifactRefs
+      .filter(artifact => !this.isArtifactLayoutPath(run.runId, artifact.path))
+      .map(artifact => {
+        const relative = this.workspaceRelative(run.runId, artifact.path);
+        const fileName = relative.split("/").pop() ?? artifact.id;
+        const dir = ARTIFACT_KIND_TO_DIR[artifact.kind.trim().toLowerCase()] ?? "context";
+        return { artifact, from: this.workspacePath(run.runId, relative), to: `${this.runRoot(run.runId)}/${dir}/${this.safeSegment(fileName)}`, dir };
+      });
+    for (const entry of planned) {
+      if (!(await this.workspace.exists(entry.from))) {
+        throw new ContractError(`Artifact ${entry.artifact.id} path "${entry.artifact.path}" does not exist in Run ${run.runId}`);
       }
-      if (await this.workspace.exists(to)) {
-        throw new ContractError(`Artifact ${artifact.id} cannot migrate to "${to}": destination already exists`);
+    }
+    const copied: ArtifactMigration[] = [];
+    for (const entry of planned) {
+      if (await this.workspace.exists(entry.to)) {
+        if (await this.sameBytes(entry.from, entry.to)) {
+          entry.artifact.path = entry.to;
+          run.updatedAt = new Date().toISOString();
+          await this.saveRun(run);
+          copied.push({ id: entry.artifact.id, kind: entry.artifact.kind, from: entry.from, to: entry.to, dir: entry.dir });
+          continue;
+        }
+        throw new ContractError(`Artifact ${entry.artifact.id} cannot migrate to "${entry.to}": destination already exists`);
       }
-      await this.workspace.writeText(to, await this.workspace.readText(from));
-      artifact.path = to;
-      moved.push({ id: artifact.id, kind: artifact.kind, from, to, dir });
+      await this.workspace.writeBytes(entry.to, await this.workspace.readBytes(entry.from));
+      entry.artifact.path = entry.to;
+      run.updatedAt = new Date().toISOString();
+      await this.saveRun(run);
+      copied.push({ id: entry.artifact.id, kind: entry.artifact.kind, from: entry.from, to: entry.to, dir: entry.dir });
     }
-    run.updatedAt = new Date().toISOString();
-    await this.saveRun(run);
-    if (moved.length > 0) {
-      await this.appendEvent(run.runId, { type: "artifacts.migrated", migrations: moved.map(entry => ({ id: entry.id, from: entry.from, to: entry.to })) });
+    if (copied.length > 0) {
+      await this.appendEvent(run.runId, { type: "artifacts.migrated", migrations: copied.map(entry => ({ id: entry.id, from: entry.from, to: entry.to })) });
     }
-    return moved;
+    return copied;
   }
 
   /**
@@ -1231,6 +1246,18 @@ export class DesignManager {
   private workspacePath(runId: string, artifactPath: string): string {
     const relative = this.workspaceRelative(runId, artifactPath);
     return relative.length === 0 ? this.runRoot(runId) : `${this.runRoot(runId)}/${relative}`;
+  }
+  /**
+   * Byte equality across two workspace paths. Lets a migration retry recognize a destination it
+   * already wrote on a previous attempt and treat it as done, instead of colliding with itself.
+   */
+  private async sameBytes(first: string, second: string): Promise<boolean> {
+    const [left, right] = await Promise.all([this.workspace.readBytes(first), this.workspace.readBytes(second)]);
+    if (left.length !== right.length) return false;
+    for (let index = 0; index < left.length; index += 1) {
+      if (left[index] !== right[index]) return false;
+    }
+    return true;
   }
   /** Run-rooted storage form of an Artifact path, so stored refs resolve however written. */
   private canonicalArtifactPath(runId: string, artifactPath: string): string {

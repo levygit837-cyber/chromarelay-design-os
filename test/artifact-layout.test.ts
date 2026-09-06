@@ -1,11 +1,12 @@
 import assert from "node:assert/strict";
-import { readdir, readFile } from "node:fs/promises";
+import { mkdtemp, readdir, readFile, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
 import { ARTIFACT_KIND_TO_DIR, ARTIFACT_LAYOUT_DIRS, DesignManager } from "../src/design-manager.js";
 import type { RegistryBundle, SpecialistHandoff, WorkflowDefinition, WorkflowId } from "../src/domain.js";
 import { noopHandoffValidator } from "../src/handoff-schema.js";
-import { MemoryWorkspace } from "../src/workspace.js";
+import { FileWorkspace, MemoryWorkspace } from "../src/workspace.js";
 
 // Typed Run Artifact layout (issue #18): five folders under the Run root, one kind-to-folder
 // registry, prefix plus file-existence validation on recordHandoff, and one flat-to-typed
@@ -232,4 +233,81 @@ test("resolveInput still matches by kind after the migration moved the file", as
   const brief = packet.inputs.find(input => input.name === "Product Brief");
   assert.equal(brief?.status, "resolved");
   assert.equal(brief?.path, ".chromarelay/runs/layout-run-006/context/PRODUCT.md");
+});
+
+test("migration preserves binary Artifact bytes without UTF-8 rewrite", async t => {
+  // MemoryWorkspace round-trips any string, so this runs against FileWorkspace with real PNG
+  // bytes (including an invalid UTF-8 sequence that a text decode would replace with U+FFFD).
+  const root = await mkdtemp(path.join(tmpdir(), "chromarelay-layout-"));
+  t.after(async () => { await rm(root, { recursive: true, force: true }); });
+  const workspace = new FileWorkspace(root);
+  const manager = new DesignManager(workspace, registry());
+  const runId = "layout-run-010";
+  await manager.start({ objective: "Create a console", hasExistingDesign: false }, { runId });
+  await manager.advance(runId, { force: true });
+  const png = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0xff, 0xfe, 0x00, 0x01]);
+  await workspace.writeBytes(`.chromarelay/runs/${runId}/evidence/desktop.png`, png);
+  const stale = await manager.getRun(runId);
+  stale.artifactRefs.push({
+    id: "surface-render",
+    kind: "Screenshot Set",
+    path: `.chromarelay/runs/${runId}/evidence/desktop.png`,
+    status: "proposed",
+    producerRole: "builder",
+    agentId: "builder-a",
+    runId,
+    phase: "grounding",
+    createdAt: "2026-09-06T10:00:00.000Z",
+    sourceRefs: []
+  });
+  await workspace.writeText(`.chromarelay/runs/${runId}/run.json`, JSON.stringify({ ...JSON.parse(await workspace.readText(`.chromarelay/runs/${runId}/run.json`)), artifactRefs: stale.artifactRefs }));
+  const copied = await manager.migrateArtifactsToTypedLayout(runId);
+  assert.equal(copied.length, 1);
+  assert.equal(copied[0]?.to, `.chromarelay/runs/${runId}/audit/desktop.png`);
+  assert.deepEqual(await workspace.readBytes(`.chromarelay/runs/${runId}/audit/desktop.png`), png);
+});
+
+test("migration retry resumes past entries that already landed", async () => {
+  const { manager, workspace } = await runOnGrounding("layout-run-011");
+  await workspace.writeText(".chromarelay/runs/layout-run-011/artifacts/first.md", "first\n");
+  await workspace.writeText(".chromarelay/runs/layout-run-011/artifacts/second.md", "second\n");
+  const stale = await manager.getRun("layout-run-011");
+  stale.artifactRefs.push(
+    {
+      id: "first",
+      kind: "Product Brief",
+      path: ".chromarelay/runs/layout-run-011/artifacts/first.md",
+      status: "proposed",
+      producerRole: "product-strategist",
+      agentId: "strategist-a",
+      runId: "layout-run-011",
+      phase: "grounding",
+      createdAt: "2026-09-06T10:00:00.000Z",
+      sourceRefs: []
+    },
+    {
+      id: "second",
+      kind: "Constraint Draft",
+      path: ".chromarelay/runs/layout-run-011/artifacts/second.md",
+      status: "proposed",
+      producerRole: "product-strategist",
+      agentId: "strategist-a",
+      runId: "layout-run-011",
+      phase: "grounding",
+      createdAt: "2026-09-06T10:00:00.000Z",
+      sourceRefs: []
+    }
+  );
+  await workspace.writeText(".chromarelay/runs/layout-run-011/run.json", JSON.stringify({ ...JSON.parse(await workspace.readText(".chromarelay/runs/layout-run-011/run.json")), artifactRefs: stale.artifactRefs }));
+  // A previous attempt copied the first entry, then crashed before run.json recorded the second:
+  // destination exists with identical bytes, run.json still points at the flat path.
+  await workspace.writeBytes(".chromarelay/runs/layout-run-011/context/first.md", new TextEncoder().encode("first\n"));
+  const copied = await manager.migrateArtifactsToTypedLayout("layout-run-011");
+  assert.equal(copied.length, 2);
+  const migrated = await manager.getRun("layout-run-011");
+  assert.deepEqual(migrated.artifactRefs.map(entry => entry.path).sort(), [
+    ".chromarelay/runs/layout-run-011/context/first.md",
+    ".chromarelay/runs/layout-run-011/context/second.md"
+  ]);
+  assert.equal(await workspace.readText(".chromarelay/runs/layout-run-011/context/second.md"), "second\n");
 });

@@ -5,6 +5,10 @@ export interface Workspace {
   exists(relativePath: string): Promise<boolean>;
   readText(relativePath: string): Promise<string>;
   writeText(relativePath: string, content: string): Promise<void>;
+  /** Raw bytes, so binary Artifacts (screenshots, renders) migrate without UTF-8 rewrite. */
+  readBytes(relativePath: string): Promise<Uint8Array>;
+  /** Raw bytes; creates parent directories like writeText. */
+  writeBytes(relativePath: string, content: Uint8Array): Promise<void>;
   appendText(relativePath: string, content: string): Promise<void>;
   list(relativePath: string): Promise<string[]>;
   ensureDir(relativePath: string): Promise<void>;
@@ -58,6 +62,18 @@ export class FileWorkspace implements Workspace {
     await rename(temporary, destination);
   }
 
+  async readBytes(relativePath: string): Promise<Uint8Array> {
+    return new Uint8Array(await readFile(this.resolve(relativePath)));
+  }
+
+  async writeBytes(relativePath: string, content: Uint8Array): Promise<void> {
+    const destination = this.resolve(relativePath);
+    await mkdir(path.dirname(destination), { recursive: true });
+    const temporary = `${destination}.tmp-${process.pid}-${Date.now()}`;
+    await writeFile(temporary, content);
+    await rename(temporary, destination);
+  }
+
   async appendText(relativePath: string, content: string): Promise<void> {
     const destination = this.resolve(relativePath);
     await mkdir(path.dirname(destination), { recursive: true });
@@ -76,7 +92,7 @@ export class FileWorkspace implements Workspace {
 }
 
 export class MemoryWorkspace implements Workspace {
-  private readonly files = new Map<string, string>();
+  private readonly files = new Map<string, string | Uint8Array>();
   private readonly directories = new Set<string>([""]);
 
   constructor(seed: Record<string, string> = {}) {
@@ -105,7 +121,8 @@ export class MemoryWorkspace implements Workspace {
     const normalized = normalizeRelative(relativePath);
     const value = this.files.get(normalized);
     if (value === undefined) throw new Error(`File not found: ${relativePath}`);
-    return value;
+    if (typeof value === "string") return value;
+    return new TextDecoder("utf8", { fatal: false }).decode(value);
   }
 
   async writeText(relativePath: string, content: string): Promise<void> {
@@ -114,9 +131,25 @@ export class MemoryWorkspace implements Workspace {
     this.addParents(normalized);
   }
 
+  async readBytes(relativePath: string): Promise<Uint8Array> {
+    const normalized = normalizeRelative(relativePath);
+    const value = this.files.get(normalized);
+    if (value === undefined) throw new Error(`File not found: ${relativePath}`);
+    if (typeof value === "string") return new TextEncoder().encode(value);
+    return value.slice();
+  }
+
+  async writeBytes(relativePath: string, content: Uint8Array): Promise<void> {
+    const normalized = normalizeRelative(relativePath);
+    this.files.set(normalized, content.slice());
+    this.addParents(normalized);
+  }
+
   async appendText(relativePath: string, content: string): Promise<void> {
     const normalized = normalizeRelative(relativePath);
-    this.files.set(normalized, (this.files.get(normalized) ?? "") + content);
+    const current = this.files.get(normalized);
+    const text = current === undefined || typeof current === "string" ? (current ?? "") : new TextDecoder("utf8", { fatal: false }).decode(current);
+    this.files.set(normalized, text + content);
     this.addParents(normalized);
   }
 
@@ -138,6 +171,11 @@ export class MemoryWorkspace implements Workspace {
   }
 
   snapshot(): Record<string, string> {
-    return Object.fromEntries([...this.files.entries()].sort(([a], [b]) => a.localeCompare(b)));
+    const decoder = new TextDecoder("utf8", { fatal: false });
+    return Object.fromEntries(
+      [...this.files.entries()]
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([filePath, value]) => [filePath, typeof value === "string" ? value : decoder.decode(value)] as const)
+    );
   }
 }
