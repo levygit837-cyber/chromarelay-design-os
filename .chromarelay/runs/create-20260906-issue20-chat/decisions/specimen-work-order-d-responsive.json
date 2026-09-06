@@ -1,0 +1,23 @@
+{
+  "id": "specimen-work-order-d-responsive",
+  "scope": "run",
+  "status": "proposed",
+  "choice": "Below 480px the spine becomes a horizontal top progress strip, wings stack as labelled drawer sections, composer stays docked, plus a visible responsive note stating the contract",
+  "rationale": [
+    "Hard floor C-T6 and C-P3 forbid page h-scroll and require drawer/tab collapse with a reachable composer",
+    "Direction requires the 375px strip-spine fallback to be proven, not sketched"
+  ],
+  "alternatives": [
+    "Hide sidebars below 700px behind icon buttons with no explanation",
+    "Allow horizontal page scroll on narrow screens"
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md"
+  ],
+  "risks": [
+    "Stacked drawers lengthen the page on phones"
+  ],
+  "revisitWhen": [
+    "If surface architecture later picks tabs over stacked drawers"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "id": "specimen-work-order-d-elevation",
+  "scope": "run",
+  "status": "proposed",
+  "choice": "Elevate exactly one ticket (Turn 04, active/selected); all other tickets flat with 1px rules; tool rows never carded",
+  "rationale": [
+    "Direction card-soup guard is absolute: depth means job state, emphasis comes from numerals and labels",
+    "Failed state already carries red node, pill, icon, and inline error so it needs no shadow"
+  ],
+  "alternatives": [
+    "Elevate every ticket with soft shadows for visual richness",
+    "Elevate failed tickets additionally to draw the eye"
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md"
+  ],
+  "risks": [
+    "Reviewers may read flat tickets as unfinished"
+  ],
+  "revisitWhen": [
+    "If selection and failure must be visible simultaneously in the same viewport"
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "version": "1.0",
+  "runId": "create-20260906-issue20-chat",
+  "workflow": "CREATE",
+  "objective": "Create an agentic model chat Surface with stubbed model traffic: left project/session sidebar, central customizable input bar with follow-ups and mode toggles, right per-session sidebar with integrated browser, file navigation and GitHub views, and visible agent tool calls (Write, Read, Edit, Bash, WebSearch). Deliver HTML Direction specimens as visual reference only, a blind Direction selection, and a bootable React plus TypeScript prototype in the Run folder.",
+  "scope": {
+    "kind": "project",
+    "targets": [
+      "agentic-model-chat"
+    ],
+    "nonGoals": [
+      "backend orchestration",
+      "real model traffic (stubbed)",
+      "billing",
+      "canonical promotion (Run-local manifest only)",
+      "pull request or merge"
+    ]
+  },
+  "autonomy": "full",
+  "status": "active",
+  "currentPhase": "intake",
+  "decisionLevel": 3,
+  "surfaceClass": "OPERATE",
+  "hardConstraints": [
+    "kit-only Skill loading; global skills disabled",
+    "HTML specimens are reference-only visual Artifacts; do-not-port-specimen-markup in the build",
+    "frontend only",
+    "real loading/empty/error states",
+    "responsive 375px to 1440px"
+  ],
+  "lockedDecisions": [],
+  "openDecisions": [
+    "creative direction",
+    "composition",
+    "typography",
+    "motion",
+    "further surfaces"
+  ],
+  "authority": {
+    "canonicalOwner": "coordinator",
+    "promotionRole": "memory-curator",
+    "creatorMayFinalCritique": false
+  },
+  "skillBudget": {
+    "primary": 1,
+    "supporting": 2
+  },
+  "phaseHistory": [
+    {
+      "phase": "intake",
+      "enteredAt": "2026-09-06T10:44:03.205Z"
+    }
+  ],
+  "artifactRefs": [],
+  "decisionRefs": [],
+  "blockers": [],
+  "createdAt": "2026-09-06T10:44:03.205Z",
+  "updatedAt": "2026-09-06T10:44:03.205Z"
+}

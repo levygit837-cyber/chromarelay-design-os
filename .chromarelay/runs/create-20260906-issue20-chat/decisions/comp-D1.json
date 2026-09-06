@@ -1,0 +1,24 @@
+{
+  "id": "comp-D1",
+  "scope": "run",
+  "status": "proposed",
+  "choice": "Separate WorkOrderTicket (card), ToolTraceRow (ruled row, never card), ExpandedWell (inset variant host) honoring CARD-SOUP GUARD",
+  "rationale": [
+    "CARD-SOUP GUARD allows exactly one elevated card per viewport; rows must be hairline-ruled, never cards",
+    "One-well-open-per-ticket and elevation discipline need distinct owners (ticket owns well slot, row owns chevron)"
+  ],
+  "alternatives": [
+    "One shared ticket+row mega-component",
+    "Rows as cards"
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/context/design-draft.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/context/information-architecture.md"
+  ],
+  "risks": [
+    "Builder merges well into row and breaks one-open rule — Auditor checks ticket-owned slot"
+  ],
+  "revisitWhen": [
+    "If Builder proves one-open rule cheaper inside row with ticket pass-through"
+  ]
+}

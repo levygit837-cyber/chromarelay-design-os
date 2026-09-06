@@ -1,0 +1,17 @@
+{
+  "id": "specimen-control-room-1",
+  "scope": "run",
+  "status": "proposed",
+  "choice": "Specimen scope is proposed as run-local reference-only evidence for direction-control-room; no build, promotion, or canonical change is decided here.",
+  "rationale": [
+    "Reference-only specimen; no build or promotion decided here."
+  ],
+  "alternatives": [],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-control-room.html"
+  ],
+  "risks": [],
+  "revisitWhen": [
+    "Tournament verdict."
+  ]
+}

@@ -1,0 +1,119 @@
+{
+  "version": "1.0",
+  "runId": "create-20260906-issue20-chat",
+  "phase": "lighthouse-build",
+  "role": "builder",
+  "agentId": "lighthouse-builder",
+  "summary": "Built ONE bootable React+TypeScript app at chat-prototype/ in the isolated worktree (branch eval/issue20-chat-20260906): work-order-rail Surface with session sidebar, spine navigator (incl. 30-turn compression + jump-to-failure), work-order tickets covering all 5 tool kinds + empty-trace + failed retry/dismiss + running staged stub, composer with Plan/Act + follow-ups + <300ms echo, evidence wing with Browser/Files/GitHub populated+empty+error views + cite-back header, drawers/sheets + strip-spine + footnotes at 4 explicit breakpoints, landmarks/tab semantics/live regions/keyboard paths/44px targets/reduced-motion. npm install + build (tsc+vite) + check.mjs + preview/dev 200s + bundle assertions all pass; fresh implementation from tokens/contracts, no specimen markup ported.",
+  "claims": [
+    {
+      "claim": "App boots from clean checkout via README (npm install + npm run dev) and npm run build passes (tsc + vite).",
+      "status": "observed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/audit/build-log.md"
+      ]
+    },
+    {
+      "claim": "Stubbed sessions, 5-kind tool trace (Write/Read/Edit/Bash/WebSearch), both sidebars render.",
+      "status": "observed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/audit/build-log.md"
+      ]
+    },
+    {
+      "claim": "Every state-matrix reachable state has a reproducible route/trigger (?state= default/empty/streaming/failed/long/narrow + in-app Demo states bar + drawers/sheets/tabs/chevrons/retry/dismiss).",
+      "status": "observed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/audit/implementation-notes.md"
+      ]
+    },
+    {
+      "claim": "Responsive rules are explicit in code at 4 breakpoints (docked, <=1180px, <=820px, <=480px + force-narrow preview class); reduced-motion honored via prefers-reduced-motion.",
+      "status": "observed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/audit/build-log.md"
+      ]
+    },
+    {
+      "claim": "No specimen markup ported; implementation is fresh from tokens/contracts (guard in check.mjs passes).",
+      "status": "observed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/audit/build-log.md"
+      ]
+    },
+    {
+      "claim": "Status is never color-only (glyph + word everywhere) and targets meet 44px with a 3px focus ring.",
+      "status": "inferred",
+      "confidence": "medium",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/audit/implementation-notes.md"
+      ]
+    }
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/audit/build-log.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/audit/implementation-notes.md"
+  ],
+  "artifacts": [
+    {
+      "id": "implementation-patch",
+      "kind": "implementation patch",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/prototype/chat-prototype/package.json",
+      "status": "proposed",
+      "producerRole": "builder",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "lighthouse-build",
+      "createdAt": "2026-09-06T20:00:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/surface-brief.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/component-plan.md"
+      ]
+    },
+    {
+      "id": "renderable-surface",
+      "kind": "renderable Surface",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/prototype/chat-prototype/src/App.tsx",
+      "status": "proposed",
+      "producerRole": "builder",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "lighthouse-build",
+      "createdAt": "2026-09-06T20:00:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/design-draft.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/component-plan.md"
+      ]
+    },
+    {
+      "id": "implementation-notes",
+      "kind": "implementation notes",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/audit/implementation-notes.md",
+      "status": "proposed",
+      "producerRole": "builder",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "lighthouse-build",
+      "createdAt": "2026-09-06T20:00:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/state-matrix.md"
+      ]
+    }
+  ],
+  "decisions": [],
+  "risks": [
+    "Hand-rolled tab/focus-trap/disclosure semantics (no installed primitive) need auditor keyboard pass — implemented per contracts but not tested with a screen reader.",
+    "20+ turn compression grouping rule (consecutive succeeded runs, failures + current bypass) is one faithful reading of the contract; auditor should confirm grouping boundaries on the 30-turn fixture.",
+    "Visual polish (numeral condensed stack, exact spacing rhythm) verified by reading tokens/CSS only — no screenshot capture was taken in this environment.",
+    "Dev-server check proves 200 + entry reference; full interaction (send/retry/dismiss/drawers) was exercised through code paths and bundle assertions, not an automated browser run (no browser tooling installed)."
+  ],
+  "confidence": "high",
+  "requestedTransition": "advance",
+  "unresolved": [],
+  "skill": {
+    "primary": "chromarelay-build",
+    "supporting": []
+  }
+}

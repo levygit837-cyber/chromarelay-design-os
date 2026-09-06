@@ -1,0 +1,23 @@
+{
+  "alternatives": [
+    "Hide tool calls behind a debug toggle",
+    "Show only free-text assistant messages"
+  ],
+  "choice": "Agent tool calls (Write, Read, Edit, Bash, WebSearch) are first-class visible trace attached to assistant turns, with summary-first progressive disclosure to full detail; stub fixtures cover running, succeeded, failed, and empty states.",
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/context/issue-20-base-prompt.txt"
+  ],
+  "id": "tool-trace-transparency",
+  "rationale": [
+    "Base prompt explicitly requires visible tool calls; transparency is the differentiator over generic chatbots and the basis of user trust.",
+    "Summary-first disclosure keeps the reading instrument calm while preserving auditability."
+  ],
+  "risks": [
+    "Over-verbose traces could overwhelm the central column; information-tier discipline is required in surface architecture."
+  ],
+  "revisitWhen": [
+    "Streaming/error-state evidence demands a revised trace model."
+  ],
+  "scope": "run",
+  "status": "proposed"
+}

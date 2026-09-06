@@ -1,0 +1,23 @@
+{
+  "id": "specimen-flight-recorder-1",
+  "scope": "run",
+  "status": "proposed",
+  "choice": "Dock tool-trace rows directly beneath the claiming assistant turn as ruled rows; one expanded Edit shows command, excerpt and diff with cite-back footer",
+  "rationale": [
+    "Keeps evidence attached to the claim that produced it",
+    "Lets 50-plus turns compress to summary lines without losing cite-back scannability"
+  ],
+  "alternatives": [
+    "Card pile with shadows per turn",
+    "Detached timeline separate from prose"
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-flight-recorder.md"
+  ],
+  "risks": [
+    "Dense turns grow tall before collapse"
+  ],
+  "revisitWhen": [
+    "Builder proves a detached timeline verifies faster in usability testing"
+  ]
+}

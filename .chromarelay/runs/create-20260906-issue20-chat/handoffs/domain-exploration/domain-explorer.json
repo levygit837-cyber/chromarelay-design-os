@@ -1,0 +1,194 @@
+{
+  "version": "1.0",
+  "runId": "create-20260906-issue20-chat",
+  "phase": "domain-exploration",
+  "role": "art-director",
+  "agentId": "domain-explorer",
+  "summary": "Domain exploration for the agentic chat workbench: full Domain Map across all seven dimensions, 8-entry anti-default ledger with alternatives, and 4 structurally distinct creative territories with no thesis selected.",
+  "claims": [
+    {
+      "claim": "Domain Map covers objects and instruments of agentic coding chat including Write/Read/Edit/Bash/WebSearch trace, composer steering, and three verification views.",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/domain-map.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md"
+      ]
+    },
+    {
+      "claim": "Domain Map covers materials and light, environments and spatial relationships, practitioner vocabulary and metaphors, natural colors, rhythms over time, and task pressure.",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/domain-map.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md"
+      ]
+    },
+    {
+      "claim": "Anti-default ledger names 8 category defaults each with why-likely, when-right, and one alternative mechanism.",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/anti-default-ledger.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md"
+      ]
+    },
+    {
+      "claim": "Ledger alternatives satisfy hard floors for tool-trace visibility, real loading/empty/error states, and responsive three-pane behavior.",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/anti-default-ledger.md"
+      ]
+    },
+    {
+      "claim": "Creative Opportunities opens 4 materially different territories differing on compositional model, density, motion role, surface logic, and typographic voice.",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/creative-opportunities.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/domain-map.md"
+      ]
+    },
+    {
+      "claim": "No thesis is selected in this phase; all territories remain open for direction-divergence under full autonomy.",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/creative-opportunities.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md"
+      ]
+    }
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/context/domain-map.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/anti-default-ledger.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/creative-opportunities.md"
+  ],
+  "artifacts": [
+    {
+      "id": "domain-map",
+      "kind": "Domain Map",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/context/domain-map.md",
+      "status": "proposed",
+      "producerRole": "art-director",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "domain-exploration",
+      "createdAt": "2026-09-06T12:30:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md"
+      ]
+    },
+    {
+      "id": "anti-default-ledger",
+      "kind": "Anti-default Ledger",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/directions/anti-default-ledger.md",
+      "status": "proposed",
+      "producerRole": "art-director",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "domain-exploration",
+      "createdAt": "2026-09-06T12:30:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md"
+      ]
+    },
+    {
+      "id": "creative-opportunities",
+      "kind": "Creative Opportunities",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/directions/creative-opportunities.md",
+      "status": "proposed",
+      "producerRole": "art-director",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "domain-exploration",
+      "createdAt": "2026-09-06T12:30:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md"
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "d-no-thesis",
+      "scope": "run",
+      "status": "proposed",
+      "choice": "Select no thesis; carry all four territories open into direction-divergence.",
+      "rationale": [
+        "Packet non-goals forbid visual Direction decisions in this phase; divergence phase needs open territories."
+      ],
+      "alternatives": [
+        "Select a thesis in this phase"
+      ],
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md"
+      ],
+      "risks": [
+        "Premature convergence narrows divergence"
+      ],
+      "revisitWhen": [
+        "direction-divergence completes"
+      ]
+    },
+    {
+      "id": "d-trace-contract",
+      "scope": "run",
+      "status": "proposed",
+      "choice": "Treat summary-first trace rows with Tier-3 detail as the working contract for later candidates.",
+      "rationale": [
+        "Brief T5/T7 plus hard floors require visible trace and real states; structures the specimen plan."
+      ],
+      "alternatives": [
+        "Leave trace structure open for each Direction"
+      ],
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md"
+      ],
+      "risks": [
+        "Inconsistent trace models across candidates"
+      ],
+      "revisitWhen": [
+        "visual-specimens eligibility evidence"
+      ]
+    },
+    {
+      "id": "d-wings-contract",
+      "scope": "run",
+      "status": "proposed",
+      "choice": "Treat left resumption wing and right per-session evidence wing as architectural, with collapse rules owned by each Direction.",
+      "rationale": [
+        "Brief T2/T4 plus C-T6/C-P3 force session-scoped wings with specified collapse rules at every width."
+      ],
+      "alternatives": [
+        "Let each Direction redefine sidebar scope"
+      ],
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md"
+      ],
+      "risks": [
+        "Session-scope confusion across candidates"
+      ],
+      "revisitWhen": [
+        "surface-architecture collapse rules"
+      ]
+    }
+  ],
+  "risks": [
+    "r-reading-drown: Dense tool trace and dual sidebars drown the central reading column. Mitigation: Tier discipline plus density axes in opportunities keep Tier-1 reading calm under workbench density.",
+    "r-streaming-theater: Streaming and skeleton motion becomes decorative theater that fatigues sustained operators. Mitigation: Distinct prose-caret vs tool-skeleton states with reduced-motion fallbacks and sub-300ms echo.",
+    "r-narrow-collapse: Three-pane architecture fails at 375px through crushed measure or horizontal scroll. Mitigation: Each Territory carries explicit collapse semantics; specimens must prove 375px single column with reachable composer.",
+    "r-false-trust: Calm surfaces over-signal trust and hide failures, retries, or empty-trace turns. Mitigation: Ledger contract requires every work-claiming turn to carry tool evidence or an explicit empty-trace state."
+  ],
+  "confidence": "high",
+  "requestedTransition": "advance",
+  "unresolved": [],
+  "skill": {
+    "primary": "chromarelay-art-direction",
+    "supporting": []
+  }
+}

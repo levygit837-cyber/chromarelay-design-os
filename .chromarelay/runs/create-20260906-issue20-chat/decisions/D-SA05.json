@@ -1,0 +1,24 @@
+{
+  "id": "D-SA05",
+  "scope": "run",
+  "status": "proposed",
+  "choice": "At 20+ turns compress completed runs to counted groups; failures and the current job always stay individually addressable; a jump-to-failure control appears whenever any failure exists; full expansion available via the collapse note.",
+  "rationale": [
+    "Uneven agentic time needs spatial compression (burst-pause-verify rhythm).",
+    "Failures must persist in place and stay reachable; completed runs compress safely."
+  ],
+  "alternatives": [
+    "Render all 30+ nodes at full size (long rail)",
+    "Paginate the ticket stack"
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/context/design-draft.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md"
+  ],
+  "risks": [
+    "Compression threshold interaction with strip-spine at <=480px needs explicit build coverage."
+  ],
+  "revisitWhen": [
+    "If fixture sessions never reach 20 turns and the builder cannot prove the rule; then prove with a synthetic 30-turn fixture."
+  ]
+}

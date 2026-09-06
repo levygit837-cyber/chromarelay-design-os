@@ -1,0 +1,564 @@
+{
+  "version": "1.0",
+  "runId": "create-20260906-issue20-chat",
+  "workflow": "CREATE",
+  "objective": "Create an agentic model chat Surface with stubbed model traffic: left project/session sidebar, central customizable input bar with follow-ups and mode toggles, right per-session sidebar with integrated browser, file navigation and GitHub views, and visible agent tool calls (Write, Read, Edit, Bash, WebSearch). Deliver HTML Direction specimens as visual reference only, a blind Direction selection, and a bootable React plus TypeScript prototype in the Run folder.",
+  "scope": {
+    "kind": "project",
+    "targets": [
+      "agentic-model-chat"
+    ],
+    "nonGoals": [
+      "backend orchestration",
+      "real model traffic (stubbed)",
+      "billing",
+      "canonical promotion (Run-local manifest only)",
+      "pull request or merge"
+    ]
+  },
+  "autonomy": "full",
+  "status": "active",
+  "currentPhase": "deterministic-audit",
+  "decisionLevel": 3,
+  "surfaceClass": "OPERATE",
+  "hardConstraints": [
+    "kit-only Skill loading; global skills disabled",
+    "HTML specimens are reference-only visual Artifacts; do-not-port-specimen-markup in the build",
+    "frontend only",
+    "real loading/empty/error states",
+    "responsive 375px to 1440px"
+  ],
+  "lockedDecisions": [],
+  "openDecisions": [
+    "creative direction",
+    "composition",
+    "typography",
+    "motion",
+    "further surfaces"
+  ],
+  "authority": {
+    "canonicalOwner": "coordinator",
+    "promotionRole": "memory-curator",
+    "creatorMayFinalCritique": false
+  },
+  "skillBudget": {
+    "primary": 1,
+    "supporting": 2
+  },
+  "phaseHistory": [
+    {
+      "phase": "intake",
+      "enteredAt": "2026-09-06T10:44:03.205Z",
+      "exitedAt": "2026-09-06T10:44:16.230Z",
+      "outcome": "advanced"
+    },
+    {
+      "phase": "grounding",
+      "enteredAt": "2026-09-06T10:44:16.230Z",
+      "exitedAt": "2026-09-06T10:49:42.744Z",
+      "outcome": "advanced"
+    },
+    {
+      "phase": "domain-exploration",
+      "enteredAt": "2026-09-06T10:49:42.744Z",
+      "exitedAt": "2026-09-06T10:52:14.099Z",
+      "outcome": "advanced"
+    },
+    {
+      "phase": "direction-divergence",
+      "enteredAt": "2026-09-06T10:52:14.099Z",
+      "exitedAt": "2026-09-06T10:57:29.841Z",
+      "outcome": "advanced"
+    },
+    {
+      "phase": "visual-specimens",
+      "enteredAt": "2026-09-06T10:57:29.841Z",
+      "exitedAt": "2026-09-06T11:03:54.527Z",
+      "outcome": "advanced"
+    },
+    {
+      "phase": "direction-tournament",
+      "enteredAt": "2026-09-06T11:03:54.527Z",
+      "exitedAt": "2026-09-06T11:28:51.611Z",
+      "outcome": "advanced"
+    },
+    {
+      "phase": "canonization",
+      "enteredAt": "2026-09-06T11:28:51.611Z",
+      "exitedAt": "2026-09-06T11:37:09.119Z",
+      "outcome": "advanced"
+    },
+    {
+      "phase": "surface-architecture",
+      "enteredAt": "2026-09-06T11:37:09.119Z",
+      "exitedAt": "2026-09-06T11:40:37.834Z",
+      "outcome": "advanced"
+    },
+    {
+      "phase": "component-plan",
+      "enteredAt": "2026-09-06T11:40:37.834Z",
+      "exitedAt": "2026-09-06T11:46:50.205Z",
+      "outcome": "advanced"
+    },
+    {
+      "phase": "lighthouse-build",
+      "enteredAt": "2026-09-06T11:46:50.205Z",
+      "exitedAt": "2026-09-06T12:15:59.661Z",
+      "outcome": "advanced"
+    },
+    {
+      "phase": "deterministic-audit",
+      "enteredAt": "2026-09-06T12:15:59.661Z"
+    }
+  ],
+  "artifactRefs": [
+    {
+      "createdAt": "2026-09-06T12:00:00Z",
+      "id": "product-brief",
+      "kind": "Product Brief",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md",
+      "phase": "grounding",
+      "producerRole": "product-strategist",
+      "runId": "create-20260906-issue20-chat",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/issue-20-base-prompt.txt",
+        ".chromarelay/runs/create-20260906-issue20-chat/run.json",
+        ".chromarelay/runs/create-20260906-issue20-chat/request.json"
+      ],
+      "status": "proposed"
+    },
+    {
+      "createdAt": "2026-09-06T12:00:00Z",
+      "id": "constraint-draft",
+      "kind": "Constraint Draft",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md",
+      "phase": "grounding",
+      "producerRole": "product-strategist",
+      "runId": "create-20260906-issue20-chat",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/issue-20-base-prompt.txt",
+        ".chromarelay/runs/create-20260906-issue20-chat/run.json",
+        ".chromarelay/runs/create-20260906-issue20-chat/request.json"
+      ],
+      "status": "proposed"
+    },
+    {
+      "id": "domain-map",
+      "kind": "Domain Map",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/context/domain-map.md",
+      "status": "proposed",
+      "producerRole": "art-director",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "domain-exploration",
+      "createdAt": "2026-09-06T12:30:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md"
+      ]
+    },
+    {
+      "id": "anti-default-ledger",
+      "kind": "Anti-default Ledger",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/directions/anti-default-ledger.md",
+      "status": "proposed",
+      "producerRole": "art-director",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "domain-exploration",
+      "createdAt": "2026-09-06T12:30:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md"
+      ]
+    },
+    {
+      "id": "creative-opportunities",
+      "kind": "Creative Opportunities",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/directions/creative-opportunities.md",
+      "status": "proposed",
+      "producerRole": "art-director",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "domain-exploration",
+      "createdAt": "2026-09-06T12:30:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md"
+      ]
+    },
+    {
+      "id": "direction-control-room",
+      "kind": "Direction candidates",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-control-room.md",
+      "status": "proposed",
+      "producerRole": "art-director",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "direction-divergence",
+      "createdAt": "2026-09-06T13:00:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/domain-map.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/creative-opportunities.md"
+      ]
+    },
+    {
+      "id": "direction-flight-recorder",
+      "kind": "Direction candidates",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-flight-recorder.md",
+      "status": "proposed",
+      "producerRole": "art-director",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "direction-divergence",
+      "createdAt": "2026-09-06T13:00:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/domain-map.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/creative-opportunities.md"
+      ]
+    },
+    {
+      "id": "direction-reading-room",
+      "kind": "Direction candidates",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-reading-room.md",
+      "status": "proposed",
+      "producerRole": "art-director",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "direction-divergence",
+      "createdAt": "2026-09-06T13:00:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/domain-map.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/creative-opportunities.md"
+      ]
+    },
+    {
+      "id": "direction-work-order",
+      "kind": "Direction candidates",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md",
+      "status": "proposed",
+      "producerRole": "art-director",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "direction-divergence",
+      "createdAt": "2026-09-06T13:00:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/domain-map.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/creative-opportunities.md"
+      ]
+    },
+    {
+      "id": "specimen-control-room",
+      "kind": "visual specimens",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-control-room.html",
+      "status": "proposed",
+      "producerRole": "art-director",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "visual-specimens",
+      "createdAt": "2026-09-06T14:00:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-control-room.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md"
+      ]
+    },
+    {
+      "id": "specimen-flight-recorder",
+      "kind": "visual specimens",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-flight-recorder.html",
+      "status": "proposed",
+      "producerRole": "art-director",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "visual-specimens",
+      "createdAt": "2026-09-06T14:00:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-flight-recorder.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md"
+      ]
+    },
+    {
+      "id": "specimen-reading-room",
+      "kind": "visual specimens",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-reading-room.html",
+      "status": "proposed",
+      "producerRole": "art-director",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "visual-specimens",
+      "createdAt": "2026-09-06T14:00:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-reading-room.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md"
+      ]
+    },
+    {
+      "id": "specimen-work-order",
+      "kind": "visual specimens",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-work-order.html",
+      "status": "proposed",
+      "producerRole": "art-director",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "visual-specimens",
+      "createdAt": "2026-09-06T14:00:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md"
+      ]
+    },
+    {
+      "id": "selected-direction",
+      "kind": "Selected Direction or escalation",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+      "status": "proposed",
+      "producerRole": "visual-critic",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "direction-tournament",
+      "createdAt": "2026-09-06T16:00:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md"
+      ]
+    },
+    {
+      "id": "design-draft",
+      "kind": "DESIGN draft",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/context/design-draft.md",
+      "status": "proposed",
+      "producerRole": "system-architect",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "canonization",
+      "createdAt": "2026-09-06T17:00:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md"
+      ]
+    },
+    {
+      "id": "token-primitives",
+      "kind": "token drafts",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/context/tokens.primitive.json",
+      "status": "proposed",
+      "producerRole": "system-architect",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "canonization",
+      "createdAt": "2026-09-06T17:00:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md"
+      ]
+    },
+    {
+      "id": "token-semantics",
+      "kind": "token drafts",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/context/tokens.semantic.json",
+      "status": "proposed",
+      "producerRole": "system-architect",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "canonization",
+      "createdAt": "2026-09-06T17:00:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md"
+      ]
+    },
+    {
+      "id": "token-components",
+      "kind": "token drafts",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/context/tokens.component.json",
+      "status": "proposed",
+      "producerRole": "system-architect",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "canonization",
+      "createdAt": "2026-09-06T17:00:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md"
+      ]
+    },
+    {
+      "id": "canon-validation",
+      "kind": "Decision records",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/audit/canonization-validation.md",
+      "status": "proposed",
+      "producerRole": "system-architect",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "canonization",
+      "createdAt": "2026-09-06T17:00:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md"
+      ]
+    },
+    {
+      "id": "surface-brief",
+      "kind": "Surface Brief",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/context/surface-brief.md",
+      "status": "proposed",
+      "producerRole": "product-strategist",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "surface-architecture",
+      "createdAt": "2026-09-06T18:00:00Z",
+      "sourceRefs": [
+        "selected-direction",
+        "design-draft"
+      ]
+    },
+    {
+      "id": "information-architecture",
+      "kind": "Information Architecture",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/context/information-architecture.md",
+      "status": "proposed",
+      "producerRole": "product-strategist",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "surface-architecture",
+      "createdAt": "2026-09-06T18:00:00Z",
+      "sourceRefs": [
+        "selected-direction",
+        "design-draft"
+      ]
+    },
+    {
+      "id": "responsive-model",
+      "kind": "Responsive Model",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/context/responsive-model.md",
+      "status": "proposed",
+      "producerRole": "product-strategist",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "surface-architecture",
+      "createdAt": "2026-09-06T18:00:00Z",
+      "sourceRefs": [
+        "selected-direction",
+        "design-draft"
+      ]
+    },
+    {
+      "id": "state-matrix",
+      "kind": "State Matrix",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/context/state-matrix.md",
+      "status": "proposed",
+      "producerRole": "product-strategist",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "surface-architecture",
+      "createdAt": "2026-09-06T18:00:00Z",
+      "sourceRefs": [
+        "selected-direction",
+        "design-draft"
+      ]
+    },
+    {
+      "id": "component-plan",
+      "kind": "Component Plan",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/context/component-plan.md",
+      "status": "proposed",
+      "producerRole": "component-architect",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "component-plan",
+      "createdAt": "2026-09-06T19:00:00Z",
+      "sourceRefs": [
+        "surface-brief",
+        "design-draft"
+      ]
+    },
+    {
+      "id": "component-states",
+      "kind": "component state contracts",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/context/component-state-contracts.md",
+      "status": "proposed",
+      "producerRole": "component-architect",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "component-plan",
+      "createdAt": "2026-09-06T19:00:00Z",
+      "sourceRefs": [
+        "surface-brief",
+        "design-draft"
+      ]
+    },
+    {
+      "id": "implementation-patch",
+      "kind": "implementation patch",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/prototype/chat-prototype/package.json",
+      "status": "proposed",
+      "producerRole": "builder",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "lighthouse-build",
+      "createdAt": "2026-09-06T20:00:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/surface-brief.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/component-plan.md"
+      ]
+    },
+    {
+      "id": "renderable-surface",
+      "kind": "renderable Surface",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/prototype/chat-prototype/src/App.tsx",
+      "status": "proposed",
+      "producerRole": "builder",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "lighthouse-build",
+      "createdAt": "2026-09-06T20:00:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/design-draft.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/component-plan.md"
+      ]
+    },
+    {
+      "id": "implementation-notes",
+      "kind": "implementation notes",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/audit/implementation-notes.md",
+      "status": "proposed",
+      "producerRole": "builder",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "lighthouse-build",
+      "createdAt": "2026-09-06T20:00:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/state-matrix.md"
+      ]
+    }
+  ],
+  "decisionRefs": [
+    "stubbed-traffic-boundary",
+    "sidebar-contract",
+    "tool-trace-transparency",
+    "d-no-thesis",
+    "d-trace-contract",
+    "d-wings-contract",
+    "decision-control-room-thesis",
+    "dec-flight-recorder-thesis",
+    "decision-reading-room-candidate",
+    "decision-work-order-scope",
+    "specimen-control-room-1",
+    "specimen-flight-recorder-1",
+    "specimen-flight-recorder-2",
+    "specimen-reading-room-scope",
+    "specimen-work-order-d-density",
+    "specimen-work-order-d-elevation",
+    "specimen-work-order-d-responsive",
+    "canon-D-01",
+    "canon-D-02",
+    "canon-D-03",
+    "canon-D-04",
+    "canon-D-05",
+    "canon-D-06",
+    "canon-D-07",
+    "canon-D-08",
+    "canon-D-09",
+    "canon-D-10",
+    "canon-D-11",
+    "canon-D-12",
+    "D-SA01",
+    "D-SA02",
+    "D-SA03",
+    "D-SA04",
+    "D-SA05",
+    "D-SA06",
+    "comp-D1",
+    "comp-D2",
+    "comp-D3",
+    "comp-D4",
+    "comp-D5",
+    "comp-D6"
+  ],
+  "blockers": [
+    "unresolved[direction-tournament/tournament-critic-one]: No rendered 375/768/1440 views accompany any candidate; a live 375px pass of A, C, D would settle severity ranking and could promote A hidden status labels to a blocker.",
+    "unresolved[direction-tournament/tournament-critic-one]: Focus management unverifiable from markup: B sheet has no focus trap; A/C drawer overlays are labels without implemented behavior.",
+    "unresolved[direction-tournament/tournament-critic-one]: Motion judged from code only; rendered-motion review pending.",
+    "unresolved[direction-tournament/tournament-critic-one]: Coordinator ruling required on the in-page direction-name leak before the verdict counts as fully independent Evidence.",
+    "unresolved[direction-tournament/tournament-critic-one]: Second critic winner unknown by design; material disagreement needs Coordinator reconciliation."
+  ],
+  "createdAt": "2026-09-06T10:44:03.205Z",
+  "updatedAt": "2026-09-06T12:15:59.661Z"
+}

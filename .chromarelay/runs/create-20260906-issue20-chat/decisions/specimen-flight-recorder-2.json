@@ -1,0 +1,23 @@
+{
+  "id": "specimen-flight-recorder-2",
+  "scope": "run",
+  "status": "proposed",
+  "choice": "Paper ledger with hairline rules; status as pip plus icon plus uppercase label; failures and skeletons resolve in place with retry",
+  "rationale": [
+    "Record never breaks its own continuity",
+    "Meaning survives grayscale and reduced motion"
+  ],
+  "alternatives": [
+    "Toast or overlay errors",
+    "Dark terminal console theme"
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-flight-recorder.md"
+  ],
+  "risks": [
+    "Quiet ground may under-signal failure urgency"
+  ],
+  "revisitWhen": [
+    "Contrast audit against WCAG AA fails on paper ground"
+  ]
+}

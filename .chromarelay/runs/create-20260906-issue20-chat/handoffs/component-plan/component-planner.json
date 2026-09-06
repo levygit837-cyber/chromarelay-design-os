@@ -1,0 +1,262 @@
+{
+  "version": "1.0",
+  "runId": "create-20260906-issue20-chat",
+  "phase": "component-plan",
+  "role": "component-architect",
+  "agentId": "component-planner",
+  "summary": "Component Plan + state contracts for the work-order-rail chat Surface: 20 requirements resolved (12 create, 1 extend, 7 native; no registry or primitives invented), token roles by semantic name, per-breakpoint responsive behavior, full a11y contracts, per-component state tables covering every reachable matrix row with unreachable states excluded, and a dependency-ordered build wave sequence.",
+  "claims": [
+    {
+      "claim": "Run inventory is greenfield: no canonical DESIGN.md registry and no UI components exist in the product tree",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/surface-brief.md",
+        "package.json"
+      ]
+    },
+    {
+      "claim": "No installed accessible primitive exists in the prototype toolchain (dependencies are ajv only)",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        "package.json"
+      ]
+    },
+    {
+      "claim": "Every Surface Brief requirement (20 items) carries one 9-field resolution record; every create/extend record carries non-empty rejected-alternatives with rung numbers",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/component-plan.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/surface-brief.md"
+      ]
+    },
+    {
+      "claim": "All token citations use semantic role names, never raw values or primitive refs",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/tokens.semantic.json",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/tokens.component.json"
+      ]
+    },
+    {
+      "claim": "State contracts cover every reachable state-matrix row (A1-A4, B1-B7, C1-C6, D1-D7, E1-E4, F1-F9, G1-G5, H, I); unreachable states are excluded with reasons",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/state-matrix.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/component-state-contracts.md"
+      ]
+    },
+    {
+      "claim": "StripSpine is a responsive variant of SpineNavigator (extend), not a second component; FootnoteBlock and LiveRegion are native patterns",
+      "status": "proposed",
+      "confidence": "medium",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/responsive-model.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/information-architecture.md"
+      ]
+    }
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/context/surface-brief.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/context/information-architecture.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/context/responsive-model.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/context/state-matrix.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/context/design-draft.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/context/tokens.component.json",
+    ".chromarelay/runs/create-20260906-issue20-chat/context/tokens.semantic.json",
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+    "package.json"
+  ],
+  "artifacts": [
+    {
+      "id": "component-plan",
+      "kind": "Component Plan",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/context/component-plan.md",
+      "status": "proposed",
+      "producerRole": "component-architect",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "component-plan",
+      "createdAt": "2026-09-06T19:00:00Z",
+      "sourceRefs": [
+        "surface-brief",
+        "design-draft"
+      ]
+    },
+    {
+      "id": "component-states",
+      "kind": "component state contracts",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/context/component-state-contracts.md",
+      "status": "proposed",
+      "producerRole": "component-architect",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "component-plan",
+      "createdAt": "2026-09-06T19:00:00Z",
+      "sourceRefs": [
+        "surface-brief",
+        "design-draft"
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "comp-D1",
+      "scope": "run",
+      "status": "proposed",
+      "choice": "Separate WorkOrderTicket (card), ToolTraceRow (ruled row, never card), ExpandedWell (inset variant host) honoring CARD-SOUP GUARD",
+      "rationale": [
+        "CARD-SOUP GUARD allows exactly one elevated card per viewport; rows must be hairline-ruled, never cards",
+        "One-well-open-per-ticket and elevation discipline need distinct owners (ticket owns well slot, row owns chevron)"
+      ],
+      "alternatives": [
+        "One shared ticket+row mega-component",
+        "Rows as cards"
+      ],
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/design-draft.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/information-architecture.md"
+      ],
+      "risks": [
+        "Builder merges well into row and breaks one-open rule — Auditor checks ticket-owned slot"
+      ],
+      "revisitWhen": [
+        "If Builder proves one-open rule cheaper inside row with ticket pass-through"
+      ]
+    },
+    {
+      "id": "comp-D2",
+      "scope": "run",
+      "status": "proposed",
+      "choice": "Single DrawerSheet contract wrapping native dialog for all three sheets with tether, stacking, one-layer Esc, opener return",
+      "rationale": [
+        "Three hand-wired dialogs repeat trap/tether/stacking/announce logic and drift",
+        "Native dialog supplies modality + top-layer + return; wrapper adds tether/stacking/scrim/reduced-motion consistently"
+      ],
+      "alternatives": [
+        "Bare native dialog per call site",
+        "No shared sheet (three bespoke drawers)"
+      ],
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/state-matrix.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/responsive-model.md"
+      ],
+      "risks": [
+        "Hand-rolled stacking + trap without installed primitive needs audit focus"
+      ],
+      "revisitWhen": [
+        "If an accessible primitive is installed later, re-resolve rung 5"
+      ]
+    },
+    {
+      "id": "comp-D3",
+      "scope": "run",
+      "status": "proposed",
+      "choice": "StripSpine as extend-variant of SpineNavigator sharing props, state, selection, and announcements",
+      "rationale": [
+        "Second component for one requirement duplicates compression/selection logic and invites divergent announcements",
+        "Responsive Model defines strip as presentation change (visuals, carriage hidden, chip), not new behavior"
+      ],
+      "alternatives": [
+        "Separate StripSpine component",
+        "Hide spine at strip widths"
+      ],
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/responsive-model.md"
+      ],
+      "risks": [
+        "Builder implements strip as fork — gate reads extend record to prevent it"
+      ],
+      "revisitWhen": [
+        "Never within this Run; strip stays a variant"
+      ]
+    },
+    {
+      "id": "comp-D4",
+      "scope": "run",
+      "status": "proposed",
+      "choice": "Shared EmptyFrame contract for all nine empty/error slots rendering in place with recovery action",
+      "rationale": [
+        "Nine copies drift in border, wording, and recovery wiring; one contract keeps dashed in-place discipline",
+        "Overlays are forbidden (T3 never overlays T1); EmptyFrame renders in place by contract"
+      ],
+      "alternatives": [
+        "Nine bespoke empty/error divs",
+        "Empty placeholders as overlay toasts"
+      ],
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/state-matrix.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/surface-brief.md"
+      ],
+      "risks": [
+        "Over-general props (title/body/action free text) could dilute cite-back wording — constrain via state contracts"
+      ],
+      "revisitWhen": [
+        "If any slot needs behavior beyond message + one recovery action"
+      ]
+    },
+    {
+      "id": "comp-D5",
+      "scope": "run",
+      "status": "proposed",
+      "choice": "ToolTraceRow + ExpandedWell as button-controlled disclosure (aria-expanded/controls); details/summary refused with recorded reason",
+      "rationale": [
+        "details/summary cannot enforce one-open-per-ticket, cite stamping, or variant bodies without JS that defeats its honesty",
+        "Div-click handlers are forbidden (IA keyboard contract: native buttons/tabs/links only)"
+      ],
+      "alternatives": [
+        "details/summary for tool disclosure",
+        "div-click rows"
+      ],
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/information-architecture.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/state-matrix.md"
+      ],
+      "risks": [
+        "None beyond audit load; button disclosure is standard"
+      ],
+      "revisitWhen": [
+        "If one-open rule is dropped (not expected)"
+      ]
+    },
+    {
+      "id": "comp-D6",
+      "scope": "run",
+      "status": "proposed",
+      "choice": "All views render from local fixtures; retry re-runs deterministic stub; offline is not a state",
+      "rationale": [
+        "Matrix section I: zero network after install; missing fixture is a build defect, not a runtime state",
+        "No offline banner exists to build"
+      ],
+      "alternatives": [
+        "Fetch-backed views with spinners",
+        "Offline banner state"
+      ],
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/state-matrix.md"
+      ],
+      "risks": [
+        "Builder adds network fetch or banner — Auditor flags as invented state"
+      ],
+      "revisitWhen": [
+        "If product adds real backend (out of Run scope)"
+      ]
+    }
+  ],
+  "risks": [
+    "Hand-rolled tab semantics (EvidenceWing) and dialog trap/stacking (DrawerSheet) re-solve rung-5 problems with no installed primitive to verify against — Auditor must exercise ArrowLeft/Right/Home/End, trap, one-layer Esc, opener return, and right-over-left stacking explicitly.",
+    "Spine scrub + carriage without viewport yank is the highest-build-risk interaction (flagged in tournament carry-ins) — Builder must prove no-scroll-yank with streaming + scrub fixtures.",
+    "Status-by-hue drift: kind chips, collapse notes, and selection must stay neutral/tint-free; only status nodes, pills, diff, and edges carry hue — Auditor checks grayscale survival.",
+    "Attempt-keeping retry + dismiss-with-reason validation (confirm disabled until reason) spans ticket footer and topmost sheet — focus return and stacked-Esc paths need explicit proof.",
+    "Reduced-motion and offline rows apply globally — every animated state needs its static equivalent and every retry must be deterministic from fixtures; missing-fixture-as-defect must not become a runtime banner."
+  ],
+  "confidence": "high",
+  "requestedTransition": "advance",
+  "unresolved": [],
+  "skill": {
+    "primary": "chromarelay-components",
+    "supporting": []
+  }
+}

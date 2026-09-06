@@ -1,0 +1,7 @@
+{
+ "A": "direction-work-order",
+ "B": "direction-reading-room",
+ "C": "direction-control-room",
+ "D": "direction-flight-recorder",
+ "note": "coordinator-side mapping; never included in critic packets"
+}

@@ -1,0 +1,50 @@
+[
+ {
+  "id": "L-01",
+  "reopening": "A further-surface proposal demonstrates a second index that does not duplicate turn order (e.g. a file-centric index); reopen by Run decision with a new signature regulation naming both rails and their aria roles.",
+  "scope": "all Surfaces in run scope agentic-model-chat",
+  "statement": "Exactly one spine navigator per active session; exactly one node per assistant turn in chronological order; user turns are ticks, never nodes; at most one expanded well per work order."
+ },
+ {
+  "id": "L-02",
+  "reopening": "A viewport study with two concurrent blocking states (e.g. failed ticket + running ticket both demanding action) proves one elevation insufficient; reopen by Run decision to permit a second elevation ONLY for the blocking-failure ticket, with the pair rule written here.",
+  "scope": "center ticket column, all widths",
+  "statement": "CARD-SOUP GUARD: exactly one ticket per viewport carries elevation lift.active with the accent edge; all other tickets flat with 1px borders; tool rows never cards; spine never elevated."
+ },
+ {
+  "id": "L-03",
+  "reopening": "WCAG guidance changes the ratio floors; reopen to re-pin the status ink values, never to remove the glyph-plus-word pairing.",
+  "scope": "every status indicator: pills, nodes, tool stats, checks, carriage",
+  "statement": "Status is never color-only: every state pairs color with glyph plus text label and meets AA (4.5:1 text, 3:1 large/graphic) via the status.* ink pairs."
+ },
+ {
+  "id": "L-04",
+  "reopening": "A cross-session evidence view is approved as a further surface; reopen to add a session token to the stamp grammar, never to drop the turn token.",
+  "scope": "wells, evidence wing header, attachment sheets",
+  "statement": "Every attachment cites back with Turn NN / Kind target + status + duration; the wing header mirrors the selected ticket and re-stamps on selection change."
+ },
+ {
+  "id": "L-05",
+  "reopening": "Retention policy or legal constraint requires failure redaction; reopen with the redaction rule and its audit trail, never silent removal.",
+  "scope": "failed tickets, error boxes, spine failure nodes",
+  "statement": "Failures render in place with evidence and attempt-keeping retry language; red nodes persist until retried or dismissed with a recorded reason; no toasts, no auto-dismiss."
+ },
+ {
+  "id": "L-06",
+  "reopening": "A new evidence kind arrives that prose cannot carry (e.g. audio trace); reopen to extend the mono-ration list by Decision, never by ad-hoc faces.",
+  "scope": "all typography",
+  "statement": "Grotesk for jobs/chrome/composer, mono strictly for targets/commands/durations/citations, condensed numerals for order; no new face or hue-coded category without a Decision."
+ },
+ {
+  "id": "L-07",
+  "reopening": "A new status or diff semantic is proven necessary (e.g. partial-failure); reopen to add the pair with its glyph+word, never a bare hue.",
+  "scope": "all color use",
+  "statement": "Saturated color means status or diff only; grounds stay neutral; no AI gradient, glow, shimmer, or decorative hue anywhere on the Surface."
+ },
+ {
+  "id": "L-08",
+  "reopening": "Breakpoint range shifts by Run decision (e.g. 360px floor); reopen to re-pin the width table, never to permit page-level horizontal scroll or an unreachable composer.",
+  "scope": "375-1440px responsive contract",
+  "statement": "No horizontal page scroll at any width; keep-status/hide-duration at <=480px; sticky-bottom composer below 820px; 44px minimum targets everywhere; strip/drawer/footnote translations per the variant table."
+ }
+]

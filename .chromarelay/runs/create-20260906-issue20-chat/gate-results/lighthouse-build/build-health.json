@@ -1,0 +1,16 @@
+{
+  "version": "1.0",
+  "runId": "create-20260906-issue20-chat",
+  "phase": "lighthouse-build",
+  "gate": "build-health",
+  "status": "pass",
+  "summary": "npm install EXIT 0; tsc + vite build EXIT 0 (40 modules, tsc clean); preview :4179 serves 200 for / and all six ?state= routes; served bundle asserts spine landmark, all 5 tool kinds, retry/dismiss, cite-back, empty-trace, composer modes, wing tabs, live regions, 30-turn compression; CSS asserts 4 breakpoints + reduced-motion + token values; no console errors reported; no specimen markup ported.",
+  "recordedBy": "coordinator",
+  "recordedAt": "2026-09-06T20:00:00Z",
+  "evidenceRefs": [
+    ".chromarelay/runs/create-20260906-issue20-chat/audit/build-log.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/audit/implementation-notes.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/prototype/chat-prototype/package.json",
+    ".chromarelay/runs/create-20260906-issue20-chat/prototype/chat-prototype/src/App.tsx"
+  ]
+}

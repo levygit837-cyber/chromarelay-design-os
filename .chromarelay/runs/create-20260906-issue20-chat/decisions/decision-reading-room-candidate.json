@@ -1,0 +1,27 @@
+{
+  "id": "decision-reading-room-candidate",
+  "scope": "run",
+  "status": "proposed",
+  "choice": "Adopt Territory 3 Reading Room as Direction candidate direction-reading-room with marginal evidence numerals as signature and density-on-demand discipline",
+  "rationale": [
+    "Territory 3 is the only territory that treats sustained reading as load-bearing and spends all density inside expanded notes and summoned sheets",
+    "Marginal numerals give session-scoped evidence a citation layout competitors lack, directly serving trust-but-verify",
+    "Lowest-density thesis maximizes divergence against control-room and work-order lenses"
+  ],
+  "alternatives": [
+    "Default the trace to expanded rows under every turn",
+    "Hide tool activity behind a single disclosure count"
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/context/domain-map.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/creative-opportunities.md"
+  ],
+  "risks": [
+    "Reads as article not workbench if rails feel distant",
+    "Failures need in-place urgency without breaking calm"
+  ],
+  "revisitWhen": [
+    "Blind critic finds capability signal too weak or failure states too quiet to ship"
+  ]
+}

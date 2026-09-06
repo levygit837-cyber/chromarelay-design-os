@@ -1,0 +1,22 @@
+{
+  "id": "canon-D-06",
+  "scope": "run",
+  "status": "proposed",
+  "choice": "Attempt-keeping retry language: retry reads Retry failed <Kind> step (T0N); failure renders in place with exit/code/line evidence; red spine node persists until retried or dismissed with a recorded reason; no toasts, no auto-dismiss, live-region announcement [applies to: failed tickets, error boxes, spine failure nodes]",
+  "rationale": [
+    "Carry-in from D plus trust-but-verify product truth: the operator stays accountable, so history of attempts is never rewritten."
+  ],
+  "alternatives": [
+    "Generic Retry button; auto-dismiss failures after re-run; toast on failure"
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-work-order.html"
+  ],
+  "risks": [
+    "Label length at 375px; mitigated by wrapping action rows."
+  ],
+  "revisitWhen": [
+    "Retry taxonomy grows (partial re-run, skip-step); then extend the label grammar, never shorten to bare Retry."
+  ]
+}

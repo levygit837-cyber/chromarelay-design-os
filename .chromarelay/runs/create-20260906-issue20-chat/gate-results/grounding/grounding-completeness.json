@@ -1,0 +1,14 @@
+{
+  "version": "1.0",
+  "runId": "create-20260906-issue20-chat",
+  "phase": "grounding",
+  "gate": "grounding-completeness",
+  "status": "pass",
+  "summary": "Product Brief covers user, task, outcomes, product truths, data contracts, constraints pointer, operational perception, differentiation, open space with per-field confidence; Constraint Draft carries all hard floors plus legal/accessibility/localization/performance with source and floor-vs-assumption flags; no material ambiguity left open.",
+  "recordedBy": "coordinator",
+  "recordedAt": "2026-09-06T11:00:00Z",
+  "evidenceRefs": [
+    ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md"
+  ]
+}

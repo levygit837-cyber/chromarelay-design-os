@@ -1,0 +1,26 @@
+{
+  "id": "D-SA04",
+  "scope": "run",
+  "status": "proposed",
+  "choice": "1440 docked workbench; <=1180 evidence wing becomes tethered drawer sheet; <=820 left wing becomes drawer, composer sticky-bottom, wing meta translates to footnotes; <=480 spine becomes sticky top strip, drawers stack, prose stays at body size with 12px gutters.",
+  "rationale": [
+    "Satisfies 375-1440px hard floor with no page h-scroll while keeping the composer persistently reachable.",
+    "Tethered drawers preserve cite-back context that a generic tab bar would lose.",
+    "Footnote translation keeps verification metadata reachable without a docked wing."
+  ],
+  "alternatives": [
+    "Squeeze all three panes at every width",
+    "Tab-bar app with no drawers"
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/context/design-draft.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md"
+  ],
+  "risks": [
+    "Drawer stacking order and sticky offsets interact; z-order and sticky rules are specified to remove invention."
+  ],
+  "revisitWhen": [
+    "If real-device testing shows sticky composer plus strip-spine consume too much vertical space at 375px."
+  ]
+}

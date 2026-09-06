@@ -1,0 +1,106 @@
+{
+  "version": "1.0",
+  "runId": "create-20260906-issue20-chat",
+  "phase": "direction-divergence",
+  "role": "art-director",
+  "agentId": "direction-lens-reading-room",
+  "summary": "Reading Room direction: the session as an essay proven in the margin — lowest-density editorial page with marginal evidence numerals binding each tool claim to its note and verification sheet.",
+  "claims": [
+    {
+      "claim": "Editorial-page-with-marginalia composition keeps the reading column calm at lowest density while withdrawing sidebars to slim rails",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-reading-room.md"
+      ]
+    },
+    {
+      "claim": "Marginal evidence numerals cite every tool claim in place and bind the gutter note to the summoned verification sheet",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-reading-room.md"
+      ]
+    },
+    {
+      "claim": "Warm paper plus summoned glass surface logic with breath motion sustains long-session reading without startling the reader",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-reading-room.md"
+      ]
+    },
+    {
+      "claim": "Calm-reading vs capability tension is resolved by withdrawing capability behind glass one gesture away rather than removing it",
+      "status": "proposed",
+      "confidence": "medium",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-reading-room.md"
+      ]
+    }
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-reading-room.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/context/domain-map.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/creative-opportunities.md"
+  ],
+  "artifacts": [
+    {
+      "id": "direction-reading-room",
+      "kind": "Direction candidates",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-reading-room.md",
+      "status": "proposed",
+      "producerRole": "art-director",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "direction-divergence",
+      "createdAt": "2026-09-06T13:00:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/domain-map.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/creative-opportunities.md"
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "decision-reading-room-candidate",
+      "scope": "run",
+      "status": "proposed",
+      "choice": "Adopt Territory 3 Reading Room as Direction candidate direction-reading-room with marginal evidence numerals as signature and density-on-demand discipline",
+      "rationale": [
+        "Territory 3 is the only territory that treats sustained reading as load-bearing and spends all density inside expanded notes and summoned sheets",
+        "Marginal numerals give session-scoped evidence a citation layout competitors lack, directly serving trust-but-verify",
+        "Lowest-density thesis maximizes divergence against control-room and work-order lenses"
+      ],
+      "alternatives": [
+        "Default the trace to expanded rows under every turn",
+        "Hide tool activity behind a single disclosure count"
+      ],
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/domain-map.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/creative-opportunities.md"
+      ],
+      "risks": [
+        "Reads as article not workbench if rails feel distant",
+        "Failures need in-place urgency without breaking calm"
+      ],
+      "revisitWhen": [
+        "Blind critic finds capability signal too weak or failure states too quiet to ship"
+      ]
+    }
+  ],
+  "risks": [
+    "Calm may read as weak capability if withdrawn rails feel distant at 1440px",
+    "Failure urgency must survive without pulse or toast on a quiet ground",
+    "Numeral sequences need capping rules or heavy turns overwhelm the margin"
+  ],
+  "confidence": "high",
+  "requestedTransition": "advance",
+  "unresolved": [],
+  "skill": {
+    "primary": "chromarelay-art-direction",
+    "supporting": []
+  }
+}

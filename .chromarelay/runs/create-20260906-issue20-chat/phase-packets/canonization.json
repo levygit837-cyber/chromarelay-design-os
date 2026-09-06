@@ -1,0 +1,69 @@
+{
+  "runId": "create-20260906-issue20-chat",
+  "workflow": "CREATE",
+  "phase": "canonization",
+  "role": "system-architect",
+  "goal": "Translate the Selected Direction into design grammar, tokens, scope, exceptions, and Locks.",
+  "scope": [
+    "agentic-model-chat"
+  ],
+  "inputs": [
+    {
+      "name": "Selected Direction",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+      "status": "resolved"
+    },
+    {
+      "name": "Product Brief",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md",
+      "status": "resolved"
+    },
+    {
+      "name": "Constraints",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md",
+      "status": "resolved"
+    }
+  ],
+  "unresolvedInputs": [],
+  "locks": [],
+  "openDecisions": [
+    "creative direction",
+    "composition",
+    "typography",
+    "motion",
+    "further surfaces"
+  ],
+  "rubric": "rubrics/operate.json",
+  "authority": [
+    "Translate the selected Direction into design grammar, tokens, scopes, exceptions, and contracts.",
+    "must not: dilute a selected Direction for implementation convenience",
+    "must not: promote directly"
+  ],
+  "skillKit": {
+    "primary": "chromarelay-systemize",
+    "supporting": [
+      "google-design-md"
+    ]
+  },
+  "outputSchema": "framework/schemas/handoff.schema.json",
+  "acceptance": [
+    "produce: DESIGN draft",
+    "produce: token drafts",
+    "produce: Decision records",
+    "satisfy or report gate: contract-consistency"
+  ],
+  "exitPolicy": "contracts validate without unresolved conflict",
+  "nonGoals": [
+    "backend orchestration",
+    "real model traffic (stubbed)",
+    "billing",
+    "canonical promotion (Run-local manifest only)",
+    "pull request or merge"
+  ],
+  "omittedContext": [
+    "unrelated project documents",
+    "unrelated Run history",
+    "Skills outside the active kit"
+  ],
+  "independenceControls": []
+}

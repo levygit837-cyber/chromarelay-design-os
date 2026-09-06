@@ -1,0 +1,22 @@
+{
+  "id": "d-wings-contract",
+  "scope": "run",
+  "status": "proposed",
+  "choice": "Treat left resumption wing and right per-session evidence wing as architectural, with collapse rules owned by each Direction.",
+  "rationale": [
+    "Brief T2/T4 plus C-T6/C-P3 force session-scoped wings with specified collapse rules at every width."
+  ],
+  "alternatives": [
+    "Let each Direction redefine sidebar scope"
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md"
+  ],
+  "risks": [
+    "Session-scope confusion across candidates"
+  ],
+  "revisitWhen": [
+    "surface-architecture collapse rules"
+  ]
+}

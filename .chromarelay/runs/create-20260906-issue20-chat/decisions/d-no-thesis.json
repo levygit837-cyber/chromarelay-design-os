@@ -1,0 +1,22 @@
+{
+  "id": "d-no-thesis",
+  "scope": "run",
+  "status": "proposed",
+  "choice": "Select no thesis; carry all four territories open into direction-divergence.",
+  "rationale": [
+    "Packet non-goals forbid visual Direction decisions in this phase; divergence phase needs open territories."
+  ],
+  "alternatives": [
+    "Select a thesis in this phase"
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md"
+  ],
+  "risks": [
+    "Premature convergence narrows divergence"
+  ],
+  "revisitWhen": [
+    "direction-divergence completes"
+  ]
+}

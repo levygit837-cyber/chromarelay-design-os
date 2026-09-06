@@ -1,0 +1,22 @@
+{
+  "id": "canon-D-04",
+  "scope": "run",
+  "status": "proposed",
+  "choice": "Composer is sticky-bottom below 820px (docked, full-width, above drawers); docked in-flow at desktop widths; echo docks to spine position within 300ms [applies to: composer, <=820px widths]",
+  "rationale": [
+    "Carry-in from C plus C-T6/C-P3: steering stays reachable where drawers otherwise push it off; satisfies composer-persistently-reachable floor."
+  ],
+  "alternatives": [
+    "Static composer that scrolls away; floating action button opening the composer"
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md"
+  ],
+  "risks": [
+    "Sticky stacking vs strip-spine z-order; resolved by explicit z scale (strip < drawers < composer)."
+  ],
+  "revisitWhen": [
+    "Viewport-height testing shows the sticky composer covering drawer actions on short screens; then compress composer chrome, never unstick it."
+  ]
+}

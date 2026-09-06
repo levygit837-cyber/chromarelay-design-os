@@ -1,0 +1,22 @@
+{
+  "id": "canon-D-09",
+  "scope": "run",
+  "status": "proposed",
+  "choice": "Numerals use the grotesk stack with font-stretch condensed + 800 weight + tight tracking; fallback chain is system-only (Arial Narrow, HelveticaNeue-CondensedBold, Franklin Gothic Condensed, DIN Condensed, system-ui); Impact is excluded from the voice chain [applies to: turn numerals, spine labels]",
+  "rationale": [
+    "Repairs the numeral fallback hazard and honors C-P2 offline boot: the ordering voice cannot depend on a face missing on Linux or blocked offline."
+  ],
+  "alternatives": [
+    "Keep specimen Impact/Haettenschweiler condensed stack; ship a CDN condensed face"
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md"
+  ],
+  "risks": [
+    "Numerals render wider on systems lacking all condensed faces; contained by fluid 38-52px clamp."
+  ],
+  "revisitWhen": [
+    "Offline-bundled condensed face is approved for the Run; then prepend it to font.numeral, never a CDN reference."
+  ]
+}

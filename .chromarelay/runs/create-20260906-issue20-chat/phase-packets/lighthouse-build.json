@@ -1,0 +1,74 @@
+{
+  "runId": "create-20260906-issue20-chat",
+  "workflow": "CREATE",
+  "phase": "lighthouse-build",
+  "role": "builder",
+  "goal": "Implement one representative Surface through an isolated worktree.",
+  "scope": [
+    "agentic-model-chat"
+  ],
+  "inputs": [
+    {
+      "name": "Surface Brief",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/context/surface-brief.md",
+      "status": "resolved"
+    },
+    {
+      "name": "DESIGN draft",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/context/design-draft.md",
+      "status": "resolved"
+    },
+    {
+      "name": "tokens",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/context/tokens.component.json",
+      "status": "resolved"
+    },
+    {
+      "name": "Component Plan",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/context/component-plan.md",
+      "status": "resolved"
+    }
+  ],
+  "unresolvedInputs": [],
+  "locks": [],
+  "openDecisions": [
+    "creative direction",
+    "composition",
+    "typography",
+    "motion",
+    "further surfaces"
+  ],
+  "rubric": "rubrics/operate.json",
+  "authority": [
+    "Implement the selected Direction through canonical tokens and component contracts.",
+    "must not: create a new Direction silently",
+    "must not: modify canonical state",
+    "must not: invent undocumented component props"
+  ],
+  "skillKit": {
+    "primary": "chromarelay-build",
+    "supporting": []
+  },
+  "outputSchema": "framework/schemas/handoff.schema.json",
+  "acceptance": [
+    "produce: implementation patch",
+    "produce: renderable Surface",
+    "produce: implementation notes",
+    "satisfy or report gate: build-health"
+  ],
+  "exitPolicy": "Surface renders and basic health passes",
+  "nonGoals": [
+    "backend orchestration",
+    "real model traffic (stubbed)",
+    "billing",
+    "canonical promotion (Run-local manifest only)",
+    "pull request or merge"
+  ],
+  "omittedContext": [
+    "unrelated project documents",
+    "unrelated Run history",
+    "Skills outside the active kit",
+    "rejected Directions"
+  ],
+  "independenceControls": []
+}

@@ -1,0 +1,23 @@
+{
+  "id": "comp-D6",
+  "scope": "run",
+  "status": "proposed",
+  "choice": "All views render from local fixtures; retry re-runs deterministic stub; offline is not a state",
+  "rationale": [
+    "Matrix section I: zero network after install; missing fixture is a build defect, not a runtime state",
+    "No offline banner exists to build"
+  ],
+  "alternatives": [
+    "Fetch-backed views with spinners",
+    "Offline banner state"
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/context/state-matrix.md"
+  ],
+  "risks": [
+    "Builder adds network fetch or banner — Auditor flags as invented state"
+  ],
+  "revisitWhen": [
+    "If product adds real backend (out of Run scope)"
+  ]
+}

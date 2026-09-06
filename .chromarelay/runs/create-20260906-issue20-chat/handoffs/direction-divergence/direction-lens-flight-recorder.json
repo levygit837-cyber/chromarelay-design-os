@@ -1,0 +1,117 @@
+{
+  "version": "1.0",
+  "runId": "create-20260906-issue20-chat",
+  "phase": "direction-divergence",
+  "role": "art-director",
+  "agentId": "direction-lens-flight-recorder",
+  "summary": "Flight Recorder direction: a calm ruled dossier where prose reads and evidence certifies, with docked tool rows, session-scoped evidence bench, attestation motion, affidavit typography, and the cite-back rule as signature.",
+  "claims": [
+    {
+      "claim": "Direction commits to a single dossier/attestation thesis and every field traces back to it",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/creative-opportunities.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md"
+      ]
+    },
+    {
+      "claim": "Cite-back rule signature is defined with recurrence locations and frequency regulation",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/creative-opportunities.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/domain-map.md"
+      ]
+    },
+    {
+      "claim": "System potential covers other surfaces, all stub states, long/short content, and 375-1440px viewports",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md"
+      ]
+    },
+    {
+      "claim": "Candidate diverges on five structural axes, not palette, from category default and sibling lenses",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/creative-opportunities.md"
+      ]
+    },
+    {
+      "claim": "Evidence plan names judgeable specimens at real density including non-happy states and responsive behavior",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md"
+      ]
+    }
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-flight-recorder.md"
+  ],
+  "artifacts": [
+    {
+      "id": "direction-flight-recorder",
+      "kind": "Direction candidates",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-flight-recorder.md",
+      "status": "proposed",
+      "producerRole": "art-director",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "direction-divergence",
+      "createdAt": "2026-09-06T13:00:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/domain-map.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/creative-opportunities.md"
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "dec-flight-recorder-thesis",
+      "scope": "run",
+      "status": "proposed",
+      "choice": "Commit Run candidate direction-flight-recorder to the dossier/attestation thesis: every agent claim is entered into a calm, ruled dossier where prose reads and evidence certifies, with the cite-back rule as signature",
+      "rationale": [
+        "Territory 1 assignment binds this lens; committing fully preserves slate divergence",
+        "Brief trust pressure (verify every consequential step) is answered structurally by docking evidence under claims, not by styling",
+        "Attestation motion and ledger surfaces are the only coherent expression of a recorder thesis; softening either breaks traceability"
+      ],
+      "alternatives": [
+        "Soften thesis toward generic calm chat with trace as accessory",
+        "Adopt control-room density or reading-room withdrawal to ease layout work"
+      ],
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/creative-opportunities.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/domain-map.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md"
+      ],
+      "risks": [
+        "Archival or slow reading if rules feel bureaucratic",
+        "Failure urgency diluted on a quiet ground"
+      ],
+      "revisitWhen": [
+        "Blind critique finds the ledger reads archival or failures lack urgency",
+        "Surface architecture proves docked rows cannot survive 375px without crushing the reading column"
+      ]
+    }
+  ],
+  "risks": [
+    "Archival or slow reading if ruled paper plus restrained motion feels bureaucratic rather than capable",
+    "Tool failures may lack urgency on a quiet ground without glow or toast theater",
+    "Dense tabular wings may leak noise into the calm reading column if rule weights slip",
+    "Ledger monotony across 50-plus turns unless turn order and cite-back references stay scannable",
+    "Long stub runs may feel frozen without shimmer unless skeleton-to-row staging is clearly progressive"
+  ],
+  "confidence": "high",
+  "requestedTransition": "advance",
+  "unresolved": [],
+  "skill": {
+    "primary": "chromarelay-art-direction",
+    "supporting": []
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "version": "1.0",
+  "runId": "create-20260906-issue20-chat",
+  "phase": "direction-tournament",
+  "role": "visual-critic",
+  "agentId": "tournament-critic-one",
+  "summary": "Blind tournament over anonymous A-D, viewed in order D, B, A, C with each scored alone on all nine OPERATE dimensions before comparison, names A the winner on the class priorities (task clarity, state completeness, predictable interaction) with C taking visual strength and scalability, D implementation risk, and B last on states. The verdict for A is repairable, not approve: its CSS hides tool-status labels at 375px against its own status-never-color-only absolute and adopted floor C-A2, and its docked-composer claim is never pinned. One hybrid move is recommended (import C turn-header status rollup plus keep-status/hide-duration rule into A ticket head), and a packet-level blindness leak (specimens embed direction names in-page) is flagged for the Coordinator.",
+  "claims": [
+    {
+      "claim": "A shows the widest in-context state vocabulary: failed-in-place with retry and dismiss-with-reason, staged running with queued step and honest stub labels, declared empty-trace turn, per-session wing with empty view, all five tool kinds.",
+      "status": "observed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/specimens/candidate-A.html"
+      ]
+    },
+    {
+      "claim": "A hides tool-row status labels and durations at max-width:480px, so collapsed rows at 375px carry no status label, violating its own status-never-color-only absolute and adopted floor C-A2 at a required viewport.",
+      "status": "observed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/specimens/candidate-A.html"
+      ]
+    },
+    {
+      "claim": "B has computed AA failures (faint caps about 3.5:1, running status about 4.1:1) and renders only the Files verification view; Browser and GitHub tabs are empty.",
+      "status": "observed",
+      "confidence": "medium",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/specimens/candidate-B.html"
+      ]
+    },
+    {
+      "claim": "C is the only specimen with a genuinely pinned sticky-bottom composer, documented AA-passing status color pairings, and state-aware follow-ups; its evidence-wing anomaly auto-promotion is the least predictable interaction in the field.",
+      "status": "observed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/specimens/candidate-C.html"
+      ]
+    },
+    {
+      "claim": "D stacks the resumption ledger above the conversation at 700px, contradicting its own note, and never pins the composer despite claiming it always reachable; its specimens embed direction names and theses in-page (as do all four), a blindness leak for the Coordinator to rule on.",
+      "status": "observed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/specimens/candidate-D.html"
+      ]
+    },
+    {
+      "claim": "Overall winner A, decided on OPERATE priorities (task clarity, state completeness, predictable interaction) after a 2-2 A/C criterion tie; trade-offs accepted: C superior craft and a11y polish, B/D distinctiveness, A higher build complexity (spine scrollspy).",
+      "status": "observed",
+      "confidence": "medium",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/specimens/candidate-A.html",
+        ".chromarelay/runs/create-20260906-issue20-chat/specimens/candidate-C.html"
+      ]
+    }
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/specimens/candidate-A.html",
+    ".chromarelay/runs/create-20260906-issue20-chat/specimens/candidate-B.html",
+    ".chromarelay/runs/create-20260906-issue20-chat/specimens/candidate-C.html",
+    ".chromarelay/runs/create-20260906-issue20-chat/specimens/candidate-D.html"
+  ],
+  "artifacts": [],
+  "decisions": [],
+  "risks": [
+    "A hides tool-row status labels at 480px; unfixed it violates C-A2 at a required viewport; fix is one CSS line (keep status, hide duration).",
+    "A 52px numerals compete with prose in 30-plus turn sessions; no collapse rule for settled tickets.",
+    "A runs two parallel color systems (kind chips vs status pills) that will drift as the system grows.",
+    "A spine scroll-sync asserted but static; composer docked claim never pinned in CSS; both must become real in the build.",
+    "All four specimens make responsive claims their CSS only partially proves; build needs a rendered 375/768/1440 verification pass.",
+    "Run-level: specimens self-identify direction names and theses in-page, weakening the blind; Coordinator must rule whether this verdict counts as fully independent Evidence."
+  ],
+  "confidence": "medium",
+  "requestedTransition": "advance",
+  "unresolved": [
+    "No rendered 375/768/1440 views accompany any candidate; a live 375px pass of A, C, D would settle severity ranking and could promote A hidden status labels to a blocker.",
+    "Focus management unverifiable from markup: B sheet has no focus trap; A/C drawer overlays are labels without implemented behavior.",
+    "Motion judged from code only; rendered-motion review pending.",
+    "Coordinator ruling required on the in-page direction-name leak before the verdict counts as fully independent Evidence.",
+    "Second critic winner unknown by design; material disagreement needs Coordinator reconciliation."
+  ],
+  "skill": {
+    "primary": "chromarelay-critique",
+    "supporting": []
+  }
+}

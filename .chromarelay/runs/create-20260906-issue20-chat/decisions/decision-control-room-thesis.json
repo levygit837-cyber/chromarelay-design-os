@@ -1,0 +1,26 @@
+{
+  "id": "decision-control-room-thesis",
+  "scope": "run",
+  "status": "proposed",
+  "choice": "Commit the full Run slate to the Control Room lens for this candidate: ops-board composition, high density everywhere, motion-as-signal, dark instrument wells with raised action caps, console-tabular voice, and the anomaly-first wing as signature",
+  "rationale": [
+    "Territory 2 is the only territory that proves density can be capability rather than clutter, which the brief explicitly demands as capable like a control room",
+    "Status-board trace with kind/target/status/duration columns makes the tool-call audit scannable at a glance instead of buried under prose",
+    "Anomaly-first wing directly serves trust-but-verify anxiety and vigilance fatigue by spending the operator's attention where it is newest-needed"
+  ],
+  "alternatives": [
+    "Fall back to a calm reading-column Direction with withdrawn rails",
+    "Adopt a ticket-spine model where time is spatial rather than tabular"
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-control-room.md"
+  ],
+  "risks": [
+    "High density overwhelms sustained reading",
+    "Dark-ground status color misses AA without disciplined tuning"
+  ],
+  "revisitWhen": [
+    "Blind critique finds Tier 1 reading drowned by Tier 2 density",
+    "AA audit fails on any dark-ground status combination"
+  ]
+}

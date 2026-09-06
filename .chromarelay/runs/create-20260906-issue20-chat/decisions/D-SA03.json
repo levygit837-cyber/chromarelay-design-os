@@ -1,0 +1,25 @@
+{
+  "id": "D-SA03",
+  "scope": "run",
+  "status": "proposed",
+  "choice": "Keep-status/hide-duration: at <=480px every status persists as color plus glyph plus word; durations hide first in ticket heads, tool rows, and spine labels; ticket heads roll up to a status rollup line.",
+  "rationale": [
+    "Repairs the known A-375px defect where tool-row status labels were hidden.",
+    "Status is product meaning (accountable delegation); duration is secondary metadata.",
+    "Preserves AA grayscale-safe signaling at every width."
+  ],
+  "alternatives": [
+    "Hide status labels at narrow widths and keep durations",
+    "Truncate both status and duration to icons only"
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/context/design-draft.md"
+  ],
+  "risks": [
+    "Narrow ticket heads may wrap to two lines; rollup line must be concise (pill plus count)."
+  ],
+  "revisitWhen": [
+    "If strip-width testing proves the rollup line overflows at 375px with longest fixture strings."
+  ]
+}

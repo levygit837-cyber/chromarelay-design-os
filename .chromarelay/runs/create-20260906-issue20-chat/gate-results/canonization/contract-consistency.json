@@ -1,0 +1,17 @@
+{
+  "version": "1.0",
+  "runId": "create-20260906-issue20-chat",
+  "phase": "canonization",
+  "gate": "contract-consistency",
+  "status": "pass",
+  "summary": "Zero broken token references (81 semantic refs resolve; 0 raw primitives in components); AA contrast pairs verified; light intent full plus single scoped dark cmdout block (accepted W-1); zero orphans; all type roles present; component states complete incl. live regions; no Lock conflicts (empty baseline); exportable DTCG JSON offline-clean; 2 warnings accepted (W-1 dark scope, W-2 30-turn proof owned by build).",
+  "recordedBy": "coordinator",
+  "recordedAt": "2026-09-06T17:30:00Z",
+  "evidenceRefs": [
+    ".chromarelay/runs/create-20260906-issue20-chat/audit/canonization-validation.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/context/tokens.primitive.json",
+    ".chromarelay/runs/create-20260906-issue20-chat/context/tokens.semantic.json",
+    ".chromarelay/runs/create-20260906-issue20-chat/context/tokens.component.json",
+    ".chromarelay/runs/create-20260906-issue20-chat/context/design-draft.md"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "id": "canon-D-10",
+  "scope": "run",
+  "status": "proposed",
+  "choice": "Neutral kind chips: white ground, graphite border, ink mono text for all tool kinds; saturated color reserved strictly for status and diff [applies to: tool rows, file-tree change markers excepted]",
+  "rationale": [
+    "Serves rationed-signal color thesis and critic should-fix: hue always means status or diff, so the rail survives grayscale and kind never masquerades as state."
+  ],
+  "alternatives": [
+    "Keep specimen per-kind tinted chips (blue/purple/amber/green grounds)"
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/audit/tournament-report-critic-one.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md"
+  ],
+  "risks": [
+    "Weaker kind scannability for color-reliant users; mitigated by fixed mono kind abbreviations."
+  ],
+  "revisitWhen": [
+    "Kind taxonomy exceeds 8 and scanning suffers; then add shape (prefix glyph) coding, never hue coding."
+  ]
+}

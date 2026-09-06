@@ -1,0 +1,22 @@
+{
+  "id": "canon-D-03",
+  "scope": "run",
+  "status": "proposed",
+  "choice": "Keep-status/hide-duration: at <=480px tool rows keep kind chip + mono target + chevron + status glyph, hide duration text and detail stat; ticket head keeps the status pill (rollup) and hides only the duration; spine labels keep the status word, hide counts/durations [applies to: ticket head, tool rows, spine labels at <=480px]",
+  "rationale": [
+    "Repairs the tournament's top defect (A hides tool-row status labels <=480px) with C's proven pattern; status is state, duration is metadata."
+  ],
+  "alternatives": [
+    "Hide whole tool rows at 375px (specimen defect); shrink status to color dots"
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/audit/tournament-report-critic-one.md"
+  ],
+  "risks": [
+    "Cramped rows at 375px; mitigated by 84px kind column and two-line target wrap."
+  ],
+  "revisitWhen": [
+    "A 375px render pass shows target truncation colliding with the status glyph; then wrap target to two lines before touching status."
+  ]
+}

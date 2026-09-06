@@ -1,0 +1,24 @@
+{
+  "id": "D-SA02",
+  "scope": "run",
+  "status": "proposed",
+  "choice": "At most one well open per work order; expansion is an inset well inside the same ticket; tool rows are hairline-ruled rows, never cards; every well and wing header carries a cite-back stamp Turn NN / Kind target.",
+  "rationale": [
+    "Enforces CARD-SOUP GUARD: depth means job state, exactly one elevated ticket per viewport.",
+    "Cite-back keeps evidence attached to the turn that produced it (per-session scoping differentiator)."
+  ],
+  "alternatives": [
+    "Multiple wells open per ticket",
+    "Detail in a separate modal disconnected from the ticket"
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/context/design-draft.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/context/tokens.component.json"
+  ],
+  "risks": [
+    "Builders may be tempted to card tool rows for emphasis; audit must reject any second elevation."
+  ],
+  "revisitWhen": [
+    "If a tool genuinely needs side-by-side comparison of two expansions (no evidence for this today)."
+  ]
+}

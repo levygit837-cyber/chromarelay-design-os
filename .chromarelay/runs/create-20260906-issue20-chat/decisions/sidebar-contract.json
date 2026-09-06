@@ -1,0 +1,23 @@
+{
+  "alternatives": [
+    "Single global right panel shared across sessions",
+    "Right panel as modal overlay only"
+  ],
+  "choice": "Left sidebar is global (projects > sessions); right sidebar is per-session scoped (browser, files, GitHub tabs follow the active session); center column owns conversation plus customizable input bar with follow-ups and mode toggles.",
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/context/issue-20-base-prompt.txt"
+  ],
+  "id": "sidebar-contract",
+  "rationale": [
+    "Base prompt names left project/session sidebar and right per-session sidebar with the three views; scoping the right panel per session preserves context when switching sessions.",
+    "Fixing the contract now prevents Directions from collapsing the workbench into a single-column chatbot."
+  ],
+  "risks": [
+    "Three-pane density is hard at 375px; responsive strategy must collapse sidebars into drawers without losing scope semantics."
+  ],
+  "revisitWhen": [
+    "Usability evidence shows session-switching confusion attributable to scoping."
+  ],
+  "scope": "run",
+  "status": "proposed"
+}

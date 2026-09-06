@@ -1,0 +1,22 @@
+{
+  "id": "canon-D-12",
+  "scope": "run",
+  "status": "proposed",
+  "choice": "Motion narrates the rail lifecycle only: queued-enter, amber running pulse (opacity steps), settle-to-terminal, composer echo-to-dock, scrub cross-highlight; staged stub progress is honestly labelled synthetic pacing; all motion has a static reduced-motion equivalent; prose streams caret-only, shimmer banned [applies to: running tickets, spine nodes, composer echo, scrub]",
+  "rationale": [
+    "Serves progress-along-rail motion role within C-A4 and the fake-determinism risk: waits stay legible without implying measurement."
+  ],
+  "alternatives": [
+    "Determinate bars from measured progress; shimmer streaming prose; pulse everywhere"
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md"
+  ],
+  "risks": [
+    "Stub honesty labels add ticket copy; accepted as trust cost."
+  ],
+  "revisitWhen": [
+    "Real streaming transport arrives; then staged labels retire to measured states, never to shimmer."
+  ]
+}

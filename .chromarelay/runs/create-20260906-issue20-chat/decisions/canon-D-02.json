@@ -1,0 +1,22 @@
+{
+  "id": "canon-D-02",
+  "scope": "run",
+  "status": "proposed",
+  "choice": "One continuous 2px `spine.rail` per session with one node per assistant turn chronologically; user turns are ticks not nodes; at 30+ turns completed runs collapse to counted groups while failures and current job stay addressable with jump-to-failure [applies to: spine navigator, all widths]",
+  "rationale": [
+    "Serves the spine-and-tickets thesis: time-as-space navigation where resumption starts with where-was-I, not scrolling."
+  ],
+  "alternatives": [
+    "Paginate turns; virtualize with unmounted history; second rail for session switching"
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-work-order.html"
+  ],
+  "risks": [
+    "Scrollspy + compression complexity is the Run's highest build risk; accepted warning W-2 tracks it."
+  ],
+  "revisitWhen": [
+    "Build proves 30-turn compression illegible in the strip variant; then revise the collapse count threshold, never the one-node-per-turn rule."
+  ]
+}

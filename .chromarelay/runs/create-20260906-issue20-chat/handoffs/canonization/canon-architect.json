@@ -1,0 +1,449 @@
+{
+  "version": "1.0",
+  "runId": "create-20260906-issue20-chat",
+  "phase": "canonization",
+  "role": "system-architect",
+  "agentId": "canon-architect",
+  "summary": "Canonized direction-work-order (spine-and-tickets) into a DESIGN draft, three DTCG token layers, 12 Decisions, 8 Locks, validation with zero errors and two accepted warnings, and 7 recorded exceptions; all tournament carry-ins and repairable-defect fixes encoded, requesting advance.",
+  "claims": [
+    {
+      "claim": "DESIGN draft fills all 13 slots with token-name citations and no TBD values",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/design-draft.md"
+      ]
+    },
+    {
+      "claim": "Primitive layer carries only raw values (color/space/size/radius/typography/elevation/motion) with no purpose semantics",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/tokens.primitive.json"
+      ]
+    },
+    {
+      "claim": "Semantic layer covers purpose tokens plus all 8 spacing roles; component layer references semantic tokens only, no raw primitive reaches any component",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/tokens.semantic.json",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/tokens.component.json",
+        ".chromarelay/runs/create-20260906-issue20-chat/audit/canonization-validation.md"
+      ]
+    },
+    {
+      "claim": "Spine-and-tickets thesis preserved without dilution: one spine per session, one node per assistant turn, active-ticket-only elevation, ruled rows never cards",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/design-draft.md"
+      ]
+    },
+    {
+      "claim": "All approved carry-ins encoded: C status rollup + keep-status/hide-duration + sticky-bottom composer below 820px; D cite-back stamping + attempt-keeping retry; B 44px targets + footnote translation",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/design-draft.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/tokens.component.json"
+      ]
+    },
+    {
+      "claim": "Repairable defects repaired in contract: 375px status persistence, 30+ turn spine compression rule, offline-safe numeral stack with no Impact-dependent voice",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/tokens.primitive.json",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/design-draft.md"
+      ]
+    },
+    {
+      "claim": "Status is never color-only and AA contrast pairs hold for all text/status pairs; reduced-motion static fallbacks specified for every animated state",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/tokens.semantic.json",
+        ".chromarelay/runs/create-20260906-issue20-chat/audit/canonization-validation.md"
+      ]
+    },
+    {
+      "claim": "Every Lock carries scope plus reopening conditions; every departing value is recorded in exceptions with its reason",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/design-draft.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/audit/canonization-validation.md"
+      ]
+    },
+    {
+      "claim": "Validation names all 8 checks with zero errors and two accepted warnings; 375-1440px collapse rules leave no horizontal scroll with composer persistently reachable",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/audit/canonization-validation.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md"
+      ]
+    }
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.json",
+    ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-work-order.html"
+  ],
+  "artifacts": [
+    {
+      "id": "design-draft",
+      "kind": "DESIGN draft",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/context/design-draft.md",
+      "status": "proposed",
+      "producerRole": "system-architect",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "canonization",
+      "createdAt": "2026-09-06T17:00:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md"
+      ]
+    },
+    {
+      "id": "token-primitives",
+      "kind": "token drafts",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/context/tokens.primitive.json",
+      "status": "proposed",
+      "producerRole": "system-architect",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "canonization",
+      "createdAt": "2026-09-06T17:00:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md"
+      ]
+    },
+    {
+      "id": "token-semantics",
+      "kind": "token drafts",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/context/tokens.semantic.json",
+      "status": "proposed",
+      "producerRole": "system-architect",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "canonization",
+      "createdAt": "2026-09-06T17:00:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md"
+      ]
+    },
+    {
+      "id": "token-components",
+      "kind": "token drafts",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/context/tokens.component.json",
+      "status": "proposed",
+      "producerRole": "system-architect",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "canonization",
+      "createdAt": "2026-09-06T17:00:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md"
+      ]
+    },
+    {
+      "id": "canon-validation",
+      "kind": "Decision records",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/audit/canonization-validation.md",
+      "status": "proposed",
+      "producerRole": "system-architect",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "canonization",
+      "createdAt": "2026-09-06T17:00:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md"
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "canon-D-01",
+      "scope": "run",
+      "status": "proposed",
+      "choice": "Exactly one ticket per viewport carries elevation `lift.active`; all others are flat with 1px `border.rule`; tool rows are never cards; spine never elevated [applies to: agentic-model-chat center column, all widths]",
+      "rationale": [
+        "Serves the Direction CARD-SOUP GUARD: depth means job state, so selection is unambiguous at any scroll position."
+      ],
+      "alternatives": [
+        "Allow two elevations (active + hovered); allow emphasis shadows on failed tickets"
+      ],
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-work-order.html"
+      ],
+      "risks": [
+        "Implementation pressure re-adds card fills for emphasis; guarded by L-02."
+      ],
+      "revisitWhen": [
+        "A usability pass shows users cannot find the selected ticket without a second cue; then add a non-shadow cue (numeral weight), never a second shadow."
+      ]
+    },
+    {
+      "id": "canon-D-02",
+      "scope": "run",
+      "status": "proposed",
+      "choice": "One continuous 2px `spine.rail` per session with one node per assistant turn chronologically; user turns are ticks not nodes; at 30+ turns completed runs collapse to counted groups while failures and current job stay addressable with jump-to-failure [applies to: spine navigator, all widths]",
+      "rationale": [
+        "Serves the spine-and-tickets thesis: time-as-space navigation where resumption starts with where-was-I, not scrolling."
+      ],
+      "alternatives": [
+        "Paginate turns; virtualize with unmounted history; second rail for session switching"
+      ],
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-work-order.html"
+      ],
+      "risks": [
+        "Scrollspy + compression complexity is the Run's highest build risk; accepted warning W-2 tracks it."
+      ],
+      "revisitWhen": [
+        "Build proves 30-turn compression illegible in the strip variant; then revise the collapse count threshold, never the one-node-per-turn rule."
+      ]
+    },
+    {
+      "id": "canon-D-03",
+      "scope": "run",
+      "status": "proposed",
+      "choice": "Keep-status/hide-duration: at <=480px tool rows keep kind chip + mono target + chevron + status glyph, hide duration text and detail stat; ticket head keeps the status pill (rollup) and hides only the duration; spine labels keep the status word, hide counts/durations [applies to: ticket head, tool rows, spine labels at <=480px]",
+      "rationale": [
+        "Repairs the tournament's top defect (A hides tool-row status labels <=480px) with C's proven pattern; status is state, duration is metadata."
+      ],
+      "alternatives": [
+        "Hide whole tool rows at 375px (specimen defect); shrink status to color dots"
+      ],
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/audit/tournament-report-critic-one.md"
+      ],
+      "risks": [
+        "Cramped rows at 375px; mitigated by 84px kind column and two-line target wrap."
+      ],
+      "revisitWhen": [
+        "A 375px render pass shows target truncation colliding with the status glyph; then wrap target to two lines before touching status."
+      ]
+    },
+    {
+      "id": "canon-D-04",
+      "scope": "run",
+      "status": "proposed",
+      "choice": "Composer is sticky-bottom below 820px (docked, full-width, above drawers); docked in-flow at desktop widths; echo docks to spine position within 300ms [applies to: composer, <=820px widths]",
+      "rationale": [
+        "Carry-in from C plus C-T6/C-P3: steering stays reachable where drawers otherwise push it off; satisfies composer-persistently-reachable floor."
+      ],
+      "alternatives": [
+        "Static composer that scrolls away; floating action button opening the composer"
+      ],
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md"
+      ],
+      "risks": [
+        "Sticky stacking vs strip-spine z-order; resolved by explicit z scale (strip < drawers < composer)."
+      ],
+      "revisitWhen": [
+        "Viewport-height testing shows the sticky composer covering drawer actions on short screens; then compress composer chrome, never unstick it."
+      ]
+    },
+    {
+      "id": "canon-D-05",
+      "scope": "run",
+      "status": "proposed",
+      "choice": "Every well and the evidence wing header carry a cite-back stamp: Turn NN / Kind target + status + duration; wing header mirrors the selected ticket and re-stamps on selection change [applies to: wells, evidence wing header]",
+      "rationale": [
+        "Carry-in from D: evidence never detaches from the turn that cites it; implements per-session scoping as a visible contract."
+      ],
+      "alternatives": [
+        "Generic attachment titles (Browser / Files); citation only in ticket wells"
+      ],
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-work-order.html"
+      ],
+      "risks": [
+        "Long targets overflow the stamp; mitigated by anywhere-wrap plus two-line clamp."
+      ],
+      "revisitWhen": [
+        "A further surface reuses the wing for cross-session content; then the stamp gains a session token, never drops the turn token."
+      ]
+    },
+    {
+      "id": "canon-D-06",
+      "scope": "run",
+      "status": "proposed",
+      "choice": "Attempt-keeping retry language: retry reads Retry failed <Kind> step (T0N); failure renders in place with exit/code/line evidence; red spine node persists until retried or dismissed with a recorded reason; no toasts, no auto-dismiss, live-region announcement [applies to: failed tickets, error boxes, spine failure nodes]",
+      "rationale": [
+        "Carry-in from D plus trust-but-verify product truth: the operator stays accountable, so history of attempts is never rewritten."
+      ],
+      "alternatives": [
+        "Generic Retry button; auto-dismiss failures after re-run; toast on failure"
+      ],
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-work-order.html"
+      ],
+      "risks": [
+        "Label length at 375px; mitigated by wrapping action rows."
+      ],
+      "revisitWhen": [
+        "Retry taxonomy grows (partial re-run, skip-step); then extend the label grammar, never shorten to bare Retry."
+      ]
+    },
+    {
+      "id": "canon-D-07",
+      "scope": "run",
+      "status": "proposed",
+      "choice": "44px minimum touch target for every interactive control: tool rows, chevrons, tabs, mode toggles, follow-ups, buttons including small variants, spine nodes (26px visual + 44px hit area in strip mode) [applies to: all interactive controls, all widths]",
+      "rationale": [
+        "Carry-in from B plus C-A4: density is rhythmic compression of information, never compression of targets."
+      ],
+      "alternatives": [
+        "Keep specimen 40px chevrons and small buttons; 36px dense rows"
+      ],
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md"
+      ],
+      "risks": [
+        "Vertical density cost (~4px per small control); accepted, recorded in EX-04."
+      ],
+      "revisitWhen": [
+        "Platform guidance changes the floor; then move all targets together via target.min, never per-component."
+      ]
+    },
+    {
+      "id": "canon-D-08",
+      "scope": "run",
+      "status": "proposed",
+      "choice": "Margin-to-footnote translation: at <=820px right-wing meta (density proof, static-mock disclaimers, capture notes) re-renders as labelled footnotes below the ticket stack, never dropped [applies to: evidence wing meta, <=820px]",
+      "rationale": [
+        "Carry-in from B: narrow widths translate chrome, they do not delete it; audit context survives the strip."
+      ],
+      "alternatives": [
+        "Drop wing meta at narrow widths; truncate density proof"
+      ],
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md"
+      ],
+      "risks": [
+        "Page length growth at 375px; bounded by single-disclosure fallback."
+      ],
+      "revisitWhen": [
+        "Footnote volume exceeds ticket volume on short sessions; then collapse footnotes behind one disclosure, never delete."
+      ]
+    },
+    {
+      "id": "canon-D-09",
+      "scope": "run",
+      "status": "proposed",
+      "choice": "Numerals use the grotesk stack with font-stretch condensed + 800 weight + tight tracking; fallback chain is system-only (Arial Narrow, HelveticaNeue-CondensedBold, Franklin Gothic Condensed, DIN Condensed, system-ui); Impact is excluded from the voice chain [applies to: turn numerals, spine labels]",
+      "rationale": [
+        "Repairs the numeral fallback hazard and honors C-P2 offline boot: the ordering voice cannot depend on a face missing on Linux or blocked offline."
+      ],
+      "alternatives": [
+        "Keep specimen Impact/Haettenschweiler condensed stack; ship a CDN condensed face"
+      ],
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md"
+      ],
+      "risks": [
+        "Numerals render wider on systems lacking all condensed faces; contained by fluid 38-52px clamp."
+      ],
+      "revisitWhen": [
+        "Offline-bundled condensed face is approved for the Run; then prepend it to font.numeral, never a CDN reference."
+      ]
+    },
+    {
+      "id": "canon-D-10",
+      "scope": "run",
+      "status": "proposed",
+      "choice": "Neutral kind chips: white ground, graphite border, ink mono text for all tool kinds; saturated color reserved strictly for status and diff [applies to: tool rows, file-tree change markers excepted]",
+      "rationale": [
+        "Serves rationed-signal color thesis and critic should-fix: hue always means status or diff, so the rail survives grayscale and kind never masquerades as state."
+      ],
+      "alternatives": [
+        "Keep specimen per-kind tinted chips (blue/purple/amber/green grounds)"
+      ],
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/audit/tournament-report-critic-one.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md"
+      ],
+      "risks": [
+        "Weaker kind scannability for color-reliant users; mitigated by fixed mono kind abbreviations."
+      ],
+      "revisitWhen": [
+        "Kind taxonomy exceeds 8 and scanning suffers; then add shape (prefix glyph) coding, never hue coding."
+      ]
+    },
+    {
+      "id": "canon-D-11",
+      "scope": "run",
+      "status": "proposed",
+      "choice": "Turn-header status rollup: ticket head always shows numeral + role + status pill + duration; pill glyph + word mirror the worst tool-row state (failed > running > succeeded > no-tools) [applies to: ticket head, all widths]",
+      "rationale": [
+        "Carry-in from C: glanceability without opening the ticket; the rollup is what makes keep-status/hide-duration coherent at 375px."
+      ],
+      "alternatives": [
+        "Status lives only in tool rows; ticket head shows numeral + duration only"
+      ],
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/selected-direction.md"
+      ],
+      "risks": [
+        "None material; pill space reserved in head grid at all widths."
+      ],
+      "revisitWhen": [
+        "Mixed-state tickets (partial failure) need finer rollup; then add counts to the pill label, never remove the pill."
+      ]
+    },
+    {
+      "id": "canon-D-12",
+      "scope": "run",
+      "status": "proposed",
+      "choice": "Motion narrates the rail lifecycle only: queued-enter, amber running pulse (opacity steps), settle-to-terminal, composer echo-to-dock, scrub cross-highlight; staged stub progress is honestly labelled synthetic pacing; all motion has a static reduced-motion equivalent; prose streams caret-only, shimmer banned [applies to: running tickets, spine nodes, composer echo, scrub]",
+      "rationale": [
+        "Serves progress-along-rail motion role within C-A4 and the fake-determinism risk: waits stay legible without implying measurement."
+      ],
+      "alternatives": [
+        "Determinate bars from measured progress; shimmer streaming prose; pulse everywhere"
+      ],
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/constraint-draft.md"
+      ],
+      "risks": [
+        "Stub honesty labels add ticket copy; accepted as trust cost."
+      ],
+      "revisitWhen": [
+        "Real streaming transport arrives; then staged labels retire to measured states, never to shimmer."
+      ]
+    }
+  ],
+  "risks": [
+    "Spine scrollspy plus 30-turn compression is the highest build cost and is specified but unproven in render; build must prove strip-spine scrub and collapse counts with a 30-turn fixture (confidence: medium).",
+    "Staged stub-duration progress risks reading as fake determinism if honesty labels are dropped in implementation; labels are locked copy, not decoration (confidence: medium).",
+    "Two-turn sessions may feel over-mechanized; empty-trace and near-chat degradation rules cover it but need a short-session render check at build (confidence: low).",
+    "Narrow-viewport rail collision at 375px is contained by the strip + drawer + sticky-composer rules but still needs a live 375px pass to confirm no overlap (confidence: medium)."
+  ],
+  "confidence": "high",
+  "requestedTransition": "advance",
+  "unresolved": [],
+  "skill": {
+    "primary": "chromarelay-systemize",
+    "supporting": []
+  }
+}

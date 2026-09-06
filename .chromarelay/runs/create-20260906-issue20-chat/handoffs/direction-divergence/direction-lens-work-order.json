@@ -1,0 +1,111 @@
+{
+  "version": "1.0",
+  "runId": "create-20260906-issue20-chat",
+  "phase": "direction-divergence",
+  "role": "art-director",
+  "agentId": "direction-lens-work-order",
+  "summary": "T4 Work-Order Rail direction candidate: session as job wall with spine-and-tickets composition, ticket-stack surfaces under absolute elevation rules, spine navigator signature, and progress-along-rail motion.",
+  "claims": [
+    {
+      "claim": "Direction candidate commits to T4 Work-Order Rail lens with spine-and-tickets composition and time-as-space thesis",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/creative-opportunities.md"
+      ]
+    },
+    {
+      "claim": "Spine navigator signature solves long-session orientation with scrub-to-turn and failure nodes",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/domain-map.md"
+      ]
+    },
+    {
+      "claim": "Absolute elevation rules guard against card-soup regression (active-ticket-only elevation)",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md"
+      ]
+    },
+    {
+      "claim": "Direction covers all states and viewports 375px-1440px with drawer and strip collapse rules",
+      "status": "proposed",
+      "confidence": "high",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md"
+      ]
+    },
+    {
+      "claim": "Workmanlike grotesk plus mono targets plus turn numerals carry job-not-journal voice within AA and keyboard floors",
+      "status": "proposed",
+      "confidence": "medium",
+      "evidenceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/domain-map.md"
+      ]
+    }
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md"
+  ],
+  "artifacts": [
+    {
+      "id": "direction-work-order",
+      "kind": "Direction candidates",
+      "path": ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md",
+      "status": "proposed",
+      "producerRole": "art-director",
+      "runId": "create-20260906-issue20-chat",
+      "phase": "direction-divergence",
+      "createdAt": "2026-09-06T13:00:00Z",
+      "sourceRefs": [
+        ".chromarelay/runs/create-20260906-issue20-chat/context/product-brief.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/context/domain-map.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/creative-opportunities.md"
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "decision-work-order-scope",
+      "scope": "run",
+      "status": "proposed",
+      "choice": "Propose direction-work-order as the T4 Work-Order Rail candidate for blind critique: spine-and-tickets composition, ticket-stack surfaces with active-only elevation, spine navigator signature, progress-as-motion.",
+      "rationale": [
+        "Territory 4 requires structural cards to make agentic time spatial; a rules-only trace would collapse back to T1.",
+        "Spine navigator answers resumption (where-was-I) without a separate minimap, directly from brief resumption truth.",
+        "Active-only elevation is the only way cards survive critique without card-soup regression."
+      ],
+      "alternatives": [
+        "Ledger-ruled trace without structural cards",
+        "Status-board grid without time spine"
+      ],
+      "evidence": [
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md",
+        ".chromarelay/runs/create-20260906-issue20-chat/directions/creative-opportunities.md"
+      ],
+      "risks": [
+        "Spine competes with content for attention",
+        "Ticket cards regress into card soup if elevation rules slip"
+      ],
+      "revisitWhen": [
+        "Blind critic rejects ticket-stack surface logic",
+        "Coordinator finds divergence collapse against sibling candidates"
+      ]
+    }
+  ],
+  "risks": [
+    "Spine competes with center column for attention if width and collapse rules are not absolute",
+    "Ticket cards regress into card soup if active-only elevation rule slips in implementation",
+    "Staged stub progress risks reading as fake determinism without honest working labels"
+  ],
+  "confidence": "high",
+  "requestedTransition": "advance",
+  "unresolved": [],
+  "skill": {
+    "primary": "chromarelay-art-direction",
+    "supporting": []
+  }
+}

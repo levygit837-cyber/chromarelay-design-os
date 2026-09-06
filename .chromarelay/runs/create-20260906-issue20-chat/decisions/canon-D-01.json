@@ -1,0 +1,22 @@
+{
+  "id": "canon-D-01",
+  "scope": "run",
+  "status": "proposed",
+  "choice": "Exactly one ticket per viewport carries elevation `lift.active`; all others are flat with 1px `border.rule`; tool rows are never cards; spine never elevated [applies to: agentic-model-chat center column, all widths]",
+  "rationale": [
+    "Serves the Direction CARD-SOUP GUARD: depth means job state, so selection is unambiguous at any scroll position."
+  ],
+  "alternatives": [
+    "Allow two elevations (active + hovered); allow emphasis shadows on failed tickets"
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/directions/direction-work-order.md",
+    ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-work-order.html"
+  ],
+  "risks": [
+    "Implementation pressure re-adds card fills for emphasis; guarded by L-02."
+  ],
+  "revisitWhen": [
+    "A usability pass shows users cannot find the selected ticket without a second cue; then add a non-shadow cue (numeral weight), never a second shadow."
+  ]
+}

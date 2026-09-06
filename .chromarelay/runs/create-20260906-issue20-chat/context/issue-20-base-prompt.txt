@@ -1,0 +1,18 @@
+## What to build
+
+One isolated CREATE Run that delivers a complete agentic model chat prototype end to end: an adapted Run Contract from the chat base prompt, fast HTML Direction specimens used as visual reference only, a blind single-pass Direction selection, and a bootable React plus TypeScript prototype in its own Run folder. The chat Surface ships stubbed model traffic with a left project and session sidebar, a central customizable input bar with follow-ups and mode toggles, a right per-session sidebar with integrated browser, file navigation, and GitHub views, plus visible agent tool calls such as Write, Read, Edit, Bash, and WebSearch.
+
+## Acceptance criteria
+
+- [ ] Run Contract adapted from the chat base prompt is archived locally next to the original base text
+- [ ] HTML Direction specimens are recorded as reference-only Artifacts, never as source of truth for the build
+- [ ] Bootable React plus TypeScript prototype runs via README plus npm install and dev command, with stubbed sessions, tool trace, and both sidebars present
+- [ ] Further-Surface Decision plus all required Gates recorded with Evidence; app smoke-tested before Handoff
+
+## Blocked by
+
+- #15 — orchestration contract with workflow, autonomy, and HTML-as-reference rules; authority: `docs/agents/evaluation-run-orchestration.md` (CREATE, full autonomy, per-Run worktree/branch, Role sandboxes, Skill Kit budget, HTML specimens reference-only, React+TS prototype layout, mandatory first-input archive alongside its Run; Runs stay local with no PR and no merge)
+- #16 — timing observability must be live before the Run starts so its data is captured
+- #18 — typed Artifact layout must exist before the Run produces specimens and code
+
+

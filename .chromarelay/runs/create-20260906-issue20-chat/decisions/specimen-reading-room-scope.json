@@ -1,0 +1,22 @@
+{
+  "id": "specimen-reading-room-scope",
+  "scope": "run",
+  "status": "proposed",
+  "choice": "Render one combined self-contained specimen file that stages all six evidence-plan beats in reading order: first view, signature with summoned sheet, expanded marginal note, in-place failure plus empty plus streaming states, density passage, and responsive rules.",
+  "rationale": [
+    "One file keeps the citation thread (numerals 1-4 across prose, margin, and sheet header) judgeable in a single viewport.",
+    "The assignment requires ONE self-contained HTML specimen covering (a)-(f)."
+  ],
+  "alternatives": [
+    "Six separate files, one per evidence-plan beat"
+  ],
+  "evidence": [
+    ".chromarelay/runs/create-20260906-issue20-chat/specimens/specimen-reading-room.html"
+  ],
+  "risks": [
+    "A single long file can read as a page rather than a system; rails, sheet, and footnote collapse carry the system reading."
+  ],
+  "revisitWhen": [
+    "The coordinator splits specimens per evidence-plan beat"
+  ]
+}
