@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-09-06
+
+Docs-only release: the remote repository is now fully EN-US.
+
+### Changed
+
+- Translated all PT-BR human-readable documentation to EN-US
+  (`README.md`, `docs/humans/`, `docs/architecture/`), preserving
+  meaning, structure, links, and code blocks.
+- Documentation language policy is now EN-US everywhere (see
+  `CLAUDE.md`); domain terms stay exactly as defined in `CONTEXT.md`.
+
+### Fixed
+
+- No Portuguese words remain in tracked filenames or prose.
+
+[Unreleased]: https://github.com/levygit837-cyber/chromarelay-design-os/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/levygit837-cyber/chromarelay-design-os/releases/tag/v0.1.1
+
 ## [0.1.0] - 2026-09-05
 
 Baseline release of ChromaRelay Design OS: the portable design-work
