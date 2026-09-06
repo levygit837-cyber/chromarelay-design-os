@@ -12,3 +12,4 @@ coverage/
 evals/runs/
 evals/baselines/**/*.png
 evals/candidates/**/*.png
+sim-out/
