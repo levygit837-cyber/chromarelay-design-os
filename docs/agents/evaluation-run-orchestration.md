@@ -1,6 +1,6 @@
 # Evaluation Run Orchestration Contract
 
-Authority for parallel evaluation Runs. The Run tickets (#19 finance dashboard, #20 agentic chat, #21 battleground game) reference this contract as their orchestration authority; #22 compares the resulting Runs. A Run coordinator executing under this contract does not ask the user for any orchestration decision recorded here — workflow, autonomy, isolation, Role sandboxes, Skill budget, specimen rule, prototype layout, archive location, and PR policy are all fixed. The only user-facing question permitted is the escalate state in the PR policy.
+Authority for parallel evaluation Runs. The Run tickets (#19 finance dashboard, #20 agentic chat, #21 battleground game) reference this contract as their orchestration authority; #22 compares the resulting Runs. A Run coordinator executing under this contract does not ask the user for any orchestration decision recorded here — workflow, autonomy, isolation, Role sandboxes, Skill budget, specimen rule, prototype layout, and local archiving are all fixed. Runs are exercises of the system, not implementation of it: their outputs stay local and are never merged as project code (see "Runs are usage results" below).
 
 This contract outranks Skill guidance (ADR-0005) but sits inside the normal authority order: explicit user requirements, `PRODUCT.md`, `CONSTRAINTS.md`, and accepted Locks still outrank it. It does not override ADRs — ADR-0002 keeps evaluation in this repository, and ADR-0003 keeps the Coordinator as the only owner of canonical state.
 
@@ -15,7 +15,7 @@ This contract outranks Skill guidance (ADR-0005) but sits inside the normal auth
 - **One Run per case, and Runs run in parallel.** No Run reads, writes, or reasons about another Run's Run folder, Handoffs, Directions, or specimens. Parallel Runs are replications for comparison, not a committee — cross-Run awareness is contamination of the eval, exactly like a critic seeing creator reasoning.
 - **One worktree and one branch per Run.** The Coordinator creates them before intake and the Run owns them exclusively for its lifetime. Branch name: `eval/<runId>` using the Run Contract's `runId`. The worktree lives outside the tracked source tree and outside every Run folder; register its path in the Run state so it is recoverable.
 - Builders and Repairers write product code only inside their own Run's worktree. Read Roles get no file-editing tools anywhere. `.chromarelay/project` is not a scratch area and no evaluation Run writes to it.
-- **Promotion is scoped to the Run folder.** Evaluation Runs never promote into `.chromarelay/project`; the memory-curator's Promotion Manifest for these Runs records the Run folder as destination, and the merged PR is the durable record.
+- **Promotion stays inside the Run.** Evaluation Runs never promote into `.chromarelay/project`. If a Run executes the CREATE `promotion` Phase, its manifest records the Run folder as destination and nothing else; the durable record is the local Run folder with its Evidence, which is what #22 consumes. No pull request ever carries Run outputs into the main branch.
 
 ## Role sandbox boundaries
 
@@ -46,20 +46,14 @@ Compile each Phase Packet from the Role's registry contract (`framework/registry
 - The builder smoke-tests boot before its Handoff, and the smoke output is recorded as Evidence for the `build-health` Gate.
 - The typed Artifact folder layout is defined by ticket #18; where that layout is silent, place Artifacts inside the Run folder rather than inventing new top-level directories.
 
-## Local archive: base prompt and adapted Run Contract
+## Local archive: first input alongside its Run
 
-- Each Run archives locally, inside its Run folder, the **original base prompt text verbatim** alongside the **adapted Run Contract** that the intake Phase produced from it. The pair lives together so #22 can audit the adaptation without hunting.
-- The Run Contract validates against `framework/schemas/run-contract.schema.json`. The archive is a repository file, never only a PR description, chat message, or issue body.
+- Each Run archives locally, inside its Run folder, its **ChromaRelay-conformant first input** — the adapted Run Contract (with its request) that the intake Phase produced. This archive is mandatory: it is the authoritative record #22 audits, and it lives next to its Run, never only in a chat message or issue body.
+- If a free-form base prompt existed and was used to adapt into ChromaRelay format, archiving its verbatim text next to the adapted Run Contract is optional but recommended — it preserves the adaptation trail. When no base prompt was used, nothing extra is archived.
+- The Run Contract validates against `framework/schemas/run-contract.schema.json`.
 
-## PR, review, and merge policy
+## Runs are usage results: no PR, no merge
 
-- **One PR per Run**, opened from `eval/<runId>`, referencing the Run ticket and the Run Contract. The PR body links the Run's Evidence — Gate results, smoke test, and the archived base prompt and Run Contract paths — so the record lives in the repository, not only in PR discussion.
-- **Code-review Gate before merge.** A declared Gate over the full PR diff: method is a code review of the implementation, inputs are the diff, the README boot instructions, and the Run Contract; pass policy is a clean review with no blocking findings and boot instructions that hold.
-- Exactly three post-review states:
-
-  1. **Merge.** Review is clean: merge, then delete the Run's branch and worktree. Record the review result as Evidence in the Run folder before deleting anything.
-  2. **Fix and re-review.** Blocking findings that are bounded become one coherent repair batch — repairer or builder, same worktree, no scope expansion, no Direction change — the PR updates, and the review re-runs. The loop repeats; an exhausted loop with the same findings recurring is an escalation, not a third silent retry.
-  3. **Escalate.** Findings that are open questions of product truth, Direction, or unresolvable reviewer disagreement: park the PR, record the question with options, Evidence, and a recommendation in the Run state as `awaiting-human`, and do not merge.
-
-- Merge never happens with unresolved blocking findings. Branch and worktree deletion happens only after merge (or explicit abandonment) and after Evidence is persisted.
-- The three PRs are independent and may merge in any order; #22 starts only when all three Runs are complete with smoke Evidence.
+- Evaluation Runs exercise the system; they are not implementation of it. Prototypes, specimens, Handoffs, and manifests remain local Run outputs under the repository's existing ignored paths. They are not opened as pull requests, not reviewed as project code changes, and never merged into the main branch.
+- Quality judgment over Run outputs belongs to #22's blind comparison of local Evidence, not to repository code review. If #22 opens follow-up issues and those become project work, *that* work follows the normal project process — but the Run outputs themselves never become PRs.
+- The per-Run branch and worktree are execution scaffolding. They persist until #22 has replayed each prototype boot from its Run folder; deletion afterwards is local cleanup, never a merge event.
