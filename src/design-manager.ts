@@ -19,7 +19,7 @@ import type {
   WorkflowId,
   WorkflowPhaseDefinition
 } from "./domain.js";
-import { ContractError, REQUESTED_TRANSITIONS, isGateResultValid, validateGateResult, validateHandoff, validateRequest } from "./domain.js";
+import { ContractError, REQUESTED_TRANSITIONS, computeRunTiming, isGateResultValid, validateGateResult, validateHandoff, validateRequest } from "./domain.js";
 import type { Workspace } from "./workspace.js";
 import { assertValidRegistry } from "./registry.js";
 
@@ -164,8 +164,11 @@ export class DesignManager {
     await this.workspace.ensureDir(".chromarelay/project");
     await this.workspace.writeText(`${runRoot}/run.json`, this.json(run));
     await this.workspace.writeText(`${runRoot}/request.json`, this.json({ request, route }));
-    await this.workspace.writeText(`${runRoot}/events.jsonl`, `${JSON.stringify({ at: timestamp, type: "run.started", workflow: route.workflow, phase: firstPhase.id })}\n`);
+    await this.workspace.writeText(`${runRoot}/events.jsonl`, `${JSON.stringify({ at: timestamp, type: "run.started", runId, workflow: route.workflow, phase: firstPhase.id, role: firstPhase.role, agentId: firstPhase.role })}\n`);
     await this.workspace.writeText(".chromarelay/active-run.json", this.json({ runId, updatedAt: timestamp }));
+    // Phase entry is an event like any other: the first phase is entered here, carrying the role as
+    // agentId until a Handoff attests an agent. Observability only: never rejects start.
+    await this.appendTimingEvent(runId, { type: "phase.entered", runId, phase: firstPhase.id, role: firstPhase.role, agentId: firstPhase.role });
     await this.phasePacket(runId);
     return run;
   }
@@ -190,7 +193,8 @@ export class DesignManager {
       requiredOutputs: phase.outputs,
       gates: phase.gates,
       blockers: run.blockers,
-      openDecisions: run.openDecisions
+      openDecisions: run.openDecisions,
+      timing: computeRunTiming(run, this.registry.workflows[run.workflow])
     };
   }
 
@@ -339,7 +343,7 @@ export class DesignManager {
     }
     run.updatedAt = new Date().toISOString();
     await this.saveRun(run);
-    await this.appendEvent(run.runId, { type: "handoff.recorded", phase: handoff.phase, role: handoff.role, agentId: handoff.agentId, transition: handoff.requestedTransition });
+    await this.appendEvent(run.runId, { type: "handoff.recorded", runId: run.runId, phase: handoff.phase, role: handoff.role, agentId: handoff.agentId, transition: handoff.requestedTransition });
   }
 
   /**
@@ -541,16 +545,21 @@ export class DesignManager {
         history.reason = options.reason!.trim();
       }
     }
-    if (bypassedGates.length > 0) {
-      await this.appendEvent(run.runId, { type: "phase.forced", phase: phase.id, bypassedGates, reason: options.reason!.trim() });
-    }
+    // The forced-exit note is observability over the transition below, so it is built here and emitted
+    // after saveRun with the other timing events: an event-store failure must not wedge the transition.
+    const forcedEvent = bypassedGates.length > 0
+      ? [{ type: "phase.forced", phase: phase.id, bypassedGates, reason: options.reason!.trim() }]
+      : [];
 
     const next = workflow.phases[currentIndex + 1];
     if (!next) {
       run.status = "completed";
       run.updatedAt = now;
       await this.saveRun(run);
-      await this.appendEvent(run.runId, { type: "run.completed", phase: phase.id, requested: requested.transition, effected: "advance" });
+      for (const forced of forcedEvent) await this.appendTimingEvent(run.runId, forced);
+      // The terminal phase exits like any other: its history entry already carries exitedAt.
+      await this.appendPhaseExited(run.runId, phase, history?.outcome);
+      await this.appendTimingEvent(run.runId, { type: "run.completed", runId: run.runId, phase: phase.id, role: phase.role, requested: requested.transition, effected: "advance" });
       return run;
     }
 
@@ -564,10 +573,22 @@ export class DesignManager {
     run.phaseHistory.push({ phase: next.id, enteredAt: now });
     run.updatedAt = now;
     await this.saveRun(run);
-    await this.appendEvent(run.runId, {
+    // Timing events follow the state they describe: appended after saveRun, so a crash between
+    // the two leaves the Run readable and the event log merely missing a line, never lying. They
+    // are observability, not state, so appendTimingEvent swallows event-store failures instead of
+    // rejecting the transition. The exiting phase names its attested agent, falling back to its
+    // role when a Coordinator phase advanced with no Handoff; the entering phase carries its role
+    // as agentId until a Handoff attests an agent.
+    for (const forced of forcedEvent) await this.appendTimingEvent(run.runId, forced);
+    await this.appendPhaseExited(run.runId, phase, history?.outcome);
+    await this.appendTimingEvent(run.runId, { type: "phase.entered", runId: run.runId, phase: next.id, role: next.role, agentId: next.role });
+    await this.appendTimingEvent(run.runId, {
       type: "phase.advanced",
+      runId: run.runId,
       from: phase.id,
+      fromRole: phase.role,
       to: next.id,
+      toRole: next.role,
       requested: requested.transition,
       effected: "advance"
     });
@@ -611,10 +632,15 @@ export class DesignManager {
       run.phaseHistory.push({ phase: target.id, enteredAt: now });
       run.updatedAt = now;
       await this.saveRun(run);
-      await this.appendEvent(run.runId, {
+      await this.appendPhaseExited(run.runId, phase, effected);
+      await this.appendTimingEvent(run.runId, { type: "phase.entered", runId: run.runId, phase: target.id, role: target.role, agentId: target.role });
+      await this.appendTimingEvent(run.runId, {
         type: "phase.returned",
+        runId: run.runId,
         from: phase.id,
+        fromRole: phase.role,
         to: target.id,
+        toRole: target.role,
         requested: requested.transition,
         effected,
         // How many times this phase has been entered beyond the first. The Repair budget is stated in
@@ -629,9 +655,12 @@ export class DesignManager {
     run.status = effected === "escalate" ? "awaiting-human" : "cancelled";
     run.updatedAt = now;
     await this.saveRun(run);
-    await this.appendEvent(run.runId, {
+    await this.appendPhaseExited(run.runId, phase, effected);
+    await this.appendTimingEvent(run.runId, {
       type: effected === "escalate" ? "run.escalated" : "run.stopped",
+      runId: run.runId,
       phase: phase.id,
+      role: phase.role,
       requested: requested.transition,
       effected
     });
@@ -743,7 +772,8 @@ export class DesignManager {
       handoffsRead,
       findings,
       blockers: this.mergeBlockers(run.blockers, findings),
-      notices: [...notices]
+      notices: [...notices],
+      timing: computeRunTiming(run, workflow)
     };
   }
 
@@ -1007,6 +1037,33 @@ export class DesignManager {
 
   private async appendEvent(runId: string, event: Record<string, unknown>): Promise<void> {
     await this.workspace.appendText(`${this.runRoot(runId)}/events.jsonl`, `${JSON.stringify({ at: new Date().toISOString(), ...event })}\n`);
+  }
+
+  /**
+   * Observability appends never reject the transition they describe. The event log is a read model
+   * over state saveRun already committed; losing a line must not fail the advance.
+   */
+  private async appendTimingEvent(runId: string, event: Record<string, unknown>): Promise<void> {
+    try {
+      await this.appendEvent(runId, event);
+    } catch {
+      // Swallowed deliberately: see above.
+    }
+  }
+
+  /**
+   * The exit event for one phase, naming the agent its Handoffs attest, or the phase role when the
+   * phase advanced with no Handoff (Coordinator phases) or its Handoffs are unreadable. Never
+   * throws: agent resolution and the append both degrade rather than reject the transition.
+   */
+  private async appendPhaseExited(runId: string, phase: WorkflowPhaseDefinition, outcome: unknown): Promise<void> {
+    let agentId = phase.role;
+    try {
+      agentId = (await this.phaseAgentId(runId, phase.id)) ?? phase.role;
+    } catch {
+      // Fall back to the role: see above.
+    }
+    await this.appendTimingEvent(runId, { type: "phase.exited", runId, phase: phase.id, role: phase.role, agentId, outcome });
   }
 
   private json(value: unknown): string {

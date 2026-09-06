@@ -56,7 +56,9 @@
           "phase": { "type": "string" },
           "enteredAt": { "type": "string", "format": "date-time" },
           "exitedAt": { "type": "string", "format": "date-time" },
-          "outcome": { "type": "string" }
+          "outcome": { "type": "string" },
+          "bypassedGates": { "type": "array", "items": { "type": "string" } },
+          "reason": { "type": "string" }
         }
       },
       "default": []
