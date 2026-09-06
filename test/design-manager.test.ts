@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { DesignManager } from "../src/design-manager.js";
-import type { DecisionRecord, RegistryBundle, SpecialistHandoff, WorkflowDefinition, WorkflowId } from "../src/domain.js";
+import type { DecisionRecord, RegistryBundle, RunContract, SpecialistHandoff, WorkflowDefinition, WorkflowId } from "../src/domain.js";
 import { ContractError, validateHandoff } from "../src/domain.js";
 import { noopHandoffValidator } from "../src/handoff-schema.js";
 import { MemoryWorkspace } from "../src/workspace.js";
@@ -873,4 +873,228 @@ test("a return with no target names the field it is missing", async () => {
     requestedTransition: "return"
   }));
   await assert.rejects(() => manager.advance("transition-run-010"), /requestedTarget/);
+});
+
+// --- Run timing observability -----------------------------------------------------------------
+//
+// phaseHistory already carries enteredAt/exitedAt; the timings under test are derived from it at
+// read time, so the fixtures overwrite run.json with known clocks rather than waiting on real time.
+
+test("auditRun derives per-Phase and per-Role elapsed from phaseHistory", async () => {
+  const workspace = new MemoryWorkspace();
+  const manager = new DesignManager(workspace, transitionRegistry());
+  await manager.start({ objective: "Create a console", hasExistingDesign: false }, { runId: "timing-run-001" });
+  await manager.advance("timing-run-001", { force: true });
+  await manager.recordHandoff(transitionHandoff("timing-run-001", "grounding", "product-strategist"));
+  await manager.advance("timing-run-001");
+  await manager.recordHandoff(transitionHandoff("timing-run-001", "direction", "art-director"));
+
+  const run = await manager.getRun("timing-run-001");
+  const stamped: RunContract = {
+    ...run,
+    phaseHistory: [
+      { phase: "intake", enteredAt: "2026-08-24T10:00:00.000Z", exitedAt: "2026-08-24T10:00:05.000Z" },
+      { phase: "grounding", enteredAt: "2026-08-24T10:00:05.000Z", exitedAt: "2026-08-24T10:00:08.000Z" },
+      { phase: "direction", enteredAt: "2026-08-24T10:00:08.000Z" }
+    ],
+    currentPhase: "direction"
+  };
+  await workspace.writeText(`.chromarelay/runs/timing-run-001/run.json`, JSON.stringify(stamped, null, 2) + "\n");
+
+  const audit = await manager.auditRun("timing-run-001");
+  const byPhase = Object.fromEntries(audit.timing.phases.map(entry => [entry.phase, entry.elapsedMs]));
+  assert.equal(byPhase["intake"], 5000);
+  assert.equal(byPhase["grounding"], 3000);
+  assert.equal(byPhase["direction"], null, "a phase still in flight is an explicit unknown, not zero");
+  const byRole = Object.fromEntries(audit.timing.roles.map(entry => [entry.role, entry.elapsedMs]));
+  assert.equal(byRole["coordinator"], 5000);
+  assert.equal(byRole["product-strategist"], 3000);
+  assert.equal(byRole["art-director"], null);
+});
+
+test("a re-entered phase contributes every entry and an unknown entry poisons the total", async () => {
+  const workspace = new MemoryWorkspace();
+  const manager = new DesignManager(workspace, transitionRegistry());
+  await manager.start({ objective: "Create a console", hasExistingDesign: false }, { runId: "timing-run-002" });
+  await manager.advance("timing-run-002", { force: true });
+  await manager.recordHandoff(transitionHandoff("timing-run-002", "grounding", "product-strategist", { requestedTransition: "advance" }));
+  await manager.advance("timing-run-002");
+  await manager.recordHandoff(transitionHandoff("timing-run-002", "direction", "art-director", {
+    requestedTransition: "return",
+    requestedTarget: "grounding"
+  }));
+  await manager.advance("timing-run-002");
+  const returned = await manager.getRun("timing-run-002");
+  assert.equal(returned.phaseHistory.filter(entry => entry.phase === "grounding").length, 2);
+
+  const audit = await manager.auditRun("timing-run-002");
+  const grounding = audit.timing.phases.find(entry => entry.phase === "grounding");
+  assert.equal(grounding?.elapsedMs, null, "returned-to phases have no exitedAt yet, so their total is unknown");
+  const strategist = audit.timing.roles.find(entry => entry.role === "product-strategist");
+  assert.equal(strategist?.elapsedMs, null, "an unknown phase contribution makes the Role total unknown, never a partial sum");
+});
+
+test("auditRun tolerates a phaseHistory with missing or unparseable timestamps", async () => {
+  const workspace = new MemoryWorkspace();
+  const manager = new DesignManager(workspace, transitionRegistry());
+  await manager.start({ objective: "Create a console", hasExistingDesign: false }, { runId: "timing-run-003" });
+  const run = await manager.getRun("timing-run-003");
+  const corrupted: RunContract = {
+    ...run,
+    phaseHistory: [
+      { phase: "intake", enteredAt: "not-a-date" },
+      { phase: "grounding", enteredAt: "2026-08-24T10:00:05.000Z", exitedAt: "2026-08-24T10:00:08.000Z" }
+    ],
+    currentPhase: "grounding"
+  };
+  await workspace.writeText(`.chromarelay/runs/timing-run-003/run.json`, JSON.stringify(corrupted, null, 2) + "\n");
+
+  const audit = await manager.auditRun("timing-run-003");
+  const byPhase = Object.fromEntries(audit.timing.phases.map(entry => [entry.phase, entry.elapsedMs]));
+  assert.equal(byPhase["intake"], null);
+  assert.equal(byPhase["grounding"], 3000);
+  const strategist = audit.timing.roles.find(entry => entry.role === "product-strategist");
+  assert.equal(strategist?.elapsedMs, 3000);
+});
+
+test("phase entry, handoff receipt, and phase exit each append timestamped events carrying runId, phase, role, and agentId", async () => {
+  const workspace = new MemoryWorkspace();
+  const manager = new DesignManager(workspace, transitionRegistry());
+  await manager.start({ objective: "Create a console", hasExistingDesign: false }, { runId: "timing-run-004" });
+  await manager.advance("timing-run-004", { force: true });
+  await manager.recordHandoff(transitionHandoff("timing-run-004", "grounding", "product-strategist"));
+  await manager.advance("timing-run-004");
+  await manager.recordHandoff(transitionHandoff("timing-run-004", "direction", "art-director", {
+    requestedTransition: "return",
+    requestedTarget: "grounding"
+  }));
+  await manager.advance("timing-run-004");
+  const returned = await manager.getRun("timing-run-004");
+  assert.equal(returned.currentPhase, "grounding");
+
+  const log = (await events(workspace, "timing-run-004")).filter(event => typeof event["at"] === "string" && !Number.isNaN(Date.parse(event["at"] as string)));
+  assert.ok(log.length >= 3, `expected timestamped run.started, phase.exited, phase.advanced; got ${JSON.stringify(log.map(event => event["type"]))}`);
+  const exited = log.filter(event => event["type"] === "phase.exited");
+  assert.equal(exited.length, 3);
+  assert.equal(exited[0]?.["runId"], "timing-run-004");
+  assert.equal(exited[0]?.["phase"], "intake");
+  assert.equal(exited[0]?.["role"], "coordinator");
+  assert.equal(exited[0]?.["agentId"], "coordinator", "a Coordinator phase with no Handoff falls back to its role");
+  assert.equal(exited[1]?.["phase"], "grounding");
+  assert.equal(exited[1]?.["agentId"], "product-strategist-a", "an attested phase names its Handoff agent");
+  assert.equal(exited[2]?.["phase"], "direction");
+  assert.equal(exited[2]?.["agentId"], "art-director-a");
+  const entered = log.filter(event => event["type"] === "phase.entered");
+  assert.equal(entered.length, 4, "start, two forward advances, and the return target each record a phase entry");
+  for (const entry of entered) {
+    assert.equal(entry["runId"], "timing-run-004");
+    assert.ok(typeof entry["phase"] === "string" && typeof entry["role"] === "string" && typeof entry["agentId"] === "string");
+    assert.ok(typeof entry["at"] === "string" && !Number.isNaN(Date.parse(entry["at"] as string)));
+  }
+  assert.deepEqual(entered.map(entry => entry["phase"]), ["intake", "grounding", "direction", "grounding"]);
+  const advanced = log.find(event => event["type"] === "phase.advanced");
+  assert.equal(advanced?.["runId"], "timing-run-004");
+  assert.equal(advanced?.["fromRole"], "coordinator");
+  assert.equal(advanced?.["toRole"], "product-strategist");
+  const recorded = log.find(event => event["type"] === "handoff.recorded");
+  assert.equal(recorded?.["agentId"], "product-strategist-a");
+});
+
+test("timing writes never gate advance: an event append failure still completes the transition", async () => {
+  const workspace = new MemoryWorkspace();
+  const manager = new DesignManager(workspace, transitionRegistry());
+  await manager.start({ objective: "Create a console", hasExistingDesign: false }, { runId: "timing-run-005" });
+  await manager.advance("timing-run-005", { force: true });
+  await manager.recordHandoff(transitionHandoff("timing-run-005", "grounding", "product-strategist"));
+
+  // Throw on every event-store write: every timing append is isolated, so the transition still
+  // commits its state first and completes. A silent no-op would not prove the try/catch.
+  let attempts = 0;
+  workspace.appendText = async (relativePath: string): Promise<void> => {
+    if (relativePath.includes("events.jsonl")) {
+      attempts += 1;
+      throw new Error("event store unavailable");
+    }
+    throw new Error("unexpected non-event append");
+  };
+  try {
+    const advanced = await manager.advance("timing-run-005");
+    assert.equal(advanced.currentPhase, "direction");
+    assert.ok(attempts >= 3, "exited, entered, and advanced must each have been attempted and swallowed");
+    const persisted = await workspace.readText(".chromarelay/runs/timing-run-005/run.json");
+    assert.match(persisted, /"currentPhase": "direction"/, "saveRun-first ordering: state commits even when the event store fails");
+  } finally {
+    workspace.appendText = MemoryWorkspace.prototype.appendText;
+  }
+});
+
+test("a failing event store still records a return entry and resolves the attested exit agent", async () => {
+  const workspace = new MemoryWorkspace();
+  const manager = new DesignManager(workspace, transitionRegistry());
+  await manager.start({ objective: "Create a console", hasExistingDesign: false }, { runId: "timing-run-006" });
+  await manager.advance("timing-run-006", { force: true });
+  await manager.recordHandoff(transitionHandoff("timing-run-006", "grounding", "product-strategist"));
+  await manager.advance("timing-run-006");
+  await manager.recordHandoff(transitionHandoff("timing-run-006", "direction", "art-director", {
+    requestedTransition: "return",
+    requestedTarget: "grounding"
+  }));
+
+  let attempts = 0;
+  workspace.appendText = async (relativePath: string): Promise<void> => {
+    if (relativePath.includes("events.jsonl")) {
+      attempts += 1;
+      throw new Error("event store unavailable");
+    }
+    throw new Error("unexpected non-event append");
+  };
+  try {
+    const returned = await manager.advance("timing-run-006");
+    assert.equal(returned.currentPhase, "grounding");
+    assert.equal(returned.phaseHistory.filter(entry => entry.phase === "grounding").length, 2);
+    assert.ok(attempts >= 3, "exited, entered, and returned must each have been attempted and swallowed");
+  } finally {
+    workspace.appendText = MemoryWorkspace.prototype.appendText;
+  }
+
+  // With the store healthy again, the same paths resolve agents without throwing.
+  const log = await events(workspace, "timing-run-006");
+  assert.ok(log.some(event => event["type"] === "phase.entered" && event["phase"] === "grounding"));
+});
+
+test("status and audit agree on timing, including a completed Run with all-known durations", async () => {
+  const workspace = new MemoryWorkspace();
+  const manager = new DesignManager(workspace, transitionRegistry());
+  await manager.start({ objective: "Create a console", hasExistingDesign: false }, { runId: "timing-run-007" });
+
+  const run = await manager.getRun("timing-run-007");
+  const completed: RunContract = {
+    ...run,
+    status: "completed",
+    currentPhase: "critique",
+    phaseHistory: [
+      { phase: "intake", enteredAt: "2026-08-24T10:00:00.000Z", exitedAt: "2026-08-24T10:00:05.000Z", outcome: "advanced" },
+      { phase: "grounding", enteredAt: "2026-08-24T10:00:05.000Z", exitedAt: "2026-08-24T10:00:08.000Z", outcome: "advanced" },
+      { phase: "direction", enteredAt: "2026-08-24T10:00:08.000Z", exitedAt: "2026-08-24T10:00:12.000Z", outcome: "advanced" },
+      { phase: "critique", enteredAt: "2026-08-24T10:00:12.000Z", exitedAt: "2026-08-24T10:00:14.000Z", outcome: "advanced" }
+    ]
+  };
+  await workspace.writeText(".chromarelay/runs/timing-run-007/run.json", JSON.stringify(completed, null, 2) + "\n");
+
+  // Both views derive from the same pure computation over the same persisted history.
+  const view = await manager.status("timing-run-007");
+  const audit = await manager.auditRun("timing-run-007");
+  assert.equal(view.status, "completed");
+  assert.deepEqual(view.timing, audit.timing);
+
+  const byPhase = Object.fromEntries(view.timing.phases.map(entry => [entry.phase, entry.elapsedMs]));
+  assert.equal(byPhase["intake"], 5000);
+  assert.equal(byPhase["grounding"], 3000);
+  assert.equal(byPhase["direction"], 4000);
+  assert.equal(byPhase["critique"], 2000, "a completed Run has no phase still in flight, so no nulls remain");
+  const byRole = Object.fromEntries(view.timing.roles.map(entry => [entry.role, entry.elapsedMs]));
+  assert.equal(byRole["coordinator"], 5000);
+  assert.equal(byRole["product-strategist"], 3000);
+  assert.equal(byRole["art-director"], 4000);
+  assert.equal(byRole["visual-critic"], 2000);
 });

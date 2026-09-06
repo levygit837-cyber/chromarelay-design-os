@@ -356,6 +356,8 @@ export interface RunStatusView {
   gates: string[];
   blockers: string[];
   openDecisions: string[];
+  /** Per-Phase and per-Role elapsed time, derived from phaseHistory at read time. */
+  timing: RunTiming;
 }
 
 export type RunFindingKind = "unresolved" | "handoff-confidence" | "claim-confidence" | "unreadable";
@@ -370,6 +372,61 @@ export interface RunFinding {
   rendered: string;
 }
 
+/**
+ * Per-Phase and per-Role elapsed time, derived from `run.phaseHistory` at read time rather than
+ * tracked alongside it, so the timings can never disagree with the history they summarize. Every
+ * duration is milliseconds; `null` is the explicit unknown — a phase still in flight, or an entry
+ * whose timestamps are missing or unparseable. An unknown contribution poisons its aggregate: a
+ * Role total over one unreadable phase is reported as unknown, never as a partial sum.
+ */
+export interface PhaseTiming {
+  phase: string;
+  role: string;
+  elapsedMs: number | null;
+}
+
+export interface RoleTiming {
+  role: string;
+  elapsedMs: number | null;
+}
+
+export interface RunTiming {
+  phases: PhaseTiming[];
+  roles: RoleTiming[];
+}
+
+/**
+ * Pure and sync for the same reason `validateGateResult` is: it is the shape computation over Run
+ * state already persisted, callable from a test with no adapter. Phases entered more than once
+ * (returns, repair cycles) contribute every entry to their total.
+ */
+export function computeRunTiming(run: RunContract, workflow: WorkflowDefinition): RunTiming {
+  const elapsed = (enteredAt: string, exitedAt: string | undefined): number | null => {
+    if (exitedAt === undefined) return null;
+    const start = Date.parse(enteredAt);
+    const end = Date.parse(exitedAt);
+    return Number.isNaN(start) || Number.isNaN(end) ? null : Math.max(0, end - start);
+  };
+
+  const phaseTotals = new Map<string, { role: string; total: number | null }>();
+  for (const entry of run.phaseHistory) {
+    const role = workflow.phases.find(phase => phase.id === entry.phase)?.role ?? "unknown";
+    const ms = elapsed(entry.enteredAt, entry.exitedAt);
+    const record = phaseTotals.get(entry.phase) ?? { role, total: 0 };
+    record.total = record.total === null || ms === null ? null : record.total + ms;
+    phaseTotals.set(entry.phase, record);
+  }
+  const phases = [...phaseTotals].map(([phase, { role, total }]) => ({ phase, role, elapsedMs: total }));
+
+  const roleTotals = new Map<string, number | null>();
+  for (const { role, elapsedMs } of phases) {
+    const current = roleTotals.get(role) ?? 0;
+    roleTotals.set(role, current === null || elapsedMs === null ? null : current + elapsedMs);
+  }
+  const roles = [...roleTotals].map(([role, elapsedMs]) => ({ role, elapsedMs }));
+  return { phases, roles };
+}
+
 export interface RunAudit {
   runId: string;
   handoffsRead: number;
@@ -378,6 +435,8 @@ export interface RunAudit {
   blockers: string[];
   /** Deduplicated `rendered` of every notice-severity finding. Never persisted. */
   notices: string[];
+  /** Per-Phase and per-Role elapsed time, derived from phaseHistory at read time. */
+  timing: RunTiming;
 }
 
 export class ContractError extends Error {
