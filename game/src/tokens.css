@@ -1,0 +1,28 @@
+/* Custom properties — papéis canônicos Ink and Gunsmoke. */
+:root {
+  --paper: #fdfbf6;
+  --ink: #131212;
+  --ink-soft: #2a2928;
+  --wash-light: #e8e2d6;
+  --parchment: #f4eee1;
+  --wash-dark: #9a958c;
+  --wash-cool: #d8d5cc;
+  --wash-warm: #e2d8c6;
+  --vermilion: #c73e1d;
+  --vermilion-deep: #a32f14;
+
+  --font-display: 'Playfair Display', 'Bodoni MT', Didot, Georgia, serif;
+  --font-data: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+
+  --hud-health-w: 320px;
+  --hud-health-h: 6px;
+  --hud-seal: 44px;
+  --hud-pip: 18px;
+
+  --stage-w: 1280;
+  --stage-h: 720;
+
+  --card-bg: var(--parchment);
+  --card-border: 1.5px solid var(--ink);
+  --card-radius: 2px;
+}
