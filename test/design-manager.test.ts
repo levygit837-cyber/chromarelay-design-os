@@ -874,3 +874,178 @@ test("a return with no target names the field it is missing", async () => {
   }));
   await assert.rejects(() => manager.advance("transition-run-010"), /requestedTarget/);
 });
+
+// --- Resource observability: telemetry on Handoffs aggregates per Phase and per Role ------------
+//
+// What is under test is the read path and the degrade-to-unknown rule: an aggregate is present only
+// when some Handoff reported that resource, and nothing here can block advance() because nothing
+// here is consulted by it.
+
+async function runWithTelemetryHandoff(runId: string, telemetry: SpecialistHandoff["telemetry"]): Promise<DesignManager> {
+  const workspace = new MemoryWorkspace();
+  const manager = new DesignManager(workspace, registry());
+  await manager.start({ objective: "Create a console", hasExistingDesign: false }, { runId });
+  await manager.advance(runId, { force: true });
+  await manager.recordHandoff({
+    version: "1.0",
+    runId,
+    phase: "grounding",
+    role: "product-strategist",
+    agentId: "strategist-a",
+    summary: "Grounding reported",
+    claims: [{ claim: "margin is outside noise", status: "inferred", confidence: "medium", evidenceRefs: ["e1"] }],
+    evidence: [],
+    artifacts: [],
+    decisions: [],
+    risks: [],
+    confidence: "high",
+    requestedTransition: "advance",
+    unresolved: [],
+    ...(telemetry ? { telemetry } : {})
+  });
+  return manager;
+}
+
+test("aggregates tool calls, tokens, and skill use per Phase and per Role", async () => {
+  const manager = await runWithTelemetryHandoff("resources-run-001", {
+    tools: { read: 4, grep: 2 },
+    inputTokens: 1200,
+    outputTokens: 300
+  });
+  await manager.recordHandoff({
+    version: "1.0",
+    runId: "resources-run-001",
+    phase: "grounding",
+    role: "product-strategist",
+    agentId: "strategist-b",
+    summary: "Grounding corroborated",
+    claims: [{ claim: "corroborated independently", status: "observed", confidence: "medium", evidenceRefs: ["e2"] }],
+    evidence: [],
+    artifacts: [],
+    decisions: [],
+    risks: [],
+    confidence: "high",
+    requestedTransition: "advance",
+    unresolved: [],
+    skill: { primary: "chromarelay-grounding", supporting: ["chromarelay-research"] },
+    telemetry: { tools: { read: 1 }, inputTokens: 500, outputTokens: 100 }
+  });
+
+  const audit = await manager.auditRun("resources-run-001");
+  const phase = audit.resources.byPhase["grounding"];
+  assert.ok(phase);
+  assert.equal(phase.role, "product-strategist");
+  assert.deepEqual(phase.tools, { read: 5, grep: 2 });
+  assert.deepEqual(phase.tokens, { input: 1700, output: 400 });
+  // Per-agent attribution survives the aggregation, so a reader can see who consumed what.
+  assert.deepEqual(phase.agents?.["strategist-a"]?.tools, { read: 4, grep: 2 });
+  assert.deepEqual(phase.agents?.["strategist-a"]?.tokens, { input: 1200, output: 300 });
+  assert.deepEqual(phase.agents?.["strategist-b"]?.tools, { read: 1 });
+  assert.deepEqual(phase.agents?.["strategist-b"]?.skill, { primary: "chromarelay-grounding", supporting: ["chromarelay-research"] });
+  // The kit offered one primary plus its supporting references; two agents, one reporting, so counts
+  // are per reporting agent in the offered shape.
+  assert.deepEqual(phase.skill, {
+    offered: { primary: "chromarelay-grounding", supporting: [] },
+    used: { primary: { "chromarelay-grounding": 1 }, supporting: { "chromarelay-research": 1 } }
+  });
+
+  const role = audit.resources.byRole["product-strategist"];
+  assert.ok(role);
+  assert.deepEqual(role.tools, { read: 5, grep: 2 });
+  assert.deepEqual(role.tokens, { input: 1700, output: 400 });
+  assert.deepEqual(role.skills, { primary: { "chromarelay-grounding": 1 }, supporting: { "chromarelay-research": 1 } });
+});
+
+test("a phase whose Handoffs carry no telemetry aggregates nothing rather than zeros", async () => {
+  const manager = await runWithTelemetryHandoff("resources-run-002", undefined);
+  const audit = await manager.auditRun("resources-run-002");
+  const phase = audit.resources.byPhase["grounding"];
+  assert.ok(phase);
+  assert.equal(phase.role, "product-strategist");
+  assert.equal(phase.tools, undefined);
+  assert.equal(phase.tokens, undefined);
+  assert.equal(phase.skill, undefined);
+  const role = audit.resources.byRole["product-strategist"];
+  assert.ok(role);
+  assert.equal(role.tools, undefined);
+  assert.deepEqual(role.skills, undefined);
+});
+
+test("a partially reported Handoff aggregates what it reported and leaves the rest unknown", async () => {
+  const manager = await runWithTelemetryHandoff("resources-run-003", { tools: { write: 3 } });
+  const audit = await manager.auditRun("resources-run-003");
+  const phase = audit.resources.byPhase["grounding"];
+  assert.deepEqual(phase?.tools, { write: 3 });
+  assert.equal(phase?.tokens, undefined);
+});
+
+test("rejects telemetry with a non-positive tool count", () => {
+  const handoff: SpecialistHandoff = {
+    version: "1.0",
+    runId: "resources-run-004",
+    phase: "grounding",
+    role: "product-strategist",
+    agentId: "strategist-a",
+    summary: "Grounding reported",
+    claims: [{ claim: "c", status: "inferred", confidence: "medium", evidenceRefs: ["e1"] }],
+    evidence: [],
+    artifacts: [],
+    decisions: [],
+    risks: [],
+    confidence: "high",
+    requestedTransition: "advance",
+    unresolved: [],
+    telemetry: { tools: { read: 0 } }
+  };
+  assert.throws(() => validateHandoff(handoff), /tool count for read must be a positive integer/);
+});
+
+test("rejects telemetry with a negative token total", () => {
+  const handoff: SpecialistHandoff = {
+    version: "1.0",
+    runId: "resources-run-005",
+    phase: "grounding",
+    role: "product-strategist",
+    agentId: "strategist-a",
+    summary: "Grounding reported",
+    claims: [{ claim: "c", status: "inferred", confidence: "medium", evidenceRefs: ["e1"] }],
+    evidence: [],
+    artifacts: [],
+    decisions: [],
+    risks: [],
+    confidence: "high",
+    requestedTransition: "advance",
+    unresolved: [],
+    telemetry: { inputTokens: -1 }
+  };
+  assert.throws(() => validateHandoff(handoff), /inputTokens must be a non-negative integer/);
+});
+
+test("missing telemetry never blocks advancing a phase", async () => {
+  // passGroundingGate needs the workspace, so this helper builds the run inline instead.
+  const workspace = new MemoryWorkspace();
+  const manager = new DesignManager(workspace, registry());
+  await manager.start({ objective: "Create a console", hasExistingDesign: false }, { runId: "resources-run-006" });
+  await manager.advance("resources-run-006", { force: true });
+  await manager.recordHandoff({
+    version: "1.0",
+    runId: "resources-run-006",
+    phase: "grounding",
+    role: "product-strategist",
+    agentId: "strategist-a",
+    summary: "Grounding reported",
+    claims: [{ claim: "margin is outside noise", status: "inferred", confidence: "medium", evidenceRefs: ["e1"] }],
+    evidence: [],
+    artifacts: [],
+    decisions: [],
+    risks: [],
+    confidence: "high",
+    requestedTransition: "advance",
+    unresolved: []
+  });
+  await passGroundingGate(manager, workspace, "resources-run-006");
+  // advance() consults Handoffs and Gates only; with telemetry absent everywhere the phase still
+  // leaves and the Run completes.
+  const completed = await manager.advance("resources-run-006");
+  assert.equal(completed.status, "completed");
+});

@@ -12,6 +12,10 @@ import type {
   RouteDecision,
   RunAudit,
   RunContract,
+  RunResourceReport,
+  PhaseResourceUsage,
+  AgentResourceUsage,
+  RoleResourceUsage,
   RunFinding,
   RunStatusView,
   SpecialistHandoff,
@@ -743,8 +747,94 @@ export class DesignManager {
       handoffsRead,
       findings,
       blockers: this.mergeBlockers(run.blockers, findings),
-      notices: [...notices]
+      notices: [...notices],
+      resources: await this.resourceReport(run)
     };
+  }
+
+  /**
+   * Aggregates the `telemetry` blocks persisted Handoffs carry into per-Phase and per-Role totals,
+   * plus the offered Skill Kit of each Phase so used reads against offered. Purely a read-path
+   * transformation: a phase with no Handoffs, or Handoffs without telemetry, contributes nothing,
+   * and an absent total means "never reported" — an explicit unknown — rather than zero. Never
+   * consulted by `advance()`; missing telemetry cannot block a transition.
+   */
+  private async resourceReport(run: RunContract): Promise<RunResourceReport> {
+    const byPhase: Record<string, PhaseResourceUsage> = {};
+    const byRole: Record<string, RoleResourceUsage> = {};
+    for (const phase of this.registry.workflows[run.workflow].phases) {
+      const handoffs = await this.eachHandoffOfPhase(run.runId, phase.id);
+      const roleUsage: RoleResourceUsage = byRole[phase.role] ?? {};
+      byRole[phase.role] = roleUsage;
+
+      for (const handoff of handoffs) {
+        const phaseUsage: PhaseResourceUsage = byPhase[phase.id] ?? { role: phase.role };
+        byPhase[phase.id] = phaseUsage;
+
+        const agentUsage: AgentResourceUsage = {};
+        if (handoff.telemetry) {
+          const { tools, inputTokens, outputTokens } = handoff.telemetry;
+          if (tools) {
+            agentUsage.tools = { ...tools };
+            const phaseTools = phaseUsage.tools ?? {};
+            for (const [name, count] of Object.entries(tools)) phaseTools[name] = (phaseTools[name] ?? 0) + count;
+            phaseUsage.tools = phaseTools;
+            const roleTools = roleUsage.tools ?? {};
+            for (const [name, count] of Object.entries(tools)) roleTools[name] = (roleTools[name] ?? 0) + count;
+            roleUsage.tools = roleTools;
+          }
+          if (inputTokens !== undefined || outputTokens !== undefined) {
+            agentUsage.tokens = { input: inputTokens ?? 0, output: outputTokens ?? 0 };
+            const phaseTokens = phaseUsage.tokens ?? { input: 0, output: 0 };
+            phaseTokens.input += inputTokens ?? 0;
+            phaseTokens.output += outputTokens ?? 0;
+            phaseUsage.tokens = phaseTokens;
+            const roleTokens = roleUsage.tokens ?? { input: 0, output: 0 };
+            roleTokens.input += inputTokens ?? 0;
+            roleTokens.output += outputTokens ?? 0;
+            roleUsage.tokens = roleTokens;
+          }
+        }
+
+        if (handoff.skill) {
+          agentUsage.skill = handoff.skill;
+          // The offered shape comes from the kit the registry declared for the phase, not from what
+          // any agent claimed, so offered and used stay independently sourced and comparable.
+          const kit = phase.kit ? this.registry.kits[phase.kit] : undefined;
+          const offered = { primary: kit?.primary ?? null, supporting: kit?.supporting.slice(0, run.skillBudget.supporting) ?? [] };
+          const phaseSkill = phaseUsage.skill ?? { offered, used: { primary: {}, supporting: {} } };
+          phaseUsage.skill = phaseSkill;
+          const bump = (table: Record<string, number>, name: string | null): void => {
+            if (name) table[name] = (table[name] ?? 0) + 1;
+          };
+          bump(phaseSkill.used.primary, handoff.skill.primary);
+          for (const name of handoff.skill.supporting) bump(phaseSkill.used.supporting, name);
+          const roleSkills = roleUsage.skills ?? { primary: {}, supporting: {} };
+          roleUsage.skills = roleSkills;
+          bump(roleSkills.primary, handoff.skill.primary);
+          for (const name of handoff.skill.supporting) bump(roleSkills.supporting, name);
+        }
+
+        if (Object.keys(agentUsage).length > 0) {
+          phaseUsage.agents = { ...phaseUsage.agents, [handoff.agentId]: agentUsage };
+        }
+      }
+    }
+    return { byPhase, byRole };
+  }
+
+  /** Parseable Handoffs of one phase. Unlike `phaseFindings`, this returns the records, not verdicts. */
+  private async eachHandoffOfPhase(runId: string, phaseId: string): Promise<SpecialistHandoff[]> {
+    const handoffDir = `${this.runRoot(runId)}/handoffs/${this.safeSegment(phaseId)}`;
+    const collected: SpecialistHandoff[] = [];
+    for (const fileName of await this.workspace.list(handoffDir)) {
+      try {
+        collected.push(JSON.parse(await this.workspace.readText(`${handoffDir}/${fileName}`)) as SpecialistHandoff);
+      } catch {
+        continue;
+      }
+    }
+    return collected;
   }
 
   validateRun(run: RunContract): void {

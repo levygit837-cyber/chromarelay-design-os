@@ -189,6 +189,20 @@ export interface HandoffSkillUse {
   supporting: string[];
 }
 
+/**
+ * Quantitative resource report a specialist may attach to its Handoff. Every field is optional so a
+ * harness that cannot observe a resource reports nothing rather than a fabricated zero: absence is
+ * read downstream as an explicit "unknown", never as an empty measurement.
+ */
+export interface HandoffTelemetry {
+  /** Tool name -> invocation count for this agent during this phase. */
+  tools?: Record<string, number>;
+  /** Input tokens consumed by this agent during this phase, when the harness reports them. */
+  inputTokens?: number;
+  /** Output tokens produced by this agent during this phase, when the harness reports them. */
+  outputTokens?: number;
+}
+
 export interface SpecialistHandoff {
   version: "1.0";
   runId: string;
@@ -207,6 +221,8 @@ export interface SpecialistHandoff {
   unresolved: string[];
   /** Optional only so Handoffs already on disk stay readable; every new Handoff should carry it. */
   skill?: HandoffSkillUse;
+  /** Optional quantitative resource report; absent means the harness observed nothing, not zero. */
+  telemetry?: HandoffTelemetry;
 }
 
 /** Verdict a Gate result may carry. `fail` is a recorded evaluation, not a pass — see `GateResult`. */
@@ -378,6 +394,59 @@ export interface RunAudit {
   blockers: string[];
   /** Deduplicated `rendered` of every notice-severity finding. Never persisted. */
   notices: string[];
+  /** Resource consumption aggregated per Phase and per Role. Absent sub-fields mean unknown, not zero. */
+  resources: RunResourceReport;
+}
+
+/**
+ * Resource telemetry aggregated from the `telemetry` blocks Handoffs persisted for this Run. Any
+ * `undefined` total means no Handoff reported that resource — an explicit unknown, so a coordinator
+ * comparing Runs can tell "never measured" from "measured zero". Read-only; never persisted and
+ * never consulted by `advance()`.
+ */
+export interface RunResourceReport {
+  /** Per Phase: tool calls by name, Skill use, and token totals, summed over the phase's agents. */
+  byPhase: Record<string, PhaseResourceUsage>;
+  /** Per Role, summed across every Phase the Role worked in this Run. */
+  byRole: Record<string, RoleResourceUsage>;
+}
+
+export interface PhaseResourceUsage {
+  /** Role that owns the Phase, so a reader needs no registry lookup to join the two views. */
+  role: string;
+  /** Tool name -> total invocations across the Phase's agents. Absent when no agent reported tools. */
+  tools?: Record<string, number>;
+  /**
+   * Offered-versus-used Skill Kit shape, aggregated across the Phase's agents: each skill name maps
+   * to how many agents reported using it, in the primary/supporting split the kit offered. Absent
+   * when no agent reported its Skill use.
+   */
+  skill?: {
+    offered: { primary: string | null; supporting: string[] };
+    used: { primary: Record<string, number>; supporting: Record<string, number> };
+  };
+  /** Absent when no agent reported tokens for the Phase. */
+  tokens?: { input: number; output: number };
+  /** What each agent of the Phase reported, keyed by agentId. Absent means the agent reported nothing. */
+  agents?: Record<string, AgentResourceUsage>;
+}
+
+/** One agent's reported resources inside one Phase. Each field absent when that resource is unknown. */
+export interface AgentResourceUsage {
+  /** Tool name -> invocation count as the agent reported it. */
+  tools?: Record<string, number>;
+  /** Skill use in the offered-versus-used shape, as reported. Absent when the agent reported none. */
+  skill?: { primary: string | null; supporting: string[] };
+  tokens?: { input: number; output: number };
+}
+
+export interface RoleResourceUsage {
+  /** Tool name -> total invocations across every Phase this Role worked. Absent when none reported. */
+  tools?: Record<string, number>;
+  /** How many agents of this Role reported using each Skill, split the same way. Absent when none reported. */
+  skills?: { primary: Record<string, number>; supporting: Record<string, number> };
+  /** Absent when no agent of this Role reported tokens. */
+  tokens?: { input: number; output: number };
 }
 
 export class ContractError extends Error {
@@ -478,6 +547,25 @@ export function validateHandoff(handoff: SpecialistHandoff): void {
     }
     if (decision.approvedBy === handoff.agentId) {
       throw new ContractError(`Decision ${decision.id} is self-approved by ${handoff.agentId}`);
+    }
+  }
+
+  // Telemetry is quantitative, so a wrong shape is a corrupted report rather than a missing one.
+  // Absence stays legal — an unknown measurement is honest — but what IS present must add up.
+  const telemetry = handoff.telemetry;
+  if (telemetry !== undefined) {
+    if (typeof telemetry !== "object" || telemetry === null) {
+      throw new ContractError("handoff telemetry must be an object when present");
+    }
+    for (const [tool, count] of Object.entries(telemetry.tools ?? {})) {
+      if (!Number.isInteger(count) || count <= 0) {
+        throw new ContractError(`Telemetry tool count for ${tool} must be a positive integer, got ${count}`);
+      }
+    }
+    for (const [label, value] of [["inputTokens", telemetry.inputTokens], ["outputTokens", telemetry.outputTokens]] as const) {
+      if (value !== undefined && (!Number.isInteger(value) || value < 0)) {
+        throw new ContractError(`Telemetry ${label} must be a non-negative integer, got ${value}`);
+      }
     }
   }
 }

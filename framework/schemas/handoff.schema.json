@@ -43,6 +43,20 @@
         "primary": { "type": ["string", "null"], "minLength": 1 },
         "supporting": { "type": "array", "maxItems": 2, "items": { "type": "string", "minLength": 1 } }
       }
+    },
+    "telemetry": {
+      "description": "Quantitative resource report from the agent's harness. Every field is optional: a harness that cannot observe a resource omits it, and the audit reads that as an explicit unknown rather than a zero. Aggregated per Phase and per Role in the audit view.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "tools": {
+          "description": "Tool name -> invocation count for this agent during this phase.",
+          "type": "object",
+          "additionalProperties": { "type": "integer", "minimum": 1 }
+        },
+        "inputTokens": { "type": "integer", "minimum": 0 },
+        "outputTokens": { "type": "integer", "minimum": 0 }
+      }
     }
   }
 }

@@ -58,6 +58,7 @@ Commands:
   advance [run-id] [--root .] [--system framework] [--force --reason "why"] [--skip] [--transition advance|branch|return|escalate|stop]
   validate [run-id] [--root .] [--system framework]
   validate-framework [--system framework]
+  resources [run-id] [--root .] [--system framework]
 `);
   process.exit(2);
 }
@@ -154,6 +155,13 @@ async function main(): Promise<void> {
         ...(transition ? { transition: transition as RequestedTransition } : {})
       });
       console.log(JSON.stringify(run, null, 2));
+      return;
+    }
+    case "resources": {
+      // Resource observability read path: per-Phase and per-Role aggregates of the telemetry
+      // Handoffs carried. Absent totals mean no Handoff reported that resource, never zero.
+      const audit = await manager.auditRun(args.positional[0]);
+      console.log(JSON.stringify(audit.resources, null, 2));
       return;
     }
     case "validate": {
