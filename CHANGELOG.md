@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-09-06
+
+Eval foundation release: the orchestration contract, timing observability,
+and typed Artifact layout that the three parallel evaluation Runs (#19,
+#20, #21) build on.
+
 ### Added
 
 - Typed Run Artifact layout: `recordHandoff` requires every `ArtifactRef.path`
@@ -63,7 +69,8 @@ Docs-only release: the remote repository is now fully EN-US.
 
 - No Portuguese words remain in tracked filenames or prose.
 
-[Unreleased]: https://github.com/levygit837-cyber/chromarelay-design-os/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/levygit837-cyber/chromarelay-design-os/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/levygit837-cyber/chromarelay-design-os/releases/tag/v0.2.0
 [0.1.1]: https://github.com/levygit837-cyber/chromarelay-design-os/releases/tag/v0.1.1
 
 ## [0.1.0] - 2026-09-05
@@ -107,5 +114,4 @@ another repository.
 - Framework cross-validation (`validate-framework`) covering phase
   references to known roles, kits, and gates.
 
-[Unreleased]: https://github.com/levygit837-cyber/chromarelay-design-os/compare/v0.1.0...HEAD
 [0.1.0]: https://github.com/levygit837-cyber/chromarelay-design-os/releases/tag/v0.1.0
