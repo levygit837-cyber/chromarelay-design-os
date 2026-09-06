@@ -66,4 +66,4 @@ append one line to the Active index below.
 
 | Date | Idea | Status |
 | ---- | ---- | ------ |
-| _empty_ | _No ideas yet._ | — |
+| 2026-09-06 | [Pre-declared deliverable format on DesignRequest](ideas/considering/2026-09-06-deliverable-format-decision.md) | issue #26 |

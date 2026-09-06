@@ -13,7 +13,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   under `specimens/`, `prototype/`, `directions/`, `context/`, or `audit/`
   with the referenced file present, and `migrate-artifacts` copies
   pre-existing flat Artifacts into their kind-mapped folder without
-  rewriting content.
+  rewriting content (#18).
+- Run timing observability per Phase and Role: Phase entry, Handoff receipt,
+  and Phase exit each append a timestamped event carrying `runId`, `phase`,
+  `role`, and `agentId`; Run status and audit views expose per-Phase and
+  per-Role elapsed time. Timing writes never block Phase advance; a missing
+  clock value degrades to an explicit unknown (#16).
+- Parallel evaluation Runs orchestration contract
+  (`docs/agents/evaluation-run-orchestration.md`): fixes the CREATE workflow,
+  full autonomy, one worktree and branch per Run, Role sandbox boundaries,
+  the Skill Kit budget, the HTML-specimen-as-reference rule, the bootable
+  prototype layout, local archiving, and the no-PR local-output policy (#15).
+
+### Changed
+
+- Enforced EN-US for commits, pull requests, and issues (`AGENTS.md`,
+  `CLAUDE.md`, PR template); clarified that GitHub Issues is the only
+  tracker and no local ticket files are created (#13).
+- Disambiguated build Artifact destinations by project state: product code
+  on an existing project goes to the isolated worktree as a patch;
+  `prototype/` is only for Run-generated apps (#18).
+- Run Contract schema records Phase entry with `agentId` for timing joins (#16).
+
+### Fixed
+
+- Typed Artifact migration preserves binary bytes without UTF-8 rewrite
+  (new `Workspace` `readBytes`/`writeBytes` on both adapters) and resumes
+  past entries that already landed (#18).
+
+### Removed
+
+- Removed the bootstrap payload (`.bootstrap/`) and the one-shot
+  materialization workflow, dead weight after repository
+  materialization (#14).
 
 ## [0.1.1] - 2026-09-06
 
